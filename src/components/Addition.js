@@ -1,14 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import Container from "./Options/Container";
+import { QuestionConsumer } from "../context";
 
-class Addition extends Component {
-  render() {
-    return (
-      <div>
-        <Container />
-      </div>
-    );
-  }
-}
+const Addition = () => {
+  return (
+    <QuestionConsumer>
+      {value => {
+        const { first, second } = value;
+        return <Container params={{ first, second }} operator={"+"} />;
+      }}
+    </QuestionConsumer>
+  );
+};
 
 export default Addition;

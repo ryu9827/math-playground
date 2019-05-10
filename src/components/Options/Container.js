@@ -1,16 +1,17 @@
 import React from "react";
 import QuestionDescription from "./QuestionDescription";
 import Option from "./Option";
+import Button from "../Button";
 
-const Container = () => {
-  let params = { first: 1, second: 2 };
+const Container = ({ params, operator }) => {
   return (
     <div className="container">
-      <QuestionDescription params={params} />
+      <QuestionDescription params={params} operator={operator} />
       <Option />
       <Option />
       <Option />
       <Option />
+      <Button />
     </div>
   );
 };
