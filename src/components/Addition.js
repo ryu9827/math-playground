@@ -1,16 +1,10 @@
 import React from "react";
 import Container from "./Options/Container";
-import { QuestionConsumer } from "../context";
+import store from "../store/store";
 
 const Addition = () => {
-  return (
-    <QuestionConsumer>
-      {value => {
-        const { first, second } = value;
-        return <Container params={{ first, second }} operator={"+"} />;
-      }}
-    </QuestionConsumer>
-  );
+  const { first, second } = store;
+  return <Container params={{ first, second }} operator={"+"} />;
 };
 
 export default Addition;

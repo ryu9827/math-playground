@@ -3,12 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { QuestionProvider } from "./context";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 ReactDOM.render(
-  <QuestionProvider>
+  <Provider store={store}>
     <App />
-  </QuestionProvider>,
+  </Provider>,
   document.getElementById("root")
 );
 
