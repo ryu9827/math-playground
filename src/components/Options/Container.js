@@ -3,10 +3,10 @@ import QuestionDescription from "./QuestionDescription";
 import Option from "./Option";
 import Button from "../Button";
 
-const Container = ({ params, operator }) => {
+const Container = () => {
   return (
     <div className="container">
-      <QuestionDescription params={params} operator={operator} />
+      <QuestionDescription />
       <Option />
       <Option />
       <Option />

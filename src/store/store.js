@@ -1,10 +1,14 @@
 import { createStore } from "redux";
 import reducer from "./reducer";
+import { randomNum } from "./Action_Constant";
+
+const initialState = {
+  first: randomNum(),
+  second: randomNum(),
+  result: null,
+  isCorrect: null
+};
 
 const store = createStore(reducer, initialState);
-
-const initialState = localStorage["redux-store"]
-  ? JSON.parse(localStorage["redux-store"])
-  : { first: 1, second: 2, result: 3, isCorrect: null };
-
+window.store = store;
 export default store;
