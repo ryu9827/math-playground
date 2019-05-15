@@ -1,4 +1,4 @@
-import { C } from "./Action_Constant";
+import C from "./Action_Constant";
 
 const reducer = (state = {}, action) => {
   switch (action.type) {

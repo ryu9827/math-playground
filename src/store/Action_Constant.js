@@ -4,8 +4,4 @@ const C = {
   UPDATE_RESULT: "UPDATE_RESULT" //change result
 };
 
-const randomNum = () => {
-  return Math.floor(Math.random() * 20 + 1);
-};
-
-export { C, randomNum };
+export default C;

@@ -1,6 +1,6 @@
 import { createStore } from "redux";
 import reducer from "./reducer";
-import { randomNum } from "./Action_Constant";
+import { randomNum } from "../components/OptionsMethods";
 
 const initialState = {
   first: randomNum(),

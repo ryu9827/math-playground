@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { nextQuestion, updateResult } from "../../store/actionsCreator";
 
 const mapStateToProps = state => {
   return {
@@ -10,24 +9,13 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    refreshParams: () => dispatch(updateResult())
-  };
-};
-
 class QuestionDescription extends React.Component {
   constructor(props) {
     super();
   }
 
-  componentWillMount() {
-    this.props.refreshParams();
-  }
-
   render() {
-    const { first, second, result } = this.props;
-    console.log(result);
+    const { first, second } = this.props;
     return (
       <div className="question">
         <p>
@@ -38,7 +26,4 @@ class QuestionDescription extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(QuestionDescription);
+export default connect(mapStateToProps)(QuestionDescription);

@@ -1,5 +1,5 @@
-import { randomNum } from "./Action_Constant";
-import { C } from "./Action_Constant";
+import { randomNum } from "../components/OptionsMethods";
+import C from "./Action_Constant";
 
 export const chooseAnswer = choosedOption => {
   return { choosedOption: choosedOption, type: C.CHOOSE_ANSWER };
