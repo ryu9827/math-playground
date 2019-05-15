@@ -3,7 +3,6 @@ const randomNum = () => {
 };
 
 const mixOptions = options => {
-  console.log(options);
   const newArray = [];
   const length = options.length;
   let indexArray = []; // get an array of [ 0, length]

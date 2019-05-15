@@ -1,62 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateResult } from "../store/actionsCreator";
-import { getOptions } from "./OptionsMethods";
 import QuestionDescription from "./Options/QuestionDescription";
 import Option from "./Options/Option";
 import Button from "./Button";
-import store from "../store/store";
-
-const mapDispatchToProps = dispatch => {
-  return {
-    refreshParams: () => dispatch(updateResult())
-  };
-};
+import { getOptions } from "./OptionsMethods";
 
 const mapStateToProps = state => ({
-  result: state.result
+  result: state.result,
+  first: state.first
 });
 
 class Addition extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      options: [],
-      isCorrect: null
+      options: []
     };
   }
 
   componentWillMount() {
-    this.props.refreshParams();
-    console.log(this.props.result);
+    this.setState(() => ({ options: getOptions(this.props.result) }));
   }
 
-  // componentDidMount() {
-  //   console.log(store.getState());
-  //   console.log(this.props);
-  // this.setState(
-  //   () => getOptions(20),
-  //   () => {
-  //     console.log(this.state.options);
-  //   }
-  // );
-  // }
-
   render() {
+    console.log(this.state.options);
     return (
       <div className="container">
         <QuestionDescription />
-        <Option />
-        <Option />
-        <Option />
-        <Option />
+        <Option option={this.state.options[0]} />
+        <Option option={this.state.options[1]} />
+        <Option option={this.state.options[2]} />
+        <Option option={this.state.options[3]} />
         <Button />
       </div>
     );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Addition);
+export default connect(mapStateToProps)(Addition);

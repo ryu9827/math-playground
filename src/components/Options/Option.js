@@ -1,7 +1,8 @@
 import React from "react";
 
-const Option = () => {
-  return <div className="option">Option</div>;
+const Option = props => {
+  const { option } = props;
+  return <div className="option">{option}</div>;
 };
 
 export default Option;

@@ -6,14 +6,16 @@ export const chooseAnswer = choosedOption => {
 };
 
 export const nextQuestion = () => {
-  return {
+  const next = {
     first: randomNum(),
     second: randomNum(),
     type: C.NEXT_QUESTION
   };
+  next.result = next.first + next.second;
+  return next;
 };
 
-export const updateResult = (first, second) => {
+export const updateIsCorrect = (first, second) => {
   return {
     result: first + second,
     type: C.UPDATE_RESULT
