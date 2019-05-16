@@ -22,7 +22,7 @@ const generateOptions = result => {
   let options = [];
   while (options.length < 3) {
     let option = generateOneOption(result);
-    if (!options.includes(option)) {
+    if (!options.includes(option) && option !== result) {
       options.push(option);
     }
   }

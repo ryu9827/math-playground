@@ -9,7 +9,7 @@ function App() {
     <div className="App-header">
       <Header />
       <Addition />
-      <Substruction />
+      {/* <Substruction /> */}
     </div>
   );
 }
