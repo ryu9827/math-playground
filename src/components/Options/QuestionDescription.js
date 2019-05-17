@@ -9,21 +9,17 @@ const mapStateToProps = state => {
   };
 };
 
-class QuestionDescription extends React.Component {
-  constructor(props) {
-    super();
-  }
-
-  render() {
-    const { first, second } = this.props;
-    return (
-      <div className="question">
-        <p>
-          {first} + {second} = _____?
-        </p>
-      </div>
-    );
-  }
-}
+const QuestionDescription = props => {
+  const { second, first, result } = props;
+  console.log(result);
+  return (
+    <div className="question">
+      <p>
+        {first} + {second} = _____?
+      </p>
+    </div>
+  );
+  // }
+};
 
 export default connect(mapStateToProps)(QuestionDescription);

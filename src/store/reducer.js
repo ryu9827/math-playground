@@ -5,18 +5,25 @@ const reducer = (state = {}, action) => {
     case C.CHOOSE_ANSWER:
       return {
         ...state,
-        isCorrect: action.choosedOption === this.result
+        isAnswered: true
       };
     case C.NEXT_QUESTION:
       return {
         ...state,
         first: action.first,
-        second: action.second
+        second: action.second,
+        result: action.first + action.second,
+        isAnswered: false
       };
-    case C.UPDATE_RESULT:
+    case C.CORRECT_INCREASE:
       return {
         ...state,
-        result: state.first + state.second
+        correctAmount: state.correctAmount++
+      };
+    case C.WRONG_INCREASE:
+      return {
+        ...state,
+        wrongAmount: state.wrongAmount++
       };
     default:
       return state;
