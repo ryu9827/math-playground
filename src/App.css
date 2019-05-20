@@ -21,7 +21,22 @@
   /* color: white; */
 }
 
+.header {
+  font-family: "Acme", sans-serif;
+}
+
+.option,
+.question {
+  font-family: "Acme", sans-serif;
+  font-size: 2rem;
+}
+
 .container {
+  background-image: url("./wood_background3.jpg");
+  border-radius: 0.3rem;
+}
+
+.blackboard {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -32,6 +47,9 @@
   background-color: var(--blackboard);
   color: white;
   border-radius: 0.5rem;
+  margin: 2rem;
+  box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.8),
+    inset 0 6px 20px 0 rgba(0, 0, 0, 0.8);
 }
 
 .question {

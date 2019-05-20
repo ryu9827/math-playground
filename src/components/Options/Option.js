@@ -20,15 +20,15 @@ const mapDispatchToProps = dispatch => {
 
 const Option = props => {
   const [correct, setCorrect] = useState(null);
-  const { option } = props; //the number from the parent component
+  const { option, result } = props; //the number from the parent component
   useEffect(() => {
     return () => {
       setCorrect(null);
     };
-  }, [null]);
-
+  }, [result, option]);
   return (
     <OptionContainer
+      className="option"
       correct={correct}
       onClick={() => {
         setCorrect(option === props.result);
@@ -43,7 +43,7 @@ const Option = props => {
 const OptionContainer = styled.div`
   margin-left: 20%;
   margin-right: 20%;
-  padding: 2%;
+  padding: 1.6%;
   border-radius: 0.3rem;
   background-color: ${props => {
     if (props.correct === true) return "var(--correctGreen)";

@@ -35,12 +35,14 @@ class Addition extends React.Component {
   render() {
     return (
       <div className="container">
-        <QuestionDescription />
-        <Option option={this.state.options[0]} />
-        <Option option={this.state.options[1]} />
-        <Option option={this.state.options[2]} />
-        <Option option={this.state.options[3]} />
-        <Button updateOptions={this.updateOptions.bind(this)} />
+        <div className="blackboard">
+          <QuestionDescription />
+          <Option option={this.state.options[0]} />
+          <Option option={this.state.options[1]} />
+          <Option option={this.state.options[2]} />
+          <Option option={this.state.options[3]} />
+          <Button updateOptions={this.updateOptions.bind(this)} />
+        </div>
       </div>
     );
   }
