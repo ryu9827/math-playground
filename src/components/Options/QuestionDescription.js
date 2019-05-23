@@ -11,7 +11,7 @@ const mapStateToProps = state => {
 
 const QuestionDescription = props => {
   const { second, first, result } = props;
-  console.log(result);
+  // console.log(result);
   return (
     <div className="question">
       <p>

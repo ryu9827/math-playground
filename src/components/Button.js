@@ -15,9 +15,21 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Button = ({ nextQuestion, updateOptions }) => {
+const Button = ({
+  nextQuestion,
+  updateStoreCounter,
+  isCorrect,
+  setIsAnsweredToFalse
+}) => {
   return (
-    <div className="button" onClick={() => nextQuestion()}>
+    <div
+      className="button"
+      onClick={() => {
+        updateStoreCounter(isCorrect);
+        setIsAnsweredToFalse();
+        nextQuestion();
+      }}
+    >
       Next
     </div>
   );

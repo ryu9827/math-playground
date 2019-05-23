@@ -1,38 +1,33 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import C from "../../store/Action_Constant";
 
 const mapStateToProps = state => ({
   result: state.result,
   isAnswered: state.isAnswered
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    chooseAnswer() {
-      dispatch({
-        type: C.CHOOSE_ANSWER
-      });
-    }
-  };
-};
-
 const Option = props => {
   const [correct, setCorrect] = useState(null);
-  const { option, result } = props; //the number from the parent component
+  const { option, result, setIsAnsweredToTrue, updateIsCorrect } = props; //the number from the parent component
   useEffect(() => {
     return () => {
-      setCorrect(null);
+      setCorrect(null); //once receive new props, set the state to original
     };
   }, [result, option]);
+
+  useEffect(() => {
+    if (correct !== null) {
+      updateIsCorrect(correct);
+      setIsAnsweredToTrue();
+    }
+  }, [correct]);
   return (
     <OptionContainer
       className="option"
       correct={correct}
       onClick={() => {
         setCorrect(option === props.result);
-        props.chooseAnswer(); //change the state of question been answered
       }}
     >
       {option}
@@ -66,7 +61,4 @@ const OptionContainer = styled.div`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Option);
+export default connect(mapStateToProps)(Option);

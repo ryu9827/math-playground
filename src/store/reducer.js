@@ -2,11 +2,6 @@ import C from "./Action_Constant";
 
 const reducer = (state = {}, action) => {
   switch (action.type) {
-    case C.CHOOSE_ANSWER:
-      return {
-        ...state,
-        isAnswered: true
-      };
     case C.NEXT_QUESTION:
       return {
         ...state,

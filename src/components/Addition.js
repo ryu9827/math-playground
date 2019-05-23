@@ -4,16 +4,32 @@ import QuestionDescription from "./Options/QuestionDescription";
 import Option from "./Options/Option";
 import Button from "./Button";
 import { getOptions } from "./OptionsMethods";
+import Counters from "./Counters.js";
+import C from "../store/Action_Constant";
 
 const mapStateToProps = state => ({
   result: state.result
 });
 
+const mapDispatchToProps = dispatch => {
+  return {
+    updateStoreCounter(isCorrect) {
+      if (isCorrect) {
+        dispatch({ type: C.CORRECT_INCREASE });
+      } else {
+        dispatch({ type: C.WRONG_INCREASE });
+      }
+    }
+  };
+};
+
 class Addition extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      options: []
+      options: [],
+      isAnswered: false,
+      isCorrect: null
     };
   }
 
@@ -32,20 +48,67 @@ class Addition extends React.Component {
     }));
   }
 
+  //@dev only the first click will be recognized as your answer. If first click is wrong, even your second click is right, the question still be regarded as wrongly answered
+  // and the question will be added to wroingCounter.
+  setIsAnsweredToTrue() {
+    this.setState(() => ({ isAnswered: true }));
+  }
+
+  updateIsCorrect(correctness) {
+    if (!this.state.isAnswered) {
+      this.setState(() => ({ isCorrect: correctness }));
+    } else {
+      console.log("this question has been answered");
+    }
+  }
+
+  setIsAnsweredToFalse() {
+    this.setState(() => ({ isAnswered: false }));
+  }
+
   render() {
     return (
       <div className="container">
         <div className="blackboard">
+          <Counters />
           <QuestionDescription />
-          <Option option={this.state.options[0]} />
-          <Option option={this.state.options[1]} />
-          <Option option={this.state.options[2]} />
-          <Option option={this.state.options[3]} />
-          <Button updateOptions={this.updateOptions.bind(this)} />
+          <Option
+            option={this.state.options[0]}
+            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+            updateIsCorrect={this.updateIsCorrect.bind(this)}
+            isCorrect={this.state.isCorrect}
+          />
+          <Option
+            option={this.state.options[1]}
+            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+            updateIsCorrect={this.updateIsCorrect.bind(this)}
+            isCorrect={this.state.isCorrect}
+          />
+          <Option
+            option={this.state.options[2]}
+            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+            updateIsCorrect={this.updateIsCorrect.bind(this)}
+            isCorrect={this.state.isCorrect}
+          />
+          <Option
+            option={this.state.options[3]}
+            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+            updateIsCorrect={this.updateIsCorrect.bind(this)}
+            isCorrect={this.state.isCorrect}
+          />
+          <Button
+            updateOptions={this.updateOptions.bind(this)}
+            updateStoreCounter={this.props.updateStoreCounter}
+            isCorrect={this.state.isCorrect}
+            setIsAnsweredToFalse={this.setIsAnsweredToFalse.bind(this)}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Addition);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Addition);

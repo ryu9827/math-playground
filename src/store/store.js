@@ -5,7 +5,8 @@ import { randomNum } from "../components/OptionsMethods";
 const initialState = {
   first: randomNum(),
   second: randomNum(),
-  isCorrect: null
+  correctAmount: 0,
+  wrongAmount: 0
 };
 initialState.result = initialState.first + initialState.second;
 
