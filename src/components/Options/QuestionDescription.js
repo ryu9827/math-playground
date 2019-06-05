@@ -10,8 +10,7 @@ const mapStateToProps = state => {
 };
 
 const QuestionDescription = props => {
-  const { second, first, result } = props;
-  // console.log(result);
+  const { second, first } = props;
   return (
     <div className="question">
       <p>
@@ -19,7 +18,6 @@ const QuestionDescription = props => {
       </p>
     </div>
   );
-  // }
 };
 
 export default connect(mapStateToProps)(QuestionDescription);

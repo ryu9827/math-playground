@@ -67,41 +67,45 @@ class Addition extends React.Component {
   }
 
   render() {
+    const { updateStoreCounter } = this.props;
     return (
       <div className="container">
-        <div className="blackboard">
+        <div className="blackboard-outter">
           <Counters />
-          <QuestionDescription />
-          <Option
-            option={this.state.options[0]}
-            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
-            updateIsCorrect={this.updateIsCorrect.bind(this)}
-            isCorrect={this.state.isCorrect}
-          />
-          <Option
-            option={this.state.options[1]}
-            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
-            updateIsCorrect={this.updateIsCorrect.bind(this)}
-            isCorrect={this.state.isCorrect}
-          />
-          <Option
-            option={this.state.options[2]}
-            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
-            updateIsCorrect={this.updateIsCorrect.bind(this)}
-            isCorrect={this.state.isCorrect}
-          />
-          <Option
-            option={this.state.options[3]}
-            setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
-            updateIsCorrect={this.updateIsCorrect.bind(this)}
-            isCorrect={this.state.isCorrect}
-          />
-          <Button
-            updateOptions={this.updateOptions.bind(this)}
-            updateStoreCounter={this.props.updateStoreCounter}
-            isCorrect={this.state.isCorrect}
-            setIsAnsweredToFalse={this.setIsAnsweredToFalse.bind(this)}
-          />
+          <div className="blackboard">
+            <QuestionDescription />
+            <Option
+              option={this.state.options[0]}
+              setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+              updateIsCorrect={this.updateIsCorrect.bind(this)}
+              isCorrect={this.state.isCorrect}
+            />
+            <Option
+              option={this.state.options[1]}
+              setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+              updateIsCorrect={this.updateIsCorrect.bind(this)}
+              isCorrect={this.state.isCorrect}
+            />
+            <Option
+              option={this.state.options[2]}
+              setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+              updateIsCorrect={this.updateIsCorrect.bind(this)}
+              isCorrect={this.state.isCorrect}
+            />
+            <Option
+              option={this.state.options[3]}
+              setIsAnsweredToTrue={this.setIsAnsweredToTrue.bind(this)}
+              updateIsCorrect={this.updateIsCorrect.bind(this)}
+              isCorrect={this.state.isCorrect}
+            />
+            <Button
+              updateOptions={this.updateOptions.bind(this)}
+              updateStoreCounter={this.props.updateStoreCounter}
+              isCorrect={this.state.isCorrect}
+              setIsAnsweredToFalse={this.setIsAnsweredToFalse.bind(this)}
+              onClick={() => updateStoreCounter(this.state.isCorrect)}
+            />
+          </div>
         </div>
       </div>
     );

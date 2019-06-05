@@ -7,9 +7,17 @@ const mapStateToProps = state => ({
 });
 
 function Counters(props) {
-  console.log(props.correctAmount);
-  console.log(props.wrongAmount);
-  return <div />;
+  const { correctAmount, wrongAmount } = props;
+  return (
+    <div className="counters">
+      <div>
+        Correct : <span className="correct">{correctAmount}</span>
+      </div>
+      <div>
+        Wrong : <span className="wrong">{wrongAmount}</span>
+      </div>
+    </div>
+  );
 }
 
 export default connect(mapStateToProps)(Counters);
