@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { Navigation } from './components/Navigation'
+import { Question } from './components/Question'
+import { WrongQuestions } from './components/WrongQuestions'
+import { Settings } from './components/Settings'
+import './App.scss'
+
+export type OperationType = '+' | '-' | '×' | '÷'
+export type TabType = OperationType | 'wrong' | 'settings'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [currentTab, setCurrentTab] = useState<TabType>('+')
+	const [currentOperation, setCurrentOperation] = useState<OperationType>('+')
+
+	const handleTabChange = (tab: TabType) => {
+		setCurrentTab(tab)
+		if (tab === '+' || tab === '-' || tab === '×' || tab === '÷') {
+			setCurrentOperation(tab)
+		}
+	}
+
+	return (
+		<div className='App'>
+			<Navigation currentTab={currentTab} onTabChange={handleTabChange} />
+
+			<main className='app-content'>
+				{(currentTab === '+' ||
+					currentTab === '-' ||
+					currentTab === '×' ||
+					currentTab === '÷') && <Question operation={currentOperation} />}
+				{currentTab === 'wrong' && <WrongQuestions />}
+				{currentTab === 'settings' && <Settings />}
+			</main>
+		</div>
+	)
 }
 
-export default App;
+export default App

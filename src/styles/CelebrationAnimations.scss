@@ -1,0 +1,178 @@
+@import './variables';
+
+.celebration-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	z-index: 9999;
+	overflow: hidden;
+}
+
+.animation-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.emoji-large {
+	font-size: 8rem;
+	text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+	z-index: 10;
+	position: relative; // 确保正确定位
+}
+
+.emoji-medium {
+	font-size: 4rem;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -2rem;
+	margin-top: -2rem;
+}
+
+.text-celebration {
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: $text-light;
+	text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+	margin-top: $spacing-md;
+	z-index: 10;
+	position: relative; // 确保正确定位
+}
+
+// 烟花粒子
+.firework-particle {
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: radial-gradient(circle, #fff, #f0f, #0ff);
+	box-shadow: 0 0 20px #fff;
+}
+
+// 星星
+.star-item {
+	font-size: 3rem;
+	filter: drop-shadow(0 0 10px gold);
+}
+
+// 闪光
+.sparkles {
+	font-size: 2rem;
+	margin-top: $spacing-sm;
+}
+
+// 飘落元素
+.falling-item {
+	position: absolute;
+	font-size: 2.5rem;
+	top: 0;
+	filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+// 礼物粒子
+.gift-particle {
+	position: absolute;
+	font-size: 2rem;
+	left: 50%;
+	top: 50%;
+	margin-left: -1rem;
+	margin-top: -1rem;
+}
+
+// 钻石光芒
+.shine-ray {
+	position: absolute;
+	width: 4px;
+	height: 100px;
+	background: linear-gradient(to bottom, transparent, white, transparent);
+	left: 50%;
+	top: 50%;
+	margin-left: -2px;
+	margin-top: -50px;
+	transform-origin: center;
+}
+
+// 气球
+.balloon-item {
+	position: absolute;
+	font-size: 3rem;
+	filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+// 闪电
+.lightning-bolt {
+	position: absolute;
+	font-size: 5rem;
+	left: 50%;
+	top: 50%;
+	margin-left: -2.5rem;
+	margin-top: -2.5rem;
+	filter: drop-shadow(0 0 20px yellow);
+}
+
+// 彩带碎片
+.confetti-piece {
+	position: absolute;
+	width: 10px;
+	height: 20px;
+	top: 0;
+	border-radius: 2px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+// 太阳光芒
+.sun-ray {
+	position: absolute;
+	width: 6px;
+	height: 60px;
+	background: linear-gradient(to bottom, transparent, gold, transparent);
+	left: 50%;
+	top: 50%;
+	margin-left: -3px;
+	margin-top: -30px;
+	transform-origin: center;
+}
+
+// 彩虹
+.rainbow {
+	font-size: 6rem;
+	position: absolute;
+	top: 20%;
+	filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.5));
+}
+
+// 响应式
+@media (max-width: 768px) {
+	.emoji-large {
+		font-size: 5rem;
+	}
+
+	.emoji-medium {
+		font-size: 2.5rem;
+		margin-left: -1.25rem;
+		margin-top: -1.25rem;
+	}
+
+	.text-celebration {
+		font-size: 1.5rem;
+	}
+
+	.falling-item {
+		font-size: 1.5rem;
+	}
+
+	.rainbow {
+		font-size: 4rem;
+	}
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-btn {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .animation-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>庆祝动画测试 (共30个)</h1>
+    <div id="buttons"></div>
+    <div class="animation-info">当前动画: <span id="current-animation">无</span></div>
+    
+    <script>
+        const animationNames = [
+            '烟花爆炸', '可爱的小猫咪', '跳跃的兔子', '旋转的星星', '欢呼的熊猫',
+            '彩虹', '跳舞的企鹅', '飘落的心形', '旋转的狗狗', '爆炸的礼物盒',
+            '飞翔的小鸟', '跳跃的青蛙', '闪烁的奖杯', '旋转的披萨', '发光的钻石',
+            '弹跳的足球', '欢庆的猴子', '魔法星星雨', '派对气球', '旋转的地球',
+            '闪电效果', '独角兽', '庆祝彩带', '火箭升空', '跳舞的章鱼',
+            '闪烁的太阳', '冰淇淋庆祝', '蝴蝶飞舞', '金币雨', '皇冠加冕'
+        ];
+        
+        const buttonsContainer = document.getElementById('buttons');
+        const currentAnimationSpan = document.getElementById('current-animation');
+        
+        animationNames.forEach((name, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'test-btn';
+            btn.textContent = `${index}: ${name}`;
+            btn.onclick = () => {
+                currentAnimationSpan.textContent = `${index}: ${name}`;
+                console.log(`Testing animation ${index}: ${name}`);
+            };
+            buttonsContainer.appendChild(btn);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+@use 'sass:color';
+@import './variables';
+
+.settings-container {
+	padding: $spacing-lg;
+	max-width: 600px;
+	margin: 0 auto;
+	min-height: calc(100vh - 120px);
+}
+
+.settings-content {
+	background: linear-gradient(135deg, $bg-card 0%, $bg-light 100%);
+	border-radius: $radius-lg;
+	padding: $spacing-xl;
+	box-shadow: $shadow-lg;
+}
+
+.setting-section {
+	margin-bottom: $spacing-xl;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	h3 {
+		color: $text-light;
+		font-size: 1.5rem;
+		margin-bottom: $spacing-md;
+		border-bottom: 2px solid $primary-color;
+		padding-bottom: $spacing-sm;
+	}
+}
+
+.setting-hint {
+	color: $text-dim;
+	font-size: 0.9rem;
+	margin-bottom: $spacing-md;
+	font-style: italic;
+}
+
+.language-buttons,
+.operation-buttons {
+	display: flex;
+	gap: $spacing-sm;
+	flex-wrap: wrap;
+}
+
+.lang-btn,
+.op-btn {
+	padding: $spacing-sm $spacing-lg;
+	border: 2px solid $primary-color;
+	background: transparent;
+	color: $text-light;
+	border-radius: $radius-sm;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all $transition-fast;
+
+	&:hover {
+		background: rgba(99, 102, 241, 0.2);
+	}
+
+	&.active {
+		background: $primary-color;
+		transform: translateY(-2px);
+		box-shadow: $shadow-sm;
+	}
+}
+
+.range-inputs {
+	display: flex;
+	gap: $spacing-md;
+	margin-bottom: $spacing-md;
+	justify-content: center;
+}
+
+.input-group {
+	flex: 0 1 200px;
+
+	label {
+		display: block;
+		color: $text-dim;
+		font-size: 0.9rem;
+		margin-bottom: $spacing-xs;
+	}
+
+	input[type='number'] {
+		width: 100%;
+		padding: $spacing-sm;
+		font-size: 1.2rem;
+		border: 2px solid $primary-color;
+		border-radius: $radius-sm;
+		background: rgba(255, 255, 255, 0.1);
+		color: $text-light;
+		text-align: center;
+		transition: all $transition-normal;
+
+		&:focus {
+			outline: none;
+			border-color: $primary-light;
+			background: rgba(255, 255, 255, 0.15);
+			box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+		}
+	}
+}
+
+.save-btn {
+	width: 100%;
+	padding: $spacing-md;
+	border: none;
+	background: $success-color;
+	color: $text-light;
+	font-size: $font-small;
+	font-weight: 600;
+	border-radius: $radius-sm;
+	cursor: pointer;
+	transition: all $transition-fast;
+
+	&:hover {
+		background: color.adjust($success-color, $lightness: -10%);
+		transform: translateY(-2px);
+		box-shadow: $shadow-md;
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 768px) {
+	.settings-content {
+		padding: $spacing-lg;
+	}
+
+	.range-inputs {
+		flex-direction: column;
+	}
+
+	.op-btn {
+		font-size: 0.9rem;
+		padding: $spacing-sm $spacing-md;
+	}
+}

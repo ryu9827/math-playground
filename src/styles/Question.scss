@@ -1,0 +1,246 @@
+@import './variables';
+
+.question-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: calc(100vh - 120px);
+	padding: $spacing-lg;
+}
+
+.question-card {
+	background: linear-gradient(135deg, $bg-card 0%, $bg-light 100%);
+	border-radius: $radius-lg;
+	padding: $spacing-xl;
+	box-shadow: $shadow-lg;
+	max-width: 600px;
+	width: 100%;
+	text-align: center;
+}
+
+.question-text {
+	font-size: $font-large;
+	font-weight: bold;
+	color: $text-light;
+	margin-bottom: $spacing-xl;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+	letter-spacing: 0.1em;
+}
+
+.options-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: $spacing-md;
+	margin-bottom: $spacing-lg;
+	max-width: 500px;
+	width: 100%;
+}
+
+.option-btn {
+	padding: $spacing-lg;
+	font-size: $font-medium;
+	font-weight: 700;
+	border: 3px solid $primary-color;
+	border-radius: $radius-md;
+	background: rgba(255, 255, 255, 0.05);
+	color: $text-light;
+	cursor: pointer;
+	transition: all $transition-normal;
+	min-height: 80px;
+
+	&:hover:not(:disabled) {
+		background: rgba(99, 102, 241, 0.2);
+		border-color: $primary-light;
+		transform: translateY(-2px);
+		box-shadow: $shadow-md;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+	}
+
+	&.selected {
+		background: rgba(99, 102, 241, 0.3);
+		border-color: $primary-light;
+		box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+	}
+
+	&.correct-option {
+		background: rgba(16, 185, 129, 0.3);
+		border-color: $success-color;
+		box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+	}
+
+	&.wrong-option {
+		background: linear-gradient(
+			135deg,
+			rgba(239, 68, 68, 0.5) 0%,
+			rgba(220, 38, 38, 0.5) 100%
+		);
+		border-color: $error-color;
+		box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+		color: $text-light;
+		animation: shake 0.4s;
+	}
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-10px);
+	}
+	75% {
+		transform: translateX(10px);
+	}
+}
+.answer-form {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+	align-items: center;
+}
+
+.answer-input {
+	width: 100%;
+	max-width: 300px;
+	font-size: $font-medium;
+	padding: $spacing-md;
+	border: 3px solid $primary-color;
+	border-radius: $radius-md;
+	background: rgba(255, 255, 255, 0.1);
+	color: $text-light;
+	text-align: center;
+	transition: all $transition-normal;
+
+	&:focus {
+		outline: none;
+		border-color: $primary-light;
+		background: rgba(255, 255, 255, 0.15);
+		box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	&::placeholder {
+		color: $text-dim;
+	}
+}
+
+.submit-btn,
+.next-btn {
+	padding: $spacing-md $spacing-xl;
+	font-size: $font-small;
+	font-weight: 600;
+	border: none;
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: all $transition-fast;
+	min-width: 200px;
+	margin-top: $spacing-md;
+}
+
+.submit-btn {
+	background: $primary-color;
+	color: $text-light;
+
+	&:hover:not(:disabled) {
+		background: $primary-dark;
+		transform: translateY(-2px);
+		box-shadow: $shadow-md;
+	}
+
+	&:active:not(:disabled) {
+		transform: translateY(0);
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
+.next-btn {
+	background: $primary-light;
+	color: $text-light;
+	margin-top: $spacing-md;
+
+	&:hover {
+		background: $primary-color;
+		transform: translateY(-2px);
+		box-shadow: $shadow-md;
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+}
+
+.result {
+	margin-top: $spacing-xl;
+	padding: $spacing-lg;
+	border-radius: $radius-md;
+
+	&.correct {
+		background: linear-gradient(
+			135deg,
+			rgba(16, 185, 129, 0.2) 0%,
+			rgba(16, 185, 129, 0.1) 100%
+		);
+		border: 2px solid $success-color;
+	}
+
+	&.incorrect {
+		background: linear-gradient(
+			135deg,
+			rgba(239, 68, 68, 0.2) 0%,
+			rgba(239, 68, 68, 0.1) 100%
+		);
+		border: 2px solid $error-color;
+	}
+}
+
+.result-message {
+	font-size: $font-medium;
+	font-weight: bold;
+	margin-bottom: $spacing-sm;
+
+	.correct & {
+		color: $success-color;
+	}
+
+	.incorrect & {
+		color: $error-color;
+	}
+}
+
+.correct-answer {
+	font-size: $font-small;
+	color: $text-dim;
+	margin-bottom: $spacing-md;
+}
+
+@media (max-width: 768px) {
+	.question-text {
+		font-size: 3rem;
+	}
+
+	.options-container {
+		gap: $spacing-sm;
+	}
+
+	.option-btn {
+		padding: $spacing-md;
+		font-size: 1.5rem;
+		min-height: 60px;
+	}
+
+	.question-card {
+		padding: $spacing-lg;
+	}
+}
