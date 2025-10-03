@@ -56,6 +56,13 @@
 	font-weight: 600;
 	cursor: pointer;
 	transition: all $transition-fast;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	svg {
+		display: block;
+	}
 
 	&:hover {
 		background: rgba(99, 102, 241, 0.2);
@@ -66,6 +73,10 @@
 		transform: translateY(-2px);
 		box-shadow: $shadow-sm;
 	}
+}
+
+.op-btn {
+	font-size: 1rem;
 }
 
 .range-inputs {

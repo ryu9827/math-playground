@@ -7,15 +7,23 @@ import {
 } from '../store/questionsSlice'
 import { translations } from '../utils/i18n'
 import { motion } from 'framer-motion'
+import { TabType } from '../App'
 import '../styles/WrongQuestions.scss'
 
-export const WrongQuestions: React.FC = () => {
+interface WrongQuestionsProps {
+	onNavigateToQuestion: (tab: TabType) => void
+}
+
+export const WrongQuestions: React.FC<WrongQuestionsProps> = ({
+	onNavigateToQuestion,
+}) => {
 	const dispatch = useDispatch()
 	const { wrongQuestions } = useSelector((state: RootState) => state.questions)
 	const { language } = useSelector((state: RootState) => state.settings)
 	const t = translations[language]
 
 	const handlePractice = (question: any) => {
+		// 先设置题目
 		dispatch(
 			setCurrentQuestion({
 				id: question.id,
@@ -25,17 +33,8 @@ export const WrongQuestions: React.FC = () => {
 				answer: question.answer,
 			})
 		)
-		// 切换到对应的运算类型标签页
-		const tabMap: { [key: string]: string } = {
-			'+': 'addition',
-			'-': 'subtraction',
-			'×': 'multiplication',
-			'÷': 'division',
-		}
-		const targetTab = document.querySelector(
-			`[data-tab="${tabMap[question.operation]}"]`
-		) as HTMLElement
-		if (targetTab) targetTab.click()
+		// 然后切换到对应的运算类型标签页
+		onNavigateToQuestion(question.operation)
 	}
 
 	if (wrongQuestions.length === 0) {

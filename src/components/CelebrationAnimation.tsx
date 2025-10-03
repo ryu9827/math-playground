@@ -16,14 +16,30 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 		Math.floor(Math.random() * 30)
 	)
 
+	// 使用 ref 来保存最新的 onComplete，避免依赖问题
+	const onCompleteRef = React.useRef(onComplete)
+
+	React.useEffect(() => {
+		onCompleteRef.current = onComplete
+	}, [onComplete])
+
 	React.useEffect(() => {
 		if (show) {
+			console.log('CelebrationAnimation - 显示动画, 类型:', animationType)
 			// 每次显示时随机选择一个新动画
 			setAnimationType(Math.floor(Math.random() * 30))
-			const timer = setTimeout(onComplete, 2000)
-			return () => clearTimeout(timer)
+			const timer = setTimeout(() => {
+				console.log('CelebrationAnimation - 2秒后调用 onComplete')
+				onCompleteRef.current()
+			}, 2000)
+
+			// 清理函数：当组件卸载或 show 变为 false 时清除定时器
+			return () => {
+				console.log('CelebrationAnimation - 清理定时器')
+				clearTimeout(timer)
+			}
 		}
-	}, [show, onComplete])
+	}, [show])
 
 	const animations = [
 		// 1. 烟花爆炸
@@ -49,7 +65,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 			className='animation-container'
 			initial={{ scale: 0, rotate: -180 }}
 			animate={{ scale: [0, 1.2, 1], rotate: 0 }}
-			transition={{ duration: 0.6, type: 'spring' }}
+			transition={{ duration: 0.6 }}
 		>
 			<div className='emoji-large'>😺</div>
 			<motion.div
@@ -497,13 +513,11 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 				rotate: 0,
 				scale: [0, 1.5, 1],
 			}}
-			transition={{ duration: 1.5, type: 'spring' }}
+			transition={{ duration: 1.5 }}
 		>
 			<div className='emoji-large'>🍦</div>
 			<div className='text-celebration'>甜蜜奖励！</div>
-		</motion.div>,
-
-		// 28. 蝴蝶飞舞
+		</motion.div>, // 28. 蝴蝶飞舞
 		<div key='butterfly' className='animation-container'>
 			{[...Array(6)].map((_, i) => (
 				<motion.div
@@ -555,7 +569,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 					scale: [0, 1.5, 1.2, 1.5, 1],
 					rotate: [0, -10, 10, -10, 0],
 				}}
-				transition={{ duration: 1.5, type: 'spring' }}
+				transition={{ duration: 1.5 }}
 			>
 				<div className='emoji-large'>👑</div>
 			</motion.div>

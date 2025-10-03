@@ -4,6 +4,8 @@ import { RootState } from '../store/store'
 import { setLanguage, setMaxNumber } from '../store/settingsSlice'
 import { translations } from '../utils/i18n'
 import { motion } from 'framer-motion'
+import { ChinaFlag } from './flags/ChinaFlag'
+import { USAFlag } from './flags/USAFlag'
 import '../styles/Settings.scss'
 
 export const Settings: React.FC = () => {
@@ -35,18 +37,19 @@ export const Settings: React.FC = () => {
 						<button
 							className={`lang-btn ${language === 'zh' ? 'active' : ''}`}
 							onClick={() => dispatch(setLanguage('zh'))}
+							title={t.chinese}
 						>
-							{t.chinese}
+							<ChinaFlag width={48} height={36} />
 						</button>
 						<button
 							className={`lang-btn ${language === 'en' ? 'active' : ''}`}
 							onClick={() => dispatch(setLanguage('en'))}
+							title={t.english}
 						>
-							{t.english}
+							<USAFlag width={48} height={36} />
 						</button>
 					</div>
-				</div>
-
+				</div>{' '}
 				<div className='setting-section'>
 					<h3>{t.rangeSettings}</h3>
 					<p className='setting-hint'>{t.maxNumberHint}</p>
