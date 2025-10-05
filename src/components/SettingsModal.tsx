@@ -1,7 +1,12 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store/store'
-import { setLanguage, setMaxNumber } from '../store/settingsSlice'
+import {
+	setLanguage,
+	setMinNumber,
+	setMaxNumber,
+	setSoundEnabled,
+} from '../store/settingsSlice'
 import { translations } from '../utils/i18n'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChinaFlag } from './flags/ChinaFlag'
@@ -18,17 +23,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 	onClose,
 }) => {
 	const dispatch = useDispatch()
-	const { language, maxNumber } = useSelector(
+	const { language, minNumber, maxNumber, soundEnabled } = useSelector(
 		(state: RootState) => state.settings
 	)
 	const t = translations[language]
 
+	const [localMin, setLocalMin] = React.useState(minNumber)
 	const [localMax, setLocalMax] = React.useState(maxNumber)
+	const [localSound, setLocalSound] = React.useState(soundEnabled)
 
 	const handleSave = () => {
-		if (localMax > 0) {
-			dispatch(setMaxNumber(localMax))
-		}
+		// 确保下限不大于上限
+		const finalMin = Math.max(1, Math.min(localMin, localMax))
+		const finalMax = Math.max(finalMin, localMax)
+
+		dispatch(setMinNumber(finalMin))
+		dispatch(setMaxNumber(finalMax))
+		dispatch(setSoundEnabled(localSound))
 		onClose() // 保存后自动关闭
 	}
 
@@ -89,6 +100,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 								<p className='setting-hint'>{t.maxNumberHint}</p>
 								<div className='range-inputs'>
 									<div className='input-group'>
+										<label>{t.minNumber}</label>
+										<input
+											type='number'
+											value={localMin}
+											onChange={(e) =>
+												setLocalMin(parseInt(e.target.value) || 1)
+											}
+											min='1'
+											max='100'
+										/>
+									</div>
+									<div className='input-group'>
 										<label>{t.maxNumber}</label>
 										<input
 											type='number'
@@ -100,6 +123,24 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 											max='100'
 										/>
 									</div>
+								</div>
+							</div>
+
+							<div className='setting-section'>
+								<h3>{t.soundSettings}</h3>
+								<p className='setting-hint'>{t.soundHint}</p>
+								<div className='sound-toggle'>
+									<button
+										className={`toggle-btn ${localSound ? 'active' : ''}`}
+										onClick={() => setLocalSound(!localSound)}
+									>
+										<span className='toggle-icon'>
+											{localSound ? '🔊' : '🔇'}
+										</span>
+										<span className='toggle-text'>
+											{localSound ? t.soundEnabled : t.soundDisabled}
+										</span>
+									</button>
 								</div>
 							</div>
 						</div>

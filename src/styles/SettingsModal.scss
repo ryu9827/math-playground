@@ -129,16 +129,18 @@
 		gap: $spacing-md;
 		margin-bottom: $spacing-md;
 		justify-content: center;
+		flex-wrap: wrap;
 	}
 
 	.input-group {
-		flex: 0 1 200px;
+		flex: 0 1 160px;
 
 		label {
 			display: block;
 			color: $text-dim;
 			font-size: 0.9rem;
 			margin-bottom: $spacing-xs;
+			font-weight: 600;
 		}
 
 		input[type='number'] {
@@ -157,6 +159,48 @@
 				background: rgba(255, 255, 255, 0.1);
 				box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
 			}
+		}
+	}
+
+	.sound-toggle {
+		display: flex;
+		justify-content: center;
+	}
+
+	.toggle-btn {
+		padding: $spacing-md $spacing-xl;
+		border: 2px solid $primary-color;
+		background: transparent;
+		color: $text-light;
+		border-radius: $radius-md;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all $transition-fast;
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+		min-width: 200px;
+		justify-content: center;
+
+		.toggle-icon {
+			font-size: 1.5rem;
+		}
+
+		.toggle-text {
+			font-size: 1rem;
+		}
+
+		&:hover {
+			background: rgba(99, 102, 241, 0.2);
+			transform: translateY(-2px);
+			box-shadow: $shadow-sm;
+		}
+
+		&.active {
+			background: $primary-color;
+			border-color: $primary-light;
+			box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
 		}
 	}
 }
@@ -224,7 +268,7 @@
 
 	.modal-footer {
 		padding: $spacing-md $spacing-lg;
-		
+
 		button {
 			min-width: 80px;
 			padding: $spacing-sm $spacing-md;

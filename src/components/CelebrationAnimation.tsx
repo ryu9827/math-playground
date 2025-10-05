@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/store'
 import { AnimatePresence } from 'framer-motion'
 import { generateAnimations, OperationType } from '../utils/animationGenerator'
 import { soundEffects } from '../utils/soundEffects'
@@ -15,6 +17,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 	onComplete,
 	operation,
 }) => {
+	const { soundEnabled } = useSelector((state: RootState) => state.settings)
 	const [animationType, setAnimationType] = React.useState(0)
 	const animationsRef = React.useRef(generateAnimations(operation))
 
@@ -37,8 +40,10 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 			setAnimationType(newAnimationType)
 			console.log('CelebrationAnimation - 显示动画, 类型:', newAnimationType)
 
-			// 播放庆祝音效
-			soundEffects.playRandomCelebration()
+			// 根据设置播放庆祝音效
+			if (soundEnabled) {
+				soundEffects.playRandomCelebration()
+			}
 
 			const timer = setTimeout(() => {
 				console.log('CelebrationAnimation - 2秒后调用 onComplete')
@@ -51,7 +56,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 				clearTimeout(timer)
 			}
 		}
-	}, [show])
+	}, [show, soundEnabled])
 
 	return (
 		<AnimatePresence>

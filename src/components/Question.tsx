@@ -26,7 +26,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 	const dispatch = useDispatch()
 	const { currentQuestion, showResult, isCorrect, wrongQuestions } =
 		useSelector((state: RootState) => state.questions)
-	const { language, maxNumber } = useSelector(
+	const { language, minNumber, maxNumber } = useSelector(
 		(state: RootState) => state.settings
 	)
 	const t = translations[language]
@@ -34,7 +34,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 	const [options, setOptions] = useState<number[]>([])
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
 	const [showCelebration, setShowCelebration] = useState(false)
-	
+
 	// 使用 ref 跟踪上一次的 operation (初始化为 null 表示首次加载)
 	const prevOperationRef = useRef<OperationType | null>(null)
 
@@ -65,6 +65,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 		if (prevOperationRef.current !== operation) {
 			prevOperationRef.current = operation
 			const newQuestion = generateNewQuestion(
+				minNumber,
 				maxNumber,
 				operation,
 				wrongQuestionsRef.current
@@ -74,7 +75,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 			setSelectedAnswer(null)
 			setShowCelebration(false)
 		}
-	}, [operation, dispatch, maxNumber, currentQuestion])
+	}, [operation, dispatch, minNumber, maxNumber, currentQuestion])
 
 	useEffect(() => {
 		// 当题目改变时，生成新选项
@@ -104,10 +105,10 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 		e.preventDefault()
 		if (selectedAnswer !== null) {
 			dispatch(submitAnswer())
-			
+
 			// 增加每日答题计数
 			incrementQuestionsAnswered()
-			
+
 			const isAnswerCorrect =
 				currentQuestion && selectedAnswer === currentQuestion.answer
 			console.log(
@@ -140,6 +141,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 		console.log('handleNext 被调用')
 		dispatch(resetResult())
 		const newQuestion = generateNewQuestion(
+			minNumber,
 			maxNumber,
 			operation,
 			wrongQuestionsRef.current
@@ -147,7 +149,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 		dispatch(setCurrentQuestion(newQuestion))
 		setSelectedAnswer(null)
 		setShowCelebration(false)
-	}, [dispatch, maxNumber, operation])
+	}, [dispatch, minNumber, maxNumber, operation])
 
 	const handleCelebrationComplete = useCallback(() => {
 		console.log('庆祝动画完成，准备进入下一题')

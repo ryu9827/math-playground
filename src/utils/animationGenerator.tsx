@@ -30,7 +30,15 @@ const emojis = {
 		'🎯',
 		'🎪',
 		'🎨',
-		'🎭',
+		'🦄',
+		'🐰',
+		'🎀',
+		'🍭',
+		'🧸',
+		'🎂',
+		'🍓',
+		'🦊',
+		'🐱',
 		'🎬',
 	],
 	subtraction: [
@@ -240,7 +248,9 @@ export const generateAnimations = (
 }
 
 // 获取运算类别
-const getOperationCategory = (operation: OperationType): keyof typeof emojis => {
+const getOperationCategory = (
+	operation: OperationType
+): keyof typeof emojis => {
 	switch (operation) {
 		case '+':
 			return 'addition'
@@ -395,7 +405,10 @@ const createAnimation = (
 					animate={{ scale: [1, 1.3, 1, 1.3, 1] }}
 					transition={{ duration: 1.5 }}
 				>
-					<div className='emoji-large' style={{ filter: `drop-shadow(0 0 20px ${color})` }}>
+					<div
+						className='emoji-large'
+						style={{ filter: `drop-shadow(0 0 20px ${color})` }}
+					>
 						{emoji}
 					</div>
 					<motion.div
@@ -457,7 +470,10 @@ const createAnimation = (
 					animate={{ opacity: [0, 1, 0, 1, 0, 1] }}
 					transition={{ duration: 1.2 }}
 				>
-					<div className='emoji-large' style={{ textShadow: `0 0 20px ${color}` }}>
+					<div
+						className='emoji-large'
+						style={{ textShadow: `0 0 20px ${color}` }}
+					>
 						{emoji}
 					</div>
 					<motion.div className='text-celebration' style={{ color: '#FFFFFF' }}>

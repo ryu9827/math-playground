@@ -19,20 +19,20 @@ export const loadDailyStats = (): DailyStats => {
 		if (saved) {
 			const stats: DailyStats = JSON.parse(saved)
 			const today = getTodayString()
-			
+
 			// 如果是新的一天，重置计数
 			if (stats.date !== today) {
 				const newStats = { date: today, questionsAnswered: 0 }
 				saveDailyStats(newStats)
 				return newStats
 			}
-			
+
 			return stats
 		}
 	} catch (error) {
 		console.error('Failed to load daily stats:', error)
 	}
-	
+
 	// 默认返回今天的初始统计
 	const newStats = { date: getTodayString(), questionsAnswered: 0 }
 	saveDailyStats(newStats)

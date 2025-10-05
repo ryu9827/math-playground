@@ -15,7 +15,14 @@ const STORAGE_KEY = 'math-playground-current-tab'
 const loadCurrentTab = (): TabType => {
 	try {
 		const saved = localStorage.getItem(STORAGE_KEY)
-		if (saved && (saved === '+' || saved === '-' || saved === '×' || saved === '÷' || saved === 'wrong')) {
+		if (
+			saved &&
+			(saved === '+' ||
+				saved === '-' ||
+				saved === '×' ||
+				saved === '÷' ||
+				saved === 'wrong')
+		) {
 			return saved as TabType
 		}
 	} catch (error) {
@@ -35,10 +42,17 @@ const saveCurrentTab = (tab: TabType) => {
 
 function App() {
 	const [currentTab, setCurrentTab] = useState<TabType>(loadCurrentTab())
-	const [currentOperation, setCurrentOperation] = useState<OperationType>(() => {
-		const initialTab = loadCurrentTab()
-		return (initialTab === '+' || initialTab === '-' || initialTab === '×' || initialTab === '÷') ? initialTab : '+'
-	})
+	const [currentOperation, setCurrentOperation] = useState<OperationType>(
+		() => {
+			const initialTab = loadCurrentTab()
+			return initialTab === '+' ||
+				initialTab === '-' ||
+				initialTab === '×' ||
+				initialTab === '÷'
+				? initialTab
+				: '+'
+		}
+	)
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 	const handleTabChange = (tab: TabType) => {
@@ -51,8 +65,8 @@ function App() {
 
 	return (
 		<div className='App'>
-			<Navigation 
-				currentTab={currentTab} 
+			<Navigation
+				currentTab={currentTab}
 				onTabChange={handleTabChange}
 				onSettingsClick={() => setIsSettingsOpen(true)}
 			/>
@@ -69,7 +83,7 @@ function App() {
 				)}
 			</main>
 
-			<SettingsModal 
+			<SettingsModal
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
 			/>

@@ -8,7 +8,7 @@ import '../styles/DailyStats.scss'
 export const DailyStats: React.FC = () => {
 	const { language } = useSelector((state: RootState) => state.settings)
 	const { showResult } = useSelector((state: RootState) => state.questions)
-	
+
 	const [count, setCount] = useState(getTodayQuestionsCount())
 
 	// 当答题结果显示时，更新计数

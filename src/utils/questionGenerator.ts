@@ -43,6 +43,7 @@ export const generateOptions = (
 }
 
 export const generateNewQuestion = (
+	min: number,
 	max: number,
 	operationType: OperationType,
 	wrongQuestions: WrongQuestion[]
@@ -68,46 +69,62 @@ export const generateNewQuestion = (
 		}
 	}
 
-	// 生成新题目，确保所有数字（包括结果）都在max范围内
+	// 生成新题目，确保所有数字（包括结果）都在 min-max 范围内
 	let num1: number
 	let num2: number
 	let answer: number
 
 	switch (operationType) {
 		case '+':
-			// 加法：确保 num1 + num2 <= max
-			num1 = Math.floor(Math.random() * max) + 1
-			num2 = Math.floor(Math.random() * (max - num1)) + 1
+			// 加法：确保 num1 + num2 在 [min, max] 范围内
+			const addRange = max - min + 1
+			num1 = Math.floor(Math.random() * Math.min(addRange, max - min + 1)) + min
+			const maxNum2ForAdd = max - num1
+			const minNum2ForAdd = Math.max(min - num1, 0)
+			num2 =
+				Math.floor(Math.random() * (maxNum2ForAdd - minNum2ForAdd + 1)) +
+				minNum2ForAdd
 			answer = num1 + num2
 			break
 
 		case '-':
-			// 减法：确保结果 >= 0 且被减数 <= max
-			answer = Math.floor(Math.random() * max)
-			num2 = Math.floor(Math.random() * (max - answer)) + 1
+			// 减法：确保结果在 [min, max] 范围内
+			answer = Math.floor(Math.random() * (max - min + 1)) + min
+			num2 =
+				Math.floor(Math.random() * Math.min(answer - min + 1, max - min + 1)) +
+				min
 			num1 = answer + num2
 			break
 
 		case '×':
-			// 乘法：确保 num1 * num2 <= max
+			// 乘法：确保 num1 * num2 在 [min, max] 范围内
 			const maxMultiplier = Math.min(Math.floor(Math.sqrt(max)), 12)
 			num1 = Math.floor(Math.random() * maxMultiplier) + 1
 			const maxNum2 = Math.min(Math.floor(max / num1), 12)
 			num2 = Math.floor(Math.random() * maxNum2) + 1
 			answer = num1 * num2
+			// 如果结果小于 min，重新调整
+			if (answer < min) {
+				num1 = Math.max(2, Math.floor(Math.sqrt(min)))
+				num2 = Math.ceil(min / num1)
+				answer = num1 * num2
+			}
 			break
 
 		case '÷':
-			// 除法：确保商 <= max，被除数 <= max
+			// 除法：确保商在 [min, max] 范围内，被除数也在范围内
 			const maxDivisor = Math.min(max, 12)
 			num2 = Math.floor(Math.random() * maxDivisor) + 1 // 除数
+			const quotientMax = Math.min(Math.floor(max / num2), 12)
+			const quotientMin = Math.max(Math.ceil(min / num2), 1)
 			answer =
-				Math.floor(Math.random() * Math.min(Math.floor(max / num2), 12)) + 1 // 商
+				Math.floor(Math.random() * (quotientMax - quotientMin + 1)) +
+				quotientMin // 商
 			num1 = num2 * answer // 被除数
 			break
 
 		default:
-			num1 = Math.floor(Math.random() * max) + 1
+			num1 = Math.floor(Math.random() * (max - min + 1)) + min
 			num2 = Math.floor(Math.random() * (max - num1)) + 1
 			answer = num1 + num2
 	}

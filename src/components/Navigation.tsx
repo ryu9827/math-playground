@@ -63,7 +63,11 @@ export const Navigation: React.FC<NavigationProps> = ({
 				</button>
 			</div>
 
-			<button className='settings-btn' onClick={onSettingsClick} title={t.settings}>
+			<button
+				className='settings-btn'
+				onClick={onSettingsClick}
+				title={t.settings}
+			>
 				<svg
 					width='24'
 					height='24'
