@@ -1,0 +1,75 @@
+@import './variables';
+
+.daily-stats {
+	position: fixed;
+	top: 80px;
+	right: $spacing-lg;
+	background: linear-gradient(135deg, $bg-card 0%, $bg-light 100%);
+	border-radius: $radius-lg;
+	padding: $spacing-md;
+	box-shadow: $shadow-lg;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	z-index: 100;
+	border: 2px solid $primary-color;
+	min-width: 140px;
+
+	.stats-icon {
+		font-size: 2rem;
+	}
+
+	.stats-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.stats-label {
+		font-size: 0.75rem;
+		color: $text-dim;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	.stats-count {
+		font-size: 2rem;
+		font-weight: bold;
+		color: $text-light;
+		line-height: 1;
+		text-shadow: 0 2px 8px rgba(99, 102, 241, 0.5);
+	}
+
+	.stats-unit {
+		font-size: 0.7rem;
+		color: $text-dim;
+	}
+}
+
+@media (max-width: 768px) {
+	.daily-stats {
+		top: 60px;
+		right: $spacing-sm;
+		padding: $spacing-sm;
+		min-width: 100px;
+		gap: 4px;
+
+		.stats-icon {
+			font-size: 1.5rem;
+		}
+
+		.stats-label {
+			font-size: 0.65rem;
+		}
+
+		.stats-count {
+			font-size: 1.5rem;
+		}
+
+		.stats-unit {
+			font-size: 0.6rem;
+		}
+	}
+}

@@ -1,0 +1,233 @@
+@import './variables';
+
+.settings-modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10000;
+	backdrop-filter: blur(4px);
+}
+
+.settings-modal-content {
+	background: linear-gradient(135deg, $bg-card 0%, $bg-light 100%);
+	border-radius: $radius-lg;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+	max-width: 600px;
+	width: 90%;
+	max-height: 90vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: $spacing-lg $spacing-xl;
+	border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+
+	h2 {
+		color: $text-light;
+		font-size: 1.8rem;
+		margin: 0;
+	}
+
+	.close-btn {
+		background: transparent;
+		border: none;
+		color: $text-light;
+		font-size: 2rem;
+		cursor: pointer;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		transition: all $transition-fast;
+
+		&:hover {
+			background: rgba(239, 68, 68, 0.2);
+			color: $error-color;
+			transform: rotate(90deg);
+		}
+	}
+}
+
+.modal-body {
+	padding: $spacing-xl;
+	flex: 1;
+	overflow-y: auto;
+
+	.setting-section {
+		margin-bottom: $spacing-xl;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		h3 {
+			color: $text-light;
+			font-size: 1.5rem;
+			margin-bottom: $spacing-md;
+			border-bottom: 2px solid $primary-color;
+			padding-bottom: $spacing-sm;
+		}
+	}
+
+	.setting-hint {
+		color: $text-dim;
+		font-size: 0.9rem;
+		margin-bottom: $spacing-md;
+		font-style: italic;
+	}
+
+	.language-buttons {
+		display: flex;
+		gap: $spacing-sm;
+		flex-wrap: wrap;
+	}
+
+	.lang-btn {
+		padding: $spacing-sm $spacing-lg;
+		border: 2px solid $primary-color;
+		background: transparent;
+		color: $text-light;
+		border-radius: $radius-sm;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all $transition-fast;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		svg {
+			display: block;
+		}
+
+		&:hover {
+			background: rgba(99, 102, 241, 0.2);
+		}
+
+		&.active {
+			background: $primary-color;
+			transform: translateY(-2px);
+			box-shadow: $shadow-sm;
+		}
+	}
+
+	.range-inputs {
+		display: flex;
+		gap: $spacing-md;
+		margin-bottom: $spacing-md;
+		justify-content: center;
+	}
+
+	.input-group {
+		flex: 0 1 200px;
+
+		label {
+			display: block;
+			color: $text-dim;
+			font-size: 0.9rem;
+			margin-bottom: $spacing-xs;
+		}
+
+		input[type='number'] {
+			width: 100%;
+			padding: $spacing-sm;
+			border: 2px solid $primary-color;
+			border-radius: $radius-sm;
+			background: rgba(255, 255, 255, 0.05);
+			color: $text-light;
+			font-size: 1rem;
+			transition: all $transition-fast;
+
+			&:focus {
+				outline: none;
+				border-color: $primary-light;
+				background: rgba(255, 255, 255, 0.1);
+				box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+			}
+		}
+	}
+}
+
+.modal-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-md;
+	padding: $spacing-lg $spacing-xl;
+	border-top: 2px solid rgba(99, 102, 241, 0.3);
+
+	button {
+		padding: $spacing-sm $spacing-xl;
+		border: none;
+		border-radius: $radius-sm;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all $transition-fast;
+		min-width: 100px;
+
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: $shadow-sm;
+		}
+	}
+
+	.cancel-btn {
+		background: rgba(255, 255, 255, 0.1);
+		color: $text-light;
+		border: 2px solid $text-dim;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.15);
+		}
+	}
+
+	.save-btn {
+		background: $primary-color;
+		color: $text-light;
+
+		&:hover {
+			background: $primary-dark;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.settings-modal-content {
+		width: 95%;
+		max-height: 95vh;
+	}
+
+	.modal-header {
+		padding: $spacing-md $spacing-lg;
+
+		h2 {
+			font-size: 1.5rem;
+		}
+	}
+
+	.modal-body {
+		padding: $spacing-lg;
+	}
+
+	.modal-footer {
+		padding: $spacing-md $spacing-lg;
+		
+		button {
+			min-width: 80px;
+			padding: $spacing-sm $spacing-md;
+		}
+	}
+}

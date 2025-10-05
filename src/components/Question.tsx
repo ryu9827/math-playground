@@ -12,6 +12,7 @@ import {
 	generateNewQuestion,
 	generateOptions,
 } from '../utils/questionGenerator'
+import { incrementQuestionsAnswered } from '../utils/dailyStats'
 import { motion, AnimatePresence } from 'framer-motion'
 import { OperationType } from '../App'
 import { CelebrationAnimation } from './CelebrationAnimation'
@@ -103,6 +104,10 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 		e.preventDefault()
 		if (selectedAnswer !== null) {
 			dispatch(submitAnswer())
+			
+			// 增加每日答题计数
+			incrementQuestionsAnswered()
+			
 			const isAnswerCorrect =
 				currentQuestion && selectedAnswer === currentQuestion.answer
 			console.log(
@@ -157,6 +162,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 			<CelebrationAnimation
 				show={showCelebration}
 				onComplete={handleCelebrationComplete}
+				operation={operation}
 			/>
 
 			<div className='question-container'>
@@ -199,11 +205,19 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 						))}
 					</div>
 
-					{selectedAnswer !== null && !showResult && (
-						<button onClick={handleSubmit} className='submit-btn'>
-							{t.submit}
-						</button>
-					)}
+					<div className='submit-btn-container'>
+						{selectedAnswer !== null && !showResult && (
+							<motion.button
+								onClick={handleSubmit}
+								className='submit-btn'
+								initial={{ scale: 0, opacity: 0 }}
+								animate={{ scale: 1, opacity: 1 }}
+								exit={{ scale: 0, opacity: 0 }}
+							>
+								{t.submit}
+							</motion.button>
+						)}
+					</div>
 
 					<AnimatePresence>
 						{showResult && !isCorrect && (

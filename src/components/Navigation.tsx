@@ -8,11 +8,13 @@ import '../styles/Navigation.scss'
 interface NavigationProps {
 	currentTab: TabType
 	onTabChange: (tab: TabType) => void
+	onSettingsClick: () => void // 新增：设置按钮点击处理
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
 	currentTab,
 	onTabChange,
+	onSettingsClick,
 }) => {
 	const { language } = useSelector((state: RootState) => state.settings)
 	const { wrongQuestions } = useSelector((state: RootState) => state.questions)
@@ -20,50 +22,65 @@ export const Navigation: React.FC<NavigationProps> = ({
 
 	return (
 		<nav className='navigation'>
-			<button
-				className={`nav-tab ${currentTab === '+' ? 'active' : ''}`}
-				onClick={() => onTabChange('+')}
-				data-tab='addition'
-			>
-				{t.addition}
-			</button>
-			<button
-				className={`nav-tab ${currentTab === '-' ? 'active' : ''}`}
-				onClick={() => onTabChange('-')}
-				data-tab='subtraction'
-			>
-				{t.subtraction}
-			</button>
-			<button
-				className={`nav-tab ${currentTab === '×' ? 'active' : ''}`}
-				onClick={() => onTabChange('×')}
-				data-tab='multiplication'
-			>
-				{t.multiplication}
-			</button>
-			<button
-				className={`nav-tab ${currentTab === '÷' ? 'active' : ''}`}
-				onClick={() => onTabChange('÷')}
-				data-tab='division'
-			>
-				{t.division}
-			</button>
-			<button
-				className={`nav-tab ${currentTab === 'wrong' ? 'active' : ''}`}
-				onClick={() => onTabChange('wrong')}
-				data-tab='wrong'
-			>
-				{t.wrongQuestions}
-				{wrongQuestions.length > 0 && (
-					<span className='badge'>{wrongQuestions.length}</span>
-				)}
-			</button>
-			<button
-				className={`nav-tab ${currentTab === 'settings' ? 'active' : ''}`}
-				onClick={() => onTabChange('settings')}
-				data-tab='settings'
-			>
-				{t.settings}
+			<div className='nav-tabs'>
+				<button
+					className={`nav-tab ${currentTab === '+' ? 'active' : ''}`}
+					onClick={() => onTabChange('+')}
+					data-tab='addition'
+				>
+					{t.addition}
+				</button>
+				<button
+					className={`nav-tab ${currentTab === '-' ? 'active' : ''}`}
+					onClick={() => onTabChange('-')}
+					data-tab='subtraction'
+				>
+					{t.subtraction}
+				</button>
+				<button
+					className={`nav-tab ${currentTab === '×' ? 'active' : ''}`}
+					onClick={() => onTabChange('×')}
+					data-tab='multiplication'
+				>
+					{t.multiplication}
+				</button>
+				<button
+					className={`nav-tab ${currentTab === '÷' ? 'active' : ''}`}
+					onClick={() => onTabChange('÷')}
+					data-tab='division'
+				>
+					{t.division}
+				</button>
+				<button
+					className={`nav-tab ${currentTab === 'wrong' ? 'active' : ''}`}
+					onClick={() => onTabChange('wrong')}
+					data-tab='wrong'
+				>
+					{t.wrongQuestions}
+					{wrongQuestions.length > 0 && (
+						<span className='badge'>{wrongQuestions.length}</span>
+					)}
+				</button>
+			</div>
+
+			<button className='settings-btn' onClick={onSettingsClick} title={t.settings}>
+				<svg
+					width='24'
+					height='24'
+					viewBox='0 0 24 24'
+					fill='none'
+					stroke='currentColor'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				>
+					<circle cx='12' cy='12' r='3'></circle>
+					<path d='M12 1v6m0 6v6'></path>
+					<path d='M17 3.34L14.5 6.5m-5 11l-2.5 3.16'></path>
+					<path d='M23 12h-6m-6 0H1'></path>
+					<path d='M20.66 17l-3.16-2.5m-11 0L3.34 17'></path>
+					<path d='M20.66 7l-3.16 2.5m-11 0L3.34 7'></path>
+				</svg>
 			</button>
 		</nav>
 	)

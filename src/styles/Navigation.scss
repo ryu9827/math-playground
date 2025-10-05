@@ -2,11 +2,20 @@
 
 .navigation {
 	display: flex;
-	justify-content: center;
-	gap: $spacing-xs;
+	justify-content: space-between;
+	align-items: center;
+	gap: $spacing-md;
 	padding: $spacing-md;
 	background: $bg-card;
 	box-shadow: $shadow-md;
+	flex-wrap: wrap;
+}
+
+.nav-tabs {
+	display: flex;
+	justify-content: center;
+	gap: $spacing-xs;
+	flex: 1;
 	flex-wrap: wrap;
 }
 
@@ -48,14 +57,65 @@
 	}
 }
 
+.settings-btn {
+	padding: $spacing-sm;
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 2px solid $primary-color;
+	border-radius: 50%;
+	color: $primary-color;
+	cursor: pointer;
+	transition: all $transition-fast;
+	flex-shrink: 0;
+
+	svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	&:hover {
+		background: $primary-color;
+		color: $text-light;
+		transform: rotate(90deg);
+		box-shadow: $shadow-md;
+	}
+
+	&:active {
+		transform: rotate(90deg) scale(0.95);
+	}
+}
+
 @media (max-width: 768px) {
 	.navigation {
-		gap: 4px;
+		gap: $spacing-sm;
 		padding: $spacing-sm;
+		justify-content: center;
+	}
+
+	.nav-tabs {
+		gap: 4px;
+		flex: none;
+		width: 100%;
+		justify-content: center;
 	}
 
 	.nav-tab {
 		padding: $spacing-xs $spacing-sm;
 		font-size: 0.85rem;
+	}
+
+	.settings-btn {
+		width: 40px;
+		height: 40px;
+		margin-top: $spacing-xs;
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
 	}
 }

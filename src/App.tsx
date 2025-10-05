@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Navigation } from './components/Navigation'
 import { Question } from './components/Question'
 import { WrongQuestions } from './components/WrongQuestions'
-import { Settings } from './components/Settings'
+import { SettingsModal } from './components/SettingsModal'
+import { DailyStats } from './components/DailyStats'
 import './App.scss'
 
 export type OperationType = '+' | '-' | '×' | '÷'
-export type TabType = OperationType | 'wrong' | 'settings'
+export type TabType = OperationType | 'wrong'
 
 const STORAGE_KEY = 'math-playground-current-tab'
 
@@ -14,7 +15,7 @@ const STORAGE_KEY = 'math-playground-current-tab'
 const loadCurrentTab = (): TabType => {
 	try {
 		const saved = localStorage.getItem(STORAGE_KEY)
-		if (saved && (saved === '+' || saved === '-' || saved === '×' || saved === '÷' || saved === 'wrong' || saved === 'settings')) {
+		if (saved && (saved === '+' || saved === '-' || saved === '×' || saved === '÷' || saved === 'wrong')) {
 			return saved as TabType
 		}
 	} catch (error) {
@@ -38,6 +39,7 @@ function App() {
 		const initialTab = loadCurrentTab()
 		return (initialTab === '+' || initialTab === '-' || initialTab === '×' || initialTab === '÷') ? initialTab : '+'
 	})
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 	const handleTabChange = (tab: TabType) => {
 		setCurrentTab(tab)
@@ -49,7 +51,13 @@ function App() {
 
 	return (
 		<div className='App'>
-			<Navigation currentTab={currentTab} onTabChange={handleTabChange} />
+			<Navigation 
+				currentTab={currentTab} 
+				onTabChange={handleTabChange}
+				onSettingsClick={() => setIsSettingsOpen(true)}
+			/>
+
+			<DailyStats />
 
 			<main className='app-content'>
 				{(currentTab === '+' ||
@@ -59,8 +67,12 @@ function App() {
 				{currentTab === 'wrong' && (
 					<WrongQuestions onNavigateToQuestion={handleTabChange} />
 				)}
-				{currentTab === 'settings' && <Settings />}
 			</main>
+
+			<SettingsModal 
+				isOpen={isSettingsOpen}
+				onClose={() => setIsSettingsOpen(false)}
+			/>
 		</div>
 	)
 }
