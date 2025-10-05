@@ -4,6 +4,7 @@ const DAILY_STATS_KEY = 'math-playground-daily-stats'
 interface DailyStats {
 	date: string // YYYY-MM-DD format
 	questionsAnswered: number
+	goalAchieved: boolean // 今天是否已达成目标并播放过动画
 }
 
 // 获取今天的日期字符串
@@ -22,7 +23,7 @@ export const loadDailyStats = (): DailyStats => {
 
 			// 如果是新的一天，重置计数
 			if (stats.date !== today) {
-				const newStats = { date: today, questionsAnswered: 0 }
+				const newStats = { date: today, questionsAnswered: 0, goalAchieved: false }
 				saveDailyStats(newStats)
 				return newStats
 			}
@@ -34,7 +35,7 @@ export const loadDailyStats = (): DailyStats => {
 	}
 
 	// 默认返回今天的初始统计
-	const newStats = { date: getTodayString(), questionsAnswered: 0 }
+	const newStats = { date: getTodayString(), questionsAnswered: 0, goalAchieved: false }
 	saveDailyStats(newStats)
 	return newStats
 }
@@ -60,4 +61,17 @@ export const incrementQuestionsAnswered = (): number => {
 export const getTodayQuestionsCount = (): number => {
 	const stats = loadDailyStats()
 	return stats.questionsAnswered
+}
+
+// 标记今天目标已达成
+export const markGoalAchieved = (): void => {
+	const stats = loadDailyStats()
+	stats.goalAchieved = true
+	saveDailyStats(stats)
+}
+
+// 检查今天是否已达成目标
+export const hasGoalBeenAchieved = (): boolean => {
+	const stats = loadDailyStats()
+	return stats.goalAchieved
 }

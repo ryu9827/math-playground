@@ -4,6 +4,7 @@ import { Question } from './components/Question'
 import { WrongQuestions } from './components/WrongQuestions'
 import { SettingsModal } from './components/SettingsModal'
 import { DailyStats } from './components/DailyStats'
+import { GoalAchievedAnimation } from './components/GoalAchievedAnimation'
 import './App.scss'
 
 export type OperationType = '+' | '-' | '×' | '÷'
@@ -54,6 +55,7 @@ function App() {
 		}
 	)
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+	const [showGoalAnimation, setShowGoalAnimation] = useState(false)
 
 	const handleTabChange = (tab: TabType) => {
 		setCurrentTab(tab)
@@ -77,7 +79,12 @@ function App() {
 				{(currentTab === '+' ||
 					currentTab === '-' ||
 					currentTab === '×' ||
-					currentTab === '÷') && <Question operation={currentOperation} />}
+					currentTab === '÷') && (
+					<Question
+						operation={currentOperation}
+						onGoalAchieved={() => setShowGoalAnimation(true)}
+					/>
+				)}
 				{currentTab === 'wrong' && (
 					<WrongQuestions onNavigateToQuestion={handleTabChange} />
 				)}
@@ -86,6 +93,11 @@ function App() {
 			<SettingsModal
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
+			/>
+
+			<GoalAchievedAnimation
+				show={showGoalAnimation}
+				onComplete={() => setShowGoalAnimation(false)}
 			/>
 		</div>
 	)

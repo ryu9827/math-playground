@@ -6,6 +6,7 @@ export interface SettingsState {
 	minNumber: number
 	maxNumber: number
 	soundEnabled: boolean
+	dailyGoal: number
 }
 
 // 从 localStorage 加载设置
@@ -20,6 +21,7 @@ const loadSettings = (): SettingsState => {
 				maxNumber: settings.maxNumber || 20,
 				soundEnabled:
 					settings.soundEnabled !== undefined ? settings.soundEnabled : true,
+				dailyGoal: settings.dailyGoal || 20,
 			}
 		}
 	} catch (error) {
@@ -30,6 +32,7 @@ const loadSettings = (): SettingsState => {
 		minNumber: 1,
 		maxNumber: 20,
 		soundEnabled: true,
+		dailyGoal: 20,
 	}
 }
 
@@ -64,9 +67,18 @@ const settingsSlice = createSlice({
 			state.soundEnabled = action.payload
 			saveSettings(state)
 		},
+		setDailyGoal: (state, action: PayloadAction<number>) => {
+			state.dailyGoal = action.payload
+			saveSettings(state)
+		},
 	},
 })
 
-export const { setLanguage, setMinNumber, setMaxNumber, setSoundEnabled } =
-	settingsSlice.actions
+export const {
+	setLanguage,
+	setMinNumber,
+	setMaxNumber,
+	setSoundEnabled,
+	setDailyGoal,
+} = settingsSlice.actions
 export default settingsSlice.reducer

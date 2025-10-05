@@ -12,7 +12,11 @@ import {
 	generateNewQuestion,
 	generateOptions,
 } from '../utils/questionGenerator'
-import { incrementQuestionsAnswered } from '../utils/dailyStats'
+import {
+	incrementQuestionsAnswered,
+	hasGoalBeenAchieved,
+	markGoalAchieved,
+} from '../utils/dailyStats'
 import { motion, AnimatePresence } from 'framer-motion'
 import { OperationType } from '../App'
 import { CelebrationAnimation } from './CelebrationAnimation'
@@ -20,13 +24,17 @@ import '../styles/Question.scss'
 
 interface QuestionProps {
 	operation: OperationType
+	onGoalAchieved: () => void
 }
 
-export const Question: React.FC<QuestionProps> = ({ operation }) => {
+export const Question: React.FC<QuestionProps> = ({
+	operation,
+	onGoalAchieved,
+}) => {
 	const dispatch = useDispatch()
 	const { currentQuestion, showResult, isCorrect, wrongQuestions } =
 		useSelector((state: RootState) => state.questions)
-	const { language, minNumber, maxNumber } = useSelector(
+	const { language, minNumber, maxNumber, dailyGoal } = useSelector(
 		(state: RootState) => state.settings
 	)
 	const t = translations[language]
@@ -107,7 +115,7 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 			dispatch(submitAnswer())
 
 			// 增加每日答题计数
-			incrementQuestionsAnswered()
+			const newCount = incrementQuestionsAnswered()
 
 			const isAnswerCorrect =
 				currentQuestion && selectedAnswer === currentQuestion.answer
@@ -125,6 +133,20 @@ export const Question: React.FC<QuestionProps> = ({ operation }) => {
 				', isCorrect =',
 				isCorrect
 			)
+
+			// 检查是否达到目标
+			if (
+				newCount >= dailyGoal &&
+				!hasGoalBeenAchieved() &&
+				isAnswerCorrect
+			) {
+				// 标记目标已达成
+				markGoalAchieved()
+				// 延迟触发目标动画，让普通庆祝动画先播放
+				setTimeout(() => {
+					onGoalAchieved()
+				}, 2000)
+			}
 
 			// 如果答对了，显示庆祝动画
 			// 庆祝动画完成后会自动调用 onComplete，然后触发 handleNext

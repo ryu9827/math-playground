@@ -1,0 +1,217 @@
+@import './variables';
+
+.daily-goal-modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10000;
+	backdrop-filter: blur(4px);
+}
+
+.daily-goal-modal-content {
+	background: linear-gradient(135deg, $bg-card 0%, $bg-light 100%);
+	border-radius: $radius-lg;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+	max-width: 500px;
+	width: 90%;
+	max-height: 90vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: $spacing-lg $spacing-xl;
+	border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+
+	h2 {
+		color: $text-light;
+		font-size: 1.8rem;
+		margin: 0;
+	}
+
+	.close-btn {
+		background: transparent;
+		border: none;
+		color: $text-light;
+		font-size: 2rem;
+		cursor: pointer;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		transition: all $transition-fast;
+
+		&:hover {
+			background: rgba(239, 68, 68, 0.2);
+			color: $error-color;
+			transform: rotate(90deg);
+		}
+	}
+}
+
+.modal-body {
+	padding: $spacing-xl;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+
+	.goal-icon {
+		font-size: 4rem;
+		margin-bottom: $spacing-md;
+		animation: bounce 2s infinite;
+	}
+
+	.goal-description {
+		color: $text-dim;
+		font-size: 1rem;
+		margin-bottom: $spacing-xl;
+	}
+
+	.goal-input-group {
+		display: flex;
+		align-items: center;
+		gap: $spacing-md;
+		margin-bottom: $spacing-lg;
+
+		.goal-input {
+			width: 120px;
+			padding: $spacing-md;
+			border: 3px solid $primary-color;
+			border-radius: $radius-md;
+			background: rgba(255, 255, 255, 0.05);
+			color: $text-light;
+			font-size: 2rem;
+			font-weight: bold;
+			text-align: center;
+			transition: all $transition-fast;
+
+			&:focus {
+				outline: none;
+				border-color: $primary-light;
+				background: rgba(255, 255, 255, 0.1);
+				box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+				transform: scale(1.05);
+			}
+		}
+
+		.goal-unit {
+			color: $text-light;
+			font-size: 1.2rem;
+			font-weight: 600;
+		}
+	}
+
+	.goal-hint {
+		color: $primary-light;
+		font-size: 0.9rem;
+		font-style: italic;
+		padding: $spacing-sm $spacing-md;
+		background: rgba(99, 102, 241, 0.1);
+		border-radius: $radius-sm;
+		border: 1px solid rgba(99, 102, 241, 0.3);
+	}
+}
+
+.modal-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-md;
+	padding: $spacing-lg $spacing-xl;
+	border-top: 2px solid rgba(99, 102, 241, 0.3);
+
+	button {
+		padding: $spacing-sm $spacing-xl;
+		border: none;
+		border-radius: $radius-sm;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all $transition-fast;
+		min-width: 100px;
+
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: $shadow-sm;
+		}
+	}
+
+	.cancel-btn {
+		background: rgba(255, 255, 255, 0.1);
+		color: $text-light;
+		border: 2px solid $text-dim;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.15);
+		}
+	}
+
+	.save-btn {
+		background: $primary-color;
+		color: $text-light;
+
+		&:hover {
+			background: $primary-dark;
+		}
+	}
+}
+
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+@media (max-width: 768px) {
+	.daily-goal-modal-content {
+		width: 95%;
+		max-height: 95vh;
+	}
+
+	.modal-header {
+		padding: $spacing-md $spacing-lg;
+
+		h2 {
+			font-size: 1.5rem;
+		}
+	}
+
+	.modal-body {
+		padding: $spacing-lg;
+
+		.goal-icon {
+			font-size: 3rem;
+		}
+
+		.goal-input-group .goal-input {
+			width: 100px;
+			font-size: 1.5rem;
+		}
+	}
+
+	.modal-footer {
+		padding: $spacing-md $spacing-lg;
+
+		button {
+			min-width: 80px;
+			padding: $spacing-sm $spacing-md;
+		}
+	}
+}

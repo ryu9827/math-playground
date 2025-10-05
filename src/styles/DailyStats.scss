@@ -40,6 +40,15 @@
 		color: $text-light;
 		line-height: 1;
 		text-shadow: 0 2px 8px rgba(99, 102, 241, 0.5);
+		display: flex;
+		align-items: baseline;
+		gap: 4px;
+
+		.stats-goal {
+			font-size: 1.2rem;
+			color: $text-dim;
+			font-weight: normal;
+		}
 	}
 
 	.stats-unit {
