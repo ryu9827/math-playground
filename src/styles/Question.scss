@@ -16,6 +16,8 @@
 	max-width: 600px;
 	width: 100%;
 	text-align: center;
+	position: relative;
+	padding-bottom: 200px; // 为结果区域预留固定空间
 }
 
 .question-text {
@@ -182,9 +184,17 @@
 }
 
 .result {
-	margin-top: $spacing-xl;
+	position: absolute;
+	bottom: $spacing-xl;
+	left: $spacing-xl;
+	right: $spacing-xl;
 	padding: $spacing-lg;
 	border-radius: $radius-md;
+	min-height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 
 	&.correct {
 		background: linear-gradient(
@@ -242,5 +252,13 @@
 
 	.question-card {
 		padding: $spacing-lg;
+		padding-bottom: 180px; // 移动端调整预留空间
+	}
+
+	.result {
+		bottom: $spacing-md;
+		left: $spacing-md;
+		right: $spacing-md;
+		min-height: 140px;
 	}
 }
