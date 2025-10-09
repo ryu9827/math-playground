@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/math-playground/static/css/main.73227b9c.css",
-    "main.js": "/math-playground/static/js/main.3df7e13e.js",
+    "main.css": "/math-playground/static/css/main.f07feaf4.css",
+    "main.js": "/math-playground/static/js/main.8d1d9cc0.js",
     "static/js/453.31dd12cb.chunk.js": "/math-playground/static/js/453.31dd12cb.chunk.js",
     "index.html": "/math-playground/index.html",
-    "main.73227b9c.css.map": "/math-playground/static/css/main.73227b9c.css.map",
-    "main.3df7e13e.js.map": "/math-playground/static/js/main.3df7e13e.js.map",
+    "main.f07feaf4.css.map": "/math-playground/static/css/main.f07feaf4.css.map",
+    "main.8d1d9cc0.js.map": "/math-playground/static/js/main.8d1d9cc0.js.map",
     "453.31dd12cb.chunk.js.map": "/math-playground/static/js/453.31dd12cb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.73227b9c.css",
-    "static/js/main.3df7e13e.js"
+    "static/css/main.f07feaf4.css",
+    "static/js/main.8d1d9cc0.js"
   ]
 }

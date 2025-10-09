@@ -31,16 +31,33 @@
 	border-radius: $radius-sm;
 	transition: all $transition-fast;
 	white-space: nowrap;
+	display: flex;
+	align-items: center;
+	gap: $spacing-xs;
+
+	.tab-symbol {
+		font-size: 1.2rem;
+		font-weight: 700;
+		opacity: 0.8;
+	}
 
 	&:hover {
 		color: $text-light;
 		background: rgba(99, 102, 241, 0.1);
+		
+		.tab-symbol {
+			opacity: 1;
+		}
 	}
 
 	&.active {
 		color: $text-light;
 		background: $primary-color;
 		box-shadow: $shadow-sm;
+		
+		.tab-symbol {
+			opacity: 1;
+		}
 	}
 
 	.badge {

@@ -28,6 +28,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 					onClick={() => onTabChange('+')}
 					data-tab='addition'
 				>
+					<span className='tab-symbol'>+</span>
 					{t.addition}
 				</button>
 				<button
@@ -35,6 +36,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 					onClick={() => onTabChange('-')}
 					data-tab='subtraction'
 				>
+					<span className='tab-symbol'>-</span>
 					{t.subtraction}
 				</button>
 				<button
@@ -42,6 +44,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 					onClick={() => onTabChange('×')}
 					data-tab='multiplication'
 				>
+					<span className='tab-symbol'>×</span>
 					{t.multiplication}
 				</button>
 				<button
@@ -49,6 +52,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 					onClick={() => onTabChange('÷')}
 					data-tab='division'
 				>
+					<span className='tab-symbol'>÷</span>
 					{t.division}
 				</button>
 				<button

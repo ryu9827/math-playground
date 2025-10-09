@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- 简洁的小兔子 favicon -->
+  <defs>
+    <linearGradient id="rabbitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE4E1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <circle cx="32" cy="32" r="32" fill="#B8D4F1"/>
+  
+  <!-- 左耳 -->
+  <ellipse cx="23" cy="18" rx="7" ry="17" fill="url(#rabbitGrad)" transform="rotate(-15 23 18)"/>
+  <ellipse cx="23" cy="20" rx="3.5" ry="12" fill="#FFD1DC" transform="rotate(-15 23 20)"/>
+  
+  <!-- 右耳 -->
+  <ellipse cx="41" cy="18" rx="7" ry="17" fill="url(#rabbitGrad)" transform="rotate(15 41 18)"/>
+  <ellipse cx="41" cy="20" rx="3.5" ry="12" fill="#FFD1DC" transform="rotate(15 41 20)"/>
+  
+  <!-- 头部 -->
+  <circle cx="32" cy="37" r="20" fill="url(#rabbitGrad)"/>
+  
+  <!-- 左眼 -->
+  <circle cx="26" cy="33" r="3.5" fill="#000000"/>
+  <circle cx="27.5" cy="32" r="1.5" fill="#FFFFFF"/>
+  
+  <!-- 右眼 -->
+  <circle cx="38" cy="33" r="3.5" fill="#000000"/>
+  <circle cx="39.5" cy="32" r="1.5" fill="#FFFFFF"/>
+  
+  <!-- 鼻子 -->
+  <ellipse cx="32" cy="40" rx="1.5" ry="2" fill="#FF69B4"/>
+  
+  <!-- 嘴巴 -->
+  <path d="M 32 40.5 L 28 43 L 26 42" stroke="#FF69B4" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <path d="M 32 40.5 L 36 43 L 38 42" stroke="#FF69B4" stroke-width="1" fill="none" stroke-linecap="round"/>
+  
+  <!-- 腮红 -->
+  <circle cx="20" cy="38" r="3.5" fill="#FFB6C1" opacity="0.4"/>
+  <circle cx="44" cy="38" r="3.5" fill="#FFB6C1" opacity="0.4"/>
+</svg>
