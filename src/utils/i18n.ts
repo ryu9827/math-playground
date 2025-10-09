@@ -37,6 +37,9 @@ export const translations = {
 		division: '除法',
 		operationType: '运算类型',
 		practice: '练习',
+		wordProblemMode: '应用题模式',
+		wordProblemModeOn: '应用题',
+		wordProblemModeOff: '普通题',
 	},
 	en: {
 		wrongQuestions: 'Wrong Questions',
@@ -75,5 +78,8 @@ export const translations = {
 		division: 'Division',
 		operationType: 'Operation Type',
 		practice: 'Practice',
+		wordProblemMode: 'Word Problem Mode',
+		wordProblemModeOn: 'Word Problems',
+		wordProblemModeOff: 'Regular',
 	},
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import {
@@ -12,11 +12,13 @@ import {
 	generateNewQuestion,
 	generateOptions,
 } from '../utils/questionGenerator'
+import { generateWordProblem } from '../utils/wordProblemGenerator'
 import {
 	incrementQuestionsAnswered,
 	hasGoalBeenAchieved,
 	markGoalAchieved,
 } from '../utils/dailyStats'
+import { setWordProblemMode } from '../store/settingsSlice'
 import { motion, AnimatePresence } from 'framer-motion'
 import { OperationType } from '../App'
 import { CelebrationAnimation } from './CelebrationAnimation'
@@ -34,10 +36,12 @@ export const Question: React.FC<QuestionProps> = ({
 	const dispatch = useDispatch()
 	const { currentQuestion, showResult, isCorrect, wrongQuestions } =
 		useSelector((state: RootState) => state.questions)
-	const { language, minNumber, maxNumber, dailyGoal } = useSelector(
-		(state: RootState) => state.settings
-	)
+	const { language, minNumber, maxNumber, dailyGoal, wordProblemMode } =
+		useSelector((state: RootState) => state.settings)
 	const t = translations[language]
+
+	// 获取当前运算类型的应用题模式状态
+	const currentWordProblemMode = wordProblemMode[operation]
 
 	const [options, setOptions] = useState<number[]>([])
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -77,14 +81,15 @@ export const Question: React.FC<QuestionProps> = ({
 				maxNumber,
 				operation,
 				wrongQuestionsRef.current,
-				currentQuestion || undefined
+				currentQuestion || undefined,
+				currentWordProblemMode
 			)
 			dispatch(setCurrentQuestion(newQuestion))
 			dispatch(resetResult())
 			setSelectedAnswer(null)
 			setShowCelebration(false)
 		}
-	}, [operation, dispatch, minNumber, maxNumber, currentQuestion])
+	}, [operation, dispatch, minNumber, maxNumber, currentQuestion, currentWordProblemMode])
 
 	useEffect(() => {
 		// 当题目改变时，生成新选项
@@ -164,18 +169,31 @@ export const Question: React.FC<QuestionProps> = ({
 			maxNumber,
 			operation,
 			wrongQuestionsRef.current,
-			currentQuestion || undefined
+			currentQuestion || undefined,
+			currentWordProblemMode
 		)
 		dispatch(setCurrentQuestion(newQuestion))
 		setSelectedAnswer(null)
 		setShowCelebration(false)
-	}, [dispatch, minNumber, maxNumber, operation, currentQuestion])
+	}, [dispatch, minNumber, maxNumber, operation, currentQuestion, currentWordProblemMode])
 
 	const handleCelebrationComplete = useCallback(() => {
 		console.log('庆祝动画完成，准备进入下一题')
 		setShowCelebration(false)
 		handleNext()
 	}, [handleNext])
+
+	// 使用 useMemo 生成应用题文本，只在题目或语言改变时重新生成
+	// 这样可以避免在用户点击选项或提交时，应用题文本发生变化
+	const wordProblemText = useMemo(() => {
+		if (!currentQuestion || !currentWordProblemMode) return null
+		return generateWordProblem(
+			currentQuestion.num1,
+			currentQuestion.num2,
+			currentQuestion.operation,
+			language
+		)
+	}, [currentQuestion, language, currentWordProblemMode])
 
 	if (!currentQuestion) return null
 
@@ -188,16 +206,44 @@ export const Question: React.FC<QuestionProps> = ({
 			/>
 
 			<div className='question-container'>
+				{/* 应用题模式开关 */}
+				<div className='word-problem-toggle'>
+					<label className='toggle-switch'>
+						<input
+							type='checkbox'
+							checked={currentWordProblemMode}
+							onChange={(e) =>
+								dispatch(
+									setWordProblemMode({
+										operation,
+										enabled: e.target.checked,
+									})
+								)
+							}
+						/>
+						<span className='toggle-slider'></span>
+					</label>
+					<span className='toggle-label'>
+						{currentWordProblemMode ? t.wordProblemModeOn : t.wordProblemModeOff}
+					</span>
+				</div>
+
 				<motion.div
 					className='question-card'
 					initial={{ scale: 0.9, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					transition={{ duration: 0.3 }}
 				>
-					<div className='question-text'>
-						{currentQuestion.num1} {currentQuestion.operation}{' '}
-						{currentQuestion.num2} = ?
-					</div>
+					{currentWordProblemMode ? (
+						<div className='question-text word-problem'>
+							{wordProblemText}
+						</div>
+					) : (
+						<div className='question-text'>
+							{currentQuestion.num1} {currentQuestion.operation}{' '}
+							{currentQuestion.num2} = ?
+						</div>
+					)}
 
 					<div className='options-container'>
 						{options.map((option, index) => (

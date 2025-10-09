@@ -47,7 +47,8 @@ export const generateNewQuestion = (
 	max: number,
 	operationType: OperationType,
 	wrongQuestions: WrongQuestion[],
-	lastQuestion?: Question
+	lastQuestion?: Question,
+	avoidZero?: boolean
 ): Question => {
 	// 30% 概率从错题本中选择（且运算类型相同）
 	const matchingWrongQuestions = wrongQuestions.filter(
@@ -61,6 +62,10 @@ export const generateNewQuestion = (
 			matchingWrongQuestions[
 				Math.floor(Math.random() * matchingWrongQuestions.length)
 			]
+		// 如果应用题模式且题目包含0，则重新生成
+		if (avoidZero && (randomWrong.num1 === 0 || randomWrong.num2 === 0)) {
+			return generateNewQuestionInternal(min, max, operationType, lastQuestion, avoidZero)
+		}
 		const question = {
 			id: randomWrong.id,
 			num1: randomWrong.num1,
@@ -70,20 +75,21 @@ export const generateNewQuestion = (
 		}
 		// 如果和上一题相同，尝试生成新题
 		if (lastQuestion && question.id === lastQuestion.id) {
-			return generateNewQuestionInternal(min, max, operationType, lastQuestion)
+			return generateNewQuestionInternal(min, max, operationType, lastQuestion, avoidZero)
 		}
 		return question
 	}
 
 	// 生成新题目，确保所有数字（包括结果）都在 min-max 范围内
-	return generateNewQuestionInternal(min, max, operationType, lastQuestion)
+	return generateNewQuestionInternal(min, max, operationType, lastQuestion, avoidZero)
 }
 
 const generateNewQuestionInternal = (
 	min: number,
 	max: number,
 	operationType: OperationType,
-	lastQuestion?: Question
+	lastQuestion?: Question,
+	avoidZero?: boolean
 ): Question => {
 	let num1: number
 	let num2: number
@@ -91,15 +97,18 @@ const generateNewQuestionInternal = (
 	let attempts = 0
 	const maxAttempts = 20 // 最多尝试20次避免无限循环
 
+	// 如果需要避免0，调整 min 的值
+	const effectiveMin = avoidZero ? Math.max(min, 1) : min
+
 	do {
 		switch (operationType) {
 			case '+':
 				// 加法：确保 num1 + num2 在 [min, max] 范围内
-				const addRange = max - min + 1
+				const addRange = max - effectiveMin + 1
 				num1 =
-					Math.floor(Math.random() * Math.min(addRange, max - min + 1)) + min
+					Math.floor(Math.random() * Math.min(addRange, max - effectiveMin + 1)) + effectiveMin
 				const maxNum2ForAdd = max - num1
-				const minNum2ForAdd = Math.max(min - num1, 0)
+				const minNum2ForAdd = Math.max(effectiveMin - num1, avoidZero ? 1 : 0)
 				num2 =
 					Math.floor(Math.random() * (maxNum2ForAdd - minNum2ForAdd + 1)) +
 					minNum2ForAdd
@@ -108,35 +117,39 @@ const generateNewQuestionInternal = (
 
 			case '-':
 				// 减法：确保结果在 [min, max] 范围内
-				answer = Math.floor(Math.random() * (max - min + 1)) + min
+				answer = Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
 				num2 =
 					Math.floor(
-						Math.random() * Math.min(answer - min + 1, max - min + 1)
-					) + min
+						Math.random() * Math.min(answer - effectiveMin + 1, max - effectiveMin + 1)
+					) + effectiveMin
 				num1 = answer + num2
 				break
 
 			case '×':
 				// 乘法：确保 num1 * num2 在 [min, max] 范围内
 				const maxMultiplier = Math.min(Math.floor(Math.sqrt(max)), 12)
-				num1 = Math.floor(Math.random() * maxMultiplier) + 1
+				const minMultiplier = avoidZero ? 1 : 0
+				num1 = Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) + minMultiplier
+				// 如果 num1 为 0，则强制 num1 至少为 1（避免除以0）
+				if (num1 === 0) num1 = 1
 				const maxNum2 = Math.min(Math.floor(max / num1), 12)
-				num2 = Math.floor(Math.random() * maxNum2) + 1
+				num2 = Math.floor(Math.random() * (maxNum2 - minMultiplier + 1)) + minMultiplier
 				answer = num1 * num2
 				// 如果结果小于 min，重新调整
-				if (answer < min) {
-					num1 = Math.max(2, Math.floor(Math.sqrt(min)))
-					num2 = Math.ceil(min / num1)
+				if (answer < effectiveMin) {
+					num1 = Math.max(2, Math.floor(Math.sqrt(effectiveMin)))
+					num2 = Math.ceil(effectiveMin / num1)
 					answer = num1 * num2
 				}
 				break
 
 			case '÷':
 				// 除法：确保商在 [min, max] 范围内，被除数也在范围内
+				// 除数永远不能为0（数学规则）
 				const maxDivisor = Math.min(max, 12)
-				num2 = Math.floor(Math.random() * maxDivisor) + 1 // 除数
+				num2 = Math.floor(Math.random() * maxDivisor) + 1 // 除数永远至少为1
 				const quotientMax = Math.min(Math.floor(max / num2), 12)
-				const quotientMin = Math.max(Math.ceil(min / num2), 1)
+				const quotientMin = Math.max(Math.ceil(effectiveMin / num2), 1)
 				answer =
 					Math.floor(Math.random() * (quotientMax - quotientMin + 1)) +
 					quotientMin // 商
@@ -144,17 +157,18 @@ const generateNewQuestionInternal = (
 				break
 
 			default:
-				num1 = Math.floor(Math.random() * (max - min + 1)) + min
-				num2 = Math.floor(Math.random() * (max - num1)) + 1
+				num1 = Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
+				num2 = Math.floor(Math.random() * (max - num1)) + (avoidZero ? 1 : 0)
 				answer = num1 + num2
 		}
 
 		attempts++
 
-		// 如果和上一题相同，继续循环生成新题（除非尝试次数过多）
+		// 如果和上一题相同，或在应用题模式下包含0，继续循环生成新题（除非尝试次数过多）
 	} while (
-		lastQuestion &&
-		generateQuestionId(num1, num2, operationType) === lastQuestion.id &&
+		((lastQuestion &&
+			generateQuestionId(num1, num2, operationType) === lastQuestion.id) ||
+			(avoidZero && (num1 === 0 || num2 === 0))) &&
 		attempts < maxAttempts
 	)
 
