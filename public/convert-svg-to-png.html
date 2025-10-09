@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to PNG Converter - 小兔子图片转换器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        .preview-section {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .preview-item {
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .preview-item h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        img {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            background: white;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .instructions {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .instructions h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+        .instructions li {
+            margin: 8px 0;
+            color: #555;
+        }
+        .note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐰 可爱小兔子图片转换器</h1>
+        
+        <div class="preview-section">
+            <div class="preview-item">
+                <h3>192x192 小兔子</h3>
+                <img id="img192" src="rabbit192.svg" width="192" height="192" alt="192x192 小兔子">
+                <br>
+                <button onclick="downloadPNG('img192', 'logo192.png', 192)">下载 PNG (192x192)</button>
+            </div>
+            
+            <div class="preview-item">
+                <h3>512x512 小兔子</h3>
+                <img id="img512" src="rabbit512.svg" width="256" height="256" alt="512x512 小兔子">
+                <br>
+                <button onclick="downloadPNG('img512', 'logo512.png', 512)">下载 PNG (512x512)</button>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>📝 使用说明：</h3>
+            <ol>
+                <li>点击上方对应的"下载 PNG"按钮</li>
+                <li>将下载的 <code>logo192.png</code> 和 <code>logo512.png</code> 文件保存到本地</li>
+                <li>将这两个文件复制到项目的 <code>public</code> 文件夹，替换原有的文件</li>
+                <li>刷新浏览器即可看到新的小兔子图标 🐰</li>
+            </ol>
+        </div>
+
+        <div class="note">
+            <strong>💡 提示：</strong> 这两个可爱的小兔子图片是粉色系设计，带有爱心装饰，非常适合作为应用的图标。如果您希望调整颜色或样式，可以编辑 <code>rabbit192.svg</code> 和 <code>rabbit512.svg</code> 文件。
+        </div>
+    </div>
+
+    <script>
+        function downloadPNG(imgId, filename, size) {
+            const img = document.getElementById(imgId);
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // 创建一个新的Image对象来加载SVG
+            const tempImg = new Image();
+            tempImg.onload = function() {
+                ctx.drawImage(tempImg, 0, 0, size, size);
+                
+                // 转换为PNG并下载
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = filename;
+                    link.href = url;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+            
+            // 将SVG转换为Data URL
+            const svg = img.src;
+            tempImg.src = svg;
+        }
+    </script>
+</body>
+</html>

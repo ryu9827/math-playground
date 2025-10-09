@@ -89,7 +89,14 @@ export const Question: React.FC<QuestionProps> = ({
 			setSelectedAnswer(null)
 			setShowCelebration(false)
 		}
-	}, [operation, dispatch, minNumber, maxNumber, currentQuestion, currentWordProblemMode])
+	}, [
+		operation,
+		dispatch,
+		minNumber,
+		maxNumber,
+		currentQuestion,
+		currentWordProblemMode,
+	])
 
 	useEffect(() => {
 		// 当题目改变时，生成新选项
@@ -107,6 +114,31 @@ export const Question: React.FC<QuestionProps> = ({
 			isCorrect
 		)
 	}, [showResult, isCorrect])
+
+	// 生成不含0的题目的辅助函数
+	const generateQuestionWithoutZero = useCallback(() => {
+		let newQuestion
+		let attempts = 0
+		const maxAttempts = 20
+
+		// 循环生成新题目，直到找到不含0的题目
+		do {
+			newQuestion = generateNewQuestion(
+				minNumber,
+				maxNumber,
+				operation,
+				wrongQuestionsRef.current,
+				currentQuestion || undefined,
+				true // avoidZero = true
+			)
+			attempts++
+		} while (
+			(newQuestion.num1 === 0 || newQuestion.num2 === 0) &&
+			attempts < maxAttempts
+		)
+
+		return newQuestion
+	}, [minNumber, maxNumber, operation, currentQuestion])
 
 	const handleOptionClick = (option: number) => {
 		if (!showResult) {
@@ -175,7 +207,14 @@ export const Question: React.FC<QuestionProps> = ({
 		dispatch(setCurrentQuestion(newQuestion))
 		setSelectedAnswer(null)
 		setShowCelebration(false)
-	}, [dispatch, minNumber, maxNumber, operation, currentQuestion, currentWordProblemMode])
+	}, [
+		dispatch,
+		minNumber,
+		maxNumber,
+		operation,
+		currentQuestion,
+		currentWordProblemMode,
+	])
 
 	const handleCelebrationComplete = useCallback(() => {
 		console.log('庆祝动画完成，准备进入下一题')
@@ -212,19 +251,36 @@ export const Question: React.FC<QuestionProps> = ({
 						<input
 							type='checkbox'
 							checked={currentWordProblemMode}
-							onChange={(e) =>
+							onChange={(e) => {
+								const enabled = e.target.checked
 								dispatch(
 									setWordProblemMode({
 										operation,
-										enabled: e.target.checked,
+										enabled,
 									})
 								)
-							}
+
+								// 如果开启应用题模式，检查当前题目是否包含0
+								if (enabled && currentQuestion) {
+									if (
+										currentQuestion.num1 === 0 ||
+										currentQuestion.num2 === 0
+									) {
+										// 当前题目包含0，需要立即刷新题目
+										const newQuestion = generateQuestionWithoutZero()
+										dispatch(setCurrentQuestion(newQuestion))
+										setSelectedAnswer(null)
+										dispatch(resetResult())
+									}
+								}
+							}}
 						/>
 						<span className='toggle-slider'></span>
 					</label>
 					<span className='toggle-label'>
-						{currentWordProblemMode ? t.wordProblemModeOn : t.wordProblemModeOff}
+						{currentWordProblemMode
+							? t.wordProblemModeOn
+							: t.wordProblemModeOff}
 					</span>
 				</div>
 
@@ -235,9 +291,7 @@ export const Question: React.FC<QuestionProps> = ({
 					transition={{ duration: 0.3 }}
 				>
 					{currentWordProblemMode ? (
-						<div className='question-text word-problem'>
-							{wordProblemText}
-						</div>
+						<div className='question-text word-problem'>{wordProblemText}</div>
 					) : (
 						<div className='question-text'>
 							{currentQuestion.num1} {currentQuestion.operation}{' '}
