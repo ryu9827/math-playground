@@ -23,7 +23,11 @@ export const loadDailyStats = (): DailyStats => {
 
 			// 如果是新的一天，重置计数
 			if (stats.date !== today) {
-				const newStats = { date: today, questionsAnswered: 0, goalAchieved: false }
+				const newStats = {
+					date: today,
+					questionsAnswered: 0,
+					goalAchieved: false,
+				}
 				saveDailyStats(newStats)
 				return newStats
 			}
@@ -35,7 +39,11 @@ export const loadDailyStats = (): DailyStats => {
 	}
 
 	// 默认返回今天的初始统计
-	const newStats = { date: getTodayString(), questionsAnswered: 0, goalAchieved: false }
+	const newStats = {
+		date: getTodayString(),
+		questionsAnswered: 0,
+		goalAchieved: false,
+	}
 	saveDailyStats(newStats)
 	return newStats
 }

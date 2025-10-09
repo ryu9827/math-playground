@@ -126,10 +126,10 @@
 
 	.range-inputs {
 		display: flex;
-		gap: $spacing-md;
+		gap: $spacing-lg;
 		margin-bottom: $spacing-md;
 		justify-content: center;
-		flex-wrap: wrap;
+		align-items: flex-end;
 	}
 
 	.input-group {

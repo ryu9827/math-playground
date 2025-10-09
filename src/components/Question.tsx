@@ -76,7 +76,8 @@ export const Question: React.FC<QuestionProps> = ({
 				minNumber,
 				maxNumber,
 				operation,
-				wrongQuestionsRef.current
+				wrongQuestionsRef.current,
+				currentQuestion || undefined
 			)
 			dispatch(setCurrentQuestion(newQuestion))
 			dispatch(resetResult())
@@ -135,11 +136,7 @@ export const Question: React.FC<QuestionProps> = ({
 			)
 
 			// 检查是否达到目标
-			if (
-				newCount >= dailyGoal &&
-				!hasGoalBeenAchieved() &&
-				isAnswerCorrect
-			) {
+			if (newCount >= dailyGoal && !hasGoalBeenAchieved() && isAnswerCorrect) {
 				// 标记目标已达成
 				markGoalAchieved()
 				// 延迟触发目标动画，让普通庆祝动画先播放
@@ -166,12 +163,13 @@ export const Question: React.FC<QuestionProps> = ({
 			minNumber,
 			maxNumber,
 			operation,
-			wrongQuestionsRef.current
+			wrongQuestionsRef.current,
+			currentQuestion || undefined
 		)
 		dispatch(setCurrentQuestion(newQuestion))
 		setSelectedAnswer(null)
 		setShowCelebration(false)
-	}, [dispatch, minNumber, maxNumber, operation])
+	}, [dispatch, minNumber, maxNumber, operation, currentQuestion])
 
 	const handleCelebrationComplete = useCallback(() => {
 		console.log('庆祝动画完成，准备进入下一题')

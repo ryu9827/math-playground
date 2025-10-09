@@ -56,6 +56,7 @@ function App() {
 	)
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 	const [showGoalAnimation, setShowGoalAnimation] = useState(false)
+	const [questionKey, setQuestionKey] = useState(0) // 用于刷新题目
 
 	const handleTabChange = (tab: TabType) => {
 		setCurrentTab(tab)
@@ -63,6 +64,11 @@ function App() {
 		if (tab === '+' || tab === '-' || tab === '×' || tab === '÷') {
 			setCurrentOperation(tab)
 		}
+	}
+
+	const handleSettingsSaved = () => {
+		// 设置保存后，增加 key 值来强制刷新题目
+		setQuestionKey((prev) => prev + 1)
 	}
 
 	return (
@@ -81,6 +87,7 @@ function App() {
 					currentTab === '×' ||
 					currentTab === '÷') && (
 					<Question
+						key={questionKey}
 						operation={currentOperation}
 						onGoalAchieved={() => setShowGoalAnimation(true)}
 					/>
@@ -93,6 +100,7 @@ function App() {
 			<SettingsModal
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
+				onSettingsSaved={handleSettingsSaved}
 			/>
 
 			<GoalAchievedAnimation
