@@ -83,14 +83,7 @@ export const ChineseRabbit: React.FC<RabbitProps> = ({
 			{/* 中国结装饰 */}
 			<circle cx='50' cy='32' r='3' fill='#DC143C' />
 			<circle cx='50' cy='38' r='2' fill='#DC143C' />
-			<line
-				x1='50'
-				y1='35'
-				x2='50'
-				y2='36'
-				stroke='#FFD700'
-				strokeWidth='1'
-			/>
+			<line x1='50' y1='35' x2='50' y2='36' stroke='#FFD700' strokeWidth='1' />
 		</svg>
 	)
 }

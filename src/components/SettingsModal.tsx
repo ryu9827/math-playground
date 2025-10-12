@@ -42,12 +42,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 		dispatch(setMinNumber(finalMin))
 		dispatch(setMaxNumber(finalMax))
 		dispatch(setSoundEnabled(localSound))
-		
+
 		// 通知外部设置已保存，需要刷新题目
 		if (onSettingsSaved) {
 			onSettingsSaved()
 		}
-		
+
 		onClose() // 保存后自动关闭
 	}
 

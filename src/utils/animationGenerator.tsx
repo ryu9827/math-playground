@@ -125,6 +125,7 @@ const emojis = {
 }
 
 // 赞美文字集合
+// 中文庆祝语
 const praises = {
 	addition: [
 		'太棒了！',
@@ -216,6 +217,98 @@ const praises = {
 	],
 }
 
+// 英文庆祝语
+const praisesEn = {
+	addition: [
+		'Awesome!',
+		'You\'re so smart!',
+		'Perfect!',
+		'Well done!',
+		'Keep it up!',
+		'Amazing!',
+		'You\'re a genius!',
+		'Fantastic!',
+		'Outstanding!',
+		'Super great!',
+		'Good job!',
+		'Excellent!',
+		'Wonderful!',
+		'You\'re great!',
+		'Go for it!',
+		'Brilliant!',
+		'Impressive!',
+		'Terrific!',
+		'Superb!',
+		'Marvelous!',
+	],
+	subtraction: [
+		'Great thinking!',
+		'Clear logic!',
+		'Correct analysis!',
+		'So clever!',
+		'Accurate calculation!',
+		'Sharp mind!',
+		'Quick thinking!',
+		'Right reasoning!',
+		'Very logical!',
+		'Good analysis!',
+		'Clear thought!',
+		'Precise judgment!',
+		'Deep understanding!',
+		'Well mastered!',
+		'Exact calculation!',
+		'Careful thinking!',
+		'Thorough analysis!',
+		'Solid logic!',
+		'Accurate judgment!',
+		'Thoughtful!',
+	],
+	multiplication: [
+		'So fast!',
+		'Quick response!',
+		'Super strong!',
+		'Unbeatable!',
+		'Lightning speed!',
+		'Fast as lightning!',
+		'Incredibly good!',
+		'Super fast!',
+		'Lightning quick!',
+		'So speedy!',
+		'Blazing fast!',
+		'Fast and accurate!',
+		'Full power!',
+		'Full speed ahead!',
+		'Sprint success!',
+		'Great burst!',
+		'Fast track!',
+		'Unstoppable!',
+		'Leading the way!',
+		'Way ahead!',
+	],
+	division: [
+		'Stay calm!',
+		'Cool and collected!',
+		'Rock steady!',
+		'Well balanced!',
+		'Even distribution!',
+		'Precise breakdown!',
+		'Well organized!',
+		'Clear structure!',
+		'Methodical!',
+		'Orderly!',
+		'Steady progress!',
+		'Step by step!',
+		'Strategic!',
+		'Solid foundation!',
+		'Composed!',
+		'Skillful!',
+		'Effortless!',
+		'Calm and cool!',
+		'Confident!',
+		'Well prepared!',
+	],
+}
+
 // 颜色方案
 const colorSchemes = {
 	addition: ['#FFD700', '#FFA500', '#FF69B4', '#FF1493', '#FF6347'],
@@ -226,12 +319,13 @@ const colorSchemes = {
 
 // 生成动画函数
 export const generateAnimations = (
-	operation: OperationType
+	operation: OperationType,
+	language: 'zh' | 'en' = 'zh'
 ): ReactElement[] => {
 	const animations: ReactElement[] = []
 	const operationType = getOperationCategory(operation)
 	const emojiSet = emojis[operationType]
-	const praiseSet = praises[operationType]
+	const praiseSet = language === 'en' ? praisesEn[operationType] : praises[operationType]
 	const colors = colorSchemes[operationType]
 
 	// 生成100个动画
@@ -245,6 +339,17 @@ export const generateAnimations = (
 	}
 
 	return animations
+}
+
+// 新增：获取庆祝文字的函数
+export const getPraiseText = (
+	operation: OperationType,
+	index: number,
+	language: 'zh' | 'en' = 'zh'
+): string => {
+	const operationType = getOperationCategory(operation)
+	const praiseSet = language === 'en' ? praisesEn[operationType] : praises[operationType]
+	return praiseSet[index % praiseSet.length]
 }
 
 // 获取运算类别

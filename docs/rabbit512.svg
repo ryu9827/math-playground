@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- 简洁可爱的小兔子头像 512x512 高清版 -->
+  <defs>
+    <linearGradient id="rabbitGradient512" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE4E1;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="blushGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FFB6C1;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FFB6C1;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 背景圆 -->
+  <circle cx="256" cy="256" r="240" fill="#B8D4F1"/>
+  
+  <!-- 左耳外部 -->
+  <ellipse cx="180" cy="145" rx="54" ry="135" fill="url(#rabbitGradient512)" transform="rotate(-15 180 145)"/>
+  <!-- 左耳内部 -->
+  <ellipse cx="180" cy="155" rx="27" ry="95" fill="#FFD1DC" transform="rotate(-15 180 155)"/>
+  
+  <!-- 右耳外部 -->
+  <ellipse cx="332" cy="145" rx="54" ry="135" fill="url(#rabbitGradient512)" transform="rotate(15 332 145)"/>
+  <!-- 右耳内部 -->
+  <ellipse cx="332" cy="155" rx="27" ry="95" fill="#FFD1DC" transform="rotate(15 332 155)"/>
+  
+  <!-- 头部 -->
+  <circle cx="256" cy="295" r="155" fill="url(#rabbitGradient512)"/>
+  
+  <!-- 左眼 -->
+  <circle cx="203" cy="270" r="27" fill="#000000"/>
+  <circle cx="211" cy="260" r="11" fill="#FFFFFF"/>
+  <circle cx="215" cy="264" r="4" fill="#FFFFFF" opacity="0.7"/>
+  
+  <!-- 右眼 -->
+  <circle cx="309" cy="270" r="27" fill="#000000"/>
+  <circle cx="317" cy="260" r="11" fill="#FFFFFF"/>
+  <circle cx="321" cy="264" r="4" fill="#FFFFFF" opacity="0.7"/>
+  
+  <!-- 鼻子 - Y字形 -->
+  <ellipse cx="256" cy="320" rx="11" ry="16" fill="#FF69B4"/>
+  
+  <!-- 嘴巴 - 简单的W形 -->
+  <path d="M 256 325 L 235 345 L 218 340" stroke="#FF69B4" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 256 325 L 277 345 L 294 340" stroke="#FF69B4" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- 微笑的嘴角 -->
+  <path d="M 218 340 Q 220 348 225 350" stroke="#FF69B4" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
+  <path d="M 294 340 Q 292 348 287 350" stroke="#FF69B4" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
+  
+  <!-- 腮红 -->
+  <circle cx="160" cy="300" r="27" fill="url(#blushGradient)"/>
+  <circle cx="352" cy="300" r="27" fill="url(#blushGradient)"/>
+  
+  <!-- 胡须 - 左侧 -->
+  <line x1="120" y1="288" x2="173" y2="283" stroke="#999999" stroke-width="4" stroke-linecap="round"/>
+  <line x1="120" y1="305" x2="173" y2="305" stroke="#999999" stroke-width="4" stroke-linecap="round"/>
+  <line x1="120" y1="322" x2="173" y2="327" stroke="#999999" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- 胡须 - 右侧 -->
+  <line x1="392" y1="288" x2="339" y2="283" stroke="#999999" stroke-width="4" stroke-linecap="round"/>
+  <line x1="392" y1="305" x2="339" y2="305" stroke="#999999" stroke-width="4" stroke-linecap="round"/>
+  <line x1="392" y1="322" x2="339" y2="327" stroke="#999999" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- 眉毛 - 可爱的弧形 -->
+  <path d="M 185 245 Q 195 238 210 242" stroke="#666666" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <path d="M 327 245 Q 317 238 302 242" stroke="#666666" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.4"/>
+</svg>
