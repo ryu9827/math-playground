@@ -236,13 +236,12 @@ export const generateWordProblem = (
 	operation: OperationType,
 	language: Language
 ): string => {
-	const templates =
-		language === 'zh' ? chineseTemplates : englishTemplates
+	const templates = language === 'zh' ? chineseTemplates : englishTemplates
 	const operationTemplates = templates[operation]
-	
+
 	// 随机选择一个模板
 	const randomTemplate =
 		operationTemplates[Math.floor(Math.random() * operationTemplates.length)]
-	
+
 	return randomTemplate.question(num1, num2)
 }

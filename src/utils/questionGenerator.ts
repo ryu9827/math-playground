@@ -64,7 +64,13 @@ export const generateNewQuestion = (
 			]
 		// 如果应用题模式且题目包含0，则重新生成
 		if (avoidZero && (randomWrong.num1 === 0 || randomWrong.num2 === 0)) {
-			return generateNewQuestionInternal(min, max, operationType, lastQuestion, avoidZero)
+			return generateNewQuestionInternal(
+				min,
+				max,
+				operationType,
+				lastQuestion,
+				avoidZero
+			)
 		}
 		const question = {
 			id: randomWrong.id,
@@ -75,13 +81,25 @@ export const generateNewQuestion = (
 		}
 		// 如果和上一题相同，尝试生成新题
 		if (lastQuestion && question.id === lastQuestion.id) {
-			return generateNewQuestionInternal(min, max, operationType, lastQuestion, avoidZero)
+			return generateNewQuestionInternal(
+				min,
+				max,
+				operationType,
+				lastQuestion,
+				avoidZero
+			)
 		}
 		return question
 	}
 
 	// 生成新题目，确保所有数字（包括结果）都在 min-max 范围内
-	return generateNewQuestionInternal(min, max, operationType, lastQuestion, avoidZero)
+	return generateNewQuestionInternal(
+		min,
+		max,
+		operationType,
+		lastQuestion,
+		avoidZero
+	)
 }
 
 const generateNewQuestionInternal = (
@@ -106,7 +124,9 @@ const generateNewQuestionInternal = (
 				// 加法：确保 num1 + num2 在 [min, max] 范围内
 				const addRange = max - effectiveMin + 1
 				num1 =
-					Math.floor(Math.random() * Math.min(addRange, max - effectiveMin + 1)) + effectiveMin
+					Math.floor(
+						Math.random() * Math.min(addRange, max - effectiveMin + 1)
+					) + effectiveMin
 				const maxNum2ForAdd = max - num1
 				const minNum2ForAdd = Math.max(effectiveMin - num1, avoidZero ? 1 : 0)
 				num2 =
@@ -117,10 +137,12 @@ const generateNewQuestionInternal = (
 
 			case '-':
 				// 减法：确保结果在 [min, max] 范围内
-				answer = Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
+				answer =
+					Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
 				num2 =
 					Math.floor(
-						Math.random() * Math.min(answer - effectiveMin + 1, max - effectiveMin + 1)
+						Math.random() *
+							Math.min(answer - effectiveMin + 1, max - effectiveMin + 1)
 					) + effectiveMin
 				num1 = answer + num2
 				break
@@ -129,11 +151,15 @@ const generateNewQuestionInternal = (
 				// 乘法：确保 num1 * num2 在 [min, max] 范围内
 				const maxMultiplier = Math.min(Math.floor(Math.sqrt(max)), 12)
 				const minMultiplier = avoidZero ? 1 : 0
-				num1 = Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) + minMultiplier
+				num1 =
+					Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) +
+					minMultiplier
 				// 如果 num1 为 0，则强制 num1 至少为 1（避免除以0）
 				if (num1 === 0) num1 = 1
 				const maxNum2 = Math.min(Math.floor(max / num1), 12)
-				num2 = Math.floor(Math.random() * (maxNum2 - minMultiplier + 1)) + minMultiplier
+				num2 =
+					Math.floor(Math.random() * (maxNum2 - minMultiplier + 1)) +
+					minMultiplier
 				answer = num1 * num2
 				// 如果结果小于 min，重新调整
 				if (answer < effectiveMin) {
@@ -157,7 +183,8 @@ const generateNewQuestionInternal = (
 				break
 
 			default:
-				num1 = Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
+				num1 =
+					Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
 				num2 = Math.floor(Math.random() * (max - num1)) + (avoidZero ? 1 : 0)
 				answer = num1 + num2
 		}

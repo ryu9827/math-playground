@@ -2,7 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import { AnimatePresence } from 'framer-motion'
-import { generateAnimations, getPraiseText, OperationType } from '../utils/animationGenerator'
+import {
+	generateAnimations,
+	getPraiseText,
+	OperationType,
+} from '../utils/animationGenerator'
 import { soundEffects } from '../utils/soundEffects'
 import '../styles/CelebrationAnimations.scss'
 
@@ -56,7 +60,11 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 				soundEffects.playRandomCelebration()
 
 				// 直接获取当前动画对应的庆祝文字
-				const praiseText = getPraiseText(operationRef.current, newAnimationType, language)
+				const praiseText = getPraiseText(
+					operationRef.current,
+					newAnimationType,
+					language
+				)
 				console.log('提取的庆祝文字:', praiseText)
 
 				// 音效结束后播放语音（庆祝音效最长600ms）

@@ -221,19 +221,19 @@ const praises = {
 const praisesEn = {
 	addition: [
 		'Awesome!',
-		'You\'re so smart!',
+		"You're so smart!",
 		'Perfect!',
 		'Well done!',
 		'Keep it up!',
 		'Amazing!',
-		'You\'re a genius!',
+		"You're a genius!",
 		'Fantastic!',
 		'Outstanding!',
 		'Super great!',
 		'Good job!',
 		'Excellent!',
 		'Wonderful!',
-		'You\'re great!',
+		"You're great!",
 		'Go for it!',
 		'Brilliant!',
 		'Impressive!',
@@ -325,7 +325,8 @@ export const generateAnimations = (
 	const animations: ReactElement[] = []
 	const operationType = getOperationCategory(operation)
 	const emojiSet = emojis[operationType]
-	const praiseSet = language === 'en' ? praisesEn[operationType] : praises[operationType]
+	const praiseSet =
+		language === 'en' ? praisesEn[operationType] : praises[operationType]
 	const colors = colorSchemes[operationType]
 
 	// 生成100个动画
@@ -348,7 +349,8 @@ export const getPraiseText = (
 	language: 'zh' | 'en' = 'zh'
 ): string => {
 	const operationType = getOperationCategory(operation)
-	const praiseSet = language === 'en' ? praisesEn[operationType] : praises[operationType]
+	const praiseSet =
+		language === 'en' ? praisesEn[operationType] : praises[operationType]
 	return praiseSet[index % praiseSet.length]
 }
 

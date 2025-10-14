@@ -27,7 +27,7 @@ const loadSettings = (): SettingsState => {
 		const stored = localStorage.getItem('math-playground-settings')
 		if (stored) {
 			const settings = JSON.parse(stored) as any
-			
+
 			// 处理 wordProblemMode 的向后兼容性
 			let wordProblemModeValue: SettingsState['wordProblemMode']
 			if (typeof settings.wordProblemMode === 'boolean') {
@@ -39,7 +39,10 @@ const loadSettings = (): SettingsState => {
 					'×': oldValue,
 					'÷': oldValue,
 				}
-			} else if (settings.wordProblemMode && typeof settings.wordProblemMode === 'object') {
+			} else if (
+				settings.wordProblemMode &&
+				typeof settings.wordProblemMode === 'object'
+			) {
 				// 新版本是对象，确保所有键都存在
 				wordProblemModeValue = {
 					'+': settings.wordProblemMode['+'] || false,
@@ -56,7 +59,7 @@ const loadSettings = (): SettingsState => {
 					'÷': false,
 				}
 			}
-			
+
 			return {
 				language: settings.language || 'zh',
 				minNumber: settings.minNumber || 1,
