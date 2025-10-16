@@ -4,8 +4,6 @@ import { OperationType } from '../App'
 
 export interface SettingsState {
 	language: Language
-	minNumber: number
-	maxNumber: number
 	soundEnabled: boolean
 	dailyGoal: number
 	wordProblemMode: {
@@ -14,11 +12,23 @@ export interface SettingsState {
 		'×': boolean
 		'÷': boolean
 	}
+	operationLimits: {
+		'+': { min: number; max: number }
+		'-': { min: number; max: number }
+		'×': { min: number; max: number }
+		'÷': { min: number; max: number }
+	}
 }
 
 export interface WordProblemModePayload {
 	operation: OperationType
 	enabled: boolean
+}
+
+export interface OperationLimitsPayload {
+	operation: OperationType
+	min: number
+	max: number
 }
 
 // 从 localStorage 加载设置
@@ -62,12 +72,16 @@ const loadSettings = (): SettingsState => {
 
 			return {
 				language: settings.language || 'zh',
-				minNumber: settings.minNumber || 1,
-				maxNumber: settings.maxNumber || 20,
 				soundEnabled:
 					settings.soundEnabled !== undefined ? settings.soundEnabled : true,
 				dailyGoal: settings.dailyGoal || 20,
 				wordProblemMode: wordProblemModeValue,
+				operationLimits: settings.operationLimits || {
+					'+': { min: 1, max: 100 },
+					'-': { min: 1, max: 100 },
+					'×': { min: 1, max: 100 },
+					'÷': { min: 1, max: 100 },
+				},
 			}
 		}
 	} catch (error) {
@@ -75,8 +89,6 @@ const loadSettings = (): SettingsState => {
 	}
 	return {
 		language: 'zh',
-		minNumber: 1,
-		maxNumber: 20,
 		soundEnabled: true,
 		dailyGoal: 20,
 		wordProblemMode: {
@@ -84,6 +96,12 @@ const loadSettings = (): SettingsState => {
 			'-': false,
 			'×': false,
 			'÷': false,
+		},
+		operationLimits: {
+			'+': { min: 1, max: 100 },
+			'-': { min: 1, max: 100 },
+			'×': { min: 1, max: 100 },
+			'÷': { min: 1, max: 100 },
 		},
 	}
 }
@@ -107,14 +125,6 @@ const settingsSlice = createSlice({
 			state.language = action.payload
 			saveSettings(state)
 		},
-		setMinNumber: (state, action: PayloadAction<number>) => {
-			state.minNumber = action.payload
-			saveSettings(state)
-		},
-		setMaxNumber: (state, action: PayloadAction<number>) => {
-			state.maxNumber = action.payload
-			saveSettings(state)
-		},
 		setSoundEnabled: (state, action: PayloadAction<boolean>) => {
 			state.soundEnabled = action.payload
 			saveSettings(state)
@@ -130,15 +140,24 @@ const settingsSlice = createSlice({
 			state.wordProblemMode[action.payload.operation] = action.payload.enabled
 			saveSettings(state)
 		},
+		setOperationLimits: (
+			state,
+			action: PayloadAction<OperationLimitsPayload>
+		) => {
+			state.operationLimits[action.payload.operation] = {
+				min: action.payload.min,
+				max: action.payload.max,
+			}
+			saveSettings(state)
+		},
 	},
 })
 
 export const {
 	setLanguage,
-	setMinNumber,
-	setMaxNumber,
 	setSoundEnabled,
 	setDailyGoal,
 	setWordProblemMode,
+	setOperationLimits,
 } = settingsSlice.actions
 export default settingsSlice.reducer

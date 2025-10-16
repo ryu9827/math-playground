@@ -3,9 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store/store'
 import {
 	setLanguage,
-	setMinNumber,
-	setMaxNumber,
 	setSoundEnabled,
+	setOperationLimits,
 } from '../store/settingsSlice'
 import { translations } from '../utils/i18n'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -16,38 +15,57 @@ import '../styles/SettingsModal.scss'
 interface SettingsModalProps {
 	isOpen: boolean
 	onClose: () => void
-	onSettingsSaved?: () => void
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
 	isOpen,
 	onClose,
-	onSettingsSaved,
 }) => {
 	const dispatch = useDispatch()
-	const { language, minNumber, maxNumber, soundEnabled } = useSelector(
+	const { language, soundEnabled, operationLimits } = useSelector(
 		(state: RootState) => state.settings
 	)
 	const t = translations[language]
 
-	const [localMin, setLocalMin] = React.useState(minNumber)
-	const [localMax, setLocalMax] = React.useState(maxNumber)
 	const [localSound, setLocalSound] = React.useState(soundEnabled)
+	const [additionMin, setAdditionMin] = React.useState(operationLimits['+'].min)
+	const [additionMax, setAdditionMax] = React.useState(operationLimits['+'].max)
+	const [additionError, setAdditionError] = React.useState('')
+
+	// 验证加法的上下限
+	const validateAdditionLimits = (min: number, max: number): boolean => {
+		if (min >= max) {
+			setAdditionError(t.minMaxError)
+			return false
+		}
+		setAdditionError('')
+		return true
+	}
+
+	const handleAdditionMinChange = (value: number) => {
+		setAdditionMin(value)
+		validateAdditionLimits(value, additionMax)
+	}
+
+	const handleAdditionMaxChange = (value: number) => {
+		setAdditionMax(value)
+		validateAdditionLimits(additionMin, value)
+	}
 
 	const handleSave = () => {
-		// 确保下限不大于上限
-		const finalMin = Math.max(1, Math.min(localMin, localMax))
-		const finalMax = Math.max(finalMin, localMax)
-
-		dispatch(setMinNumber(finalMin))
-		dispatch(setMaxNumber(finalMax))
-		dispatch(setSoundEnabled(localSound))
-
-		// 通知外部设置已保存，需要刷新题目
-		if (onSettingsSaved) {
-			onSettingsSaved()
+		// 验证加法上下限
+		if (!validateAdditionLimits(additionMin, additionMax)) {
+			return // 如果验证失败，不保存
 		}
 
+		dispatch(setSoundEnabled(localSound))
+		dispatch(
+			setOperationLimits({
+				operation: '+',
+				min: additionMin,
+				max: additionMax,
+			})
+		)
 		onClose() // 保存后自动关闭
 	}
 
@@ -104,33 +122,42 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 							</div>
 
 							<div className='setting-section'>
-								<h3>{t.rangeSettings}</h3>
-								<p className='setting-hint'>{t.maxNumberHint}</p>
-								<div className='range-inputs'>
-									<div className='input-group'>
-										<label>{t.minNumber}</label>
-										<input
-											type='number'
-											value={localMin}
-											onChange={(e) =>
-												setLocalMin(parseInt(e.target.value) || 1)
-											}
-											min='1'
-											max='100'
-										/>
+								<h3>{t.operationLimits}</h3>
+
+								{/* 加法限制 */}
+								<div className='operation-limit-group'>
+									<h4>➕ {t.addition}</h4>
+									<div className='limit-inputs'>
+										<div className='input-group'>
+											<label>{t.minNumber}</label>
+											<input
+												type='number'
+												value={additionMin}
+												onChange={(e) =>
+													handleAdditionMinChange(parseInt(e.target.value) || 1)
+												}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>{t.additionMinHint}</span>
+										</div>
+										<div className='input-group'>
+											<label>{t.maxNumber}</label>
+											<input
+												type='number'
+												value={additionMax}
+												onChange={(e) =>
+													handleAdditionMaxChange(parseInt(e.target.value) || 1)
+												}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>{t.additionMaxHint}</span>
+										</div>
 									</div>
-									<div className='input-group'>
-										<label>{t.maxNumber}</label>
-										<input
-											type='number'
-											value={localMax}
-											onChange={(e) =>
-												setLocalMax(parseInt(e.target.value) || 1)
-											}
-											min='1'
-											max='100'
-										/>
-									</div>
+									{additionError && (
+										<div className='error-message'>{additionError}</div>
+									)}
 								</div>
 							</div>
 

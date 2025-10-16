@@ -121,18 +121,24 @@ const generateNewQuestionInternal = (
 	do {
 		switch (operationType) {
 			case '+':
-				// 加法：确保 num1 + num2 在 [min, max] 范围内
-				const addRange = max - effectiveMin + 1
-				num1 =
-					Math.floor(
-						Math.random() * Math.min(addRange, max - effectiveMin + 1)
-					) + effectiveMin
-				const maxNum2ForAdd = max - num1
-				const minNum2ForAdd = Math.max(effectiveMin - num1, avoidZero ? 1 : 0)
-				num2 =
-					Math.floor(Math.random() * (maxNum2ForAdd - minNum2ForAdd + 1)) +
-					minNum2ForAdd
-				answer = num1 + num2
+				// 加法：num1 >= min, num2 >= min, num1 + num2 <= max
+				// 首先确保 max >= 2 * min，否则无法生成有效题目
+				if (max < 2 * min) {
+					// 如果上限小于2倍下限，无法生成符合条件的题目
+					// 回退到使用更宽松的条件
+					num1 = min
+					num2 = min
+					answer = num1 + num2
+				} else {
+					// num1 范围：[min, max - min]（确保至少留给 num2 一个 min 的空间）
+					const maxNum1 = max - min
+					num1 = Math.floor(Math.random() * (maxNum1 - min + 1)) + min
+
+					// num2 范围：[min, max - num1]（确保 num2 >= min 且结果 <= max）
+					const maxNum2ForAdd = max - num1
+					num2 = Math.floor(Math.random() * (maxNum2ForAdd - min + 1)) + min
+					answer = num1 + num2
+				}
 				break
 
 			case '-':
@@ -172,8 +178,13 @@ const generateNewQuestionInternal = (
 			case '÷':
 				// 除法：确保商在 [min, max] 范围内，被除数也在范围内
 				// 除数永远不能为0（数学规则）
-				const maxDivisor = Math.min(max, 12)
-				num2 = Math.floor(Math.random() * maxDivisor) + 1 // 除数永远至少为1
+				// 优化：除数范围设为 2-12，减少1的出现
+				const minDivisor = avoidZero ? 2 : 1
+				const maxDivisor = Math.min(12, Math.floor(max / 2))
+				num2 =
+					Math.floor(Math.random() * (maxDivisor - minDivisor + 1)) + minDivisor
+
+				// 商（答案）的范围
 				const quotientMax = Math.min(Math.floor(max / num2), 12)
 				const quotientMin = Math.max(Math.ceil(effectiveMin / num2), 1)
 				answer =

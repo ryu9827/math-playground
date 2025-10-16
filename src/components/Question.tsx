@@ -36,12 +36,15 @@ export const Question: React.FC<QuestionProps> = ({
 	const dispatch = useDispatch()
 	const { currentQuestion, showResult, isCorrect, wrongQuestions } =
 		useSelector((state: RootState) => state.questions)
-	const { language, minNumber, maxNumber, dailyGoal, wordProblemMode } =
-		useSelector((state: RootState) => state.settings)
+	const { language, dailyGoal, wordProblemMode, operationLimits } = useSelector(
+		(state: RootState) => state.settings
+	)
 	const t = translations[language]
 
 	// 获取当前运算类型的应用题模式状态
 	const currentWordProblemMode = wordProblemMode[operation]
+	// 获取当前运算类型的上下限
+	const currentLimits = operationLimits[operation]
 
 	const [options, setOptions] = useState<number[]>([])
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -77,8 +80,8 @@ export const Question: React.FC<QuestionProps> = ({
 		if (prevOperationRef.current !== operation) {
 			prevOperationRef.current = operation
 			const newQuestion = generateNewQuestion(
-				minNumber,
-				maxNumber,
+				currentLimits.min,
+				currentLimits.max,
 				operation,
 				wrongQuestionsRef.current,
 				currentQuestion || undefined,
@@ -92,19 +95,21 @@ export const Question: React.FC<QuestionProps> = ({
 	}, [
 		operation,
 		dispatch,
-		minNumber,
-		maxNumber,
 		currentQuestion,
 		currentWordProblemMode,
+		currentLimits,
 	])
 
 	useEffect(() => {
 		// 当题目改变时，生成新选项
 		if (currentQuestion) {
-			const newOptions = generateOptions(currentQuestion.answer, maxNumber)
+			const newOptions = generateOptions(
+				currentQuestion.answer,
+				currentLimits.max
+			)
 			setOptions(newOptions)
 		}
-	}, [currentQuestion, maxNumber])
+	}, [currentQuestion, currentLimits])
 
 	useEffect(() => {
 		console.log(
@@ -124,8 +129,8 @@ export const Question: React.FC<QuestionProps> = ({
 		// 循环生成新题目，直到找到不含0的题目
 		do {
 			newQuestion = generateNewQuestion(
-				minNumber,
-				maxNumber,
+				currentLimits.min,
+				currentLimits.max,
 				operation,
 				wrongQuestionsRef.current,
 				currentQuestion || undefined,
@@ -138,7 +143,7 @@ export const Question: React.FC<QuestionProps> = ({
 		)
 
 		return newQuestion
-	}, [minNumber, maxNumber, operation, currentQuestion])
+	}, [operation, currentQuestion, currentLimits])
 
 	const handleOptionClick = (option: number) => {
 		if (!showResult) {
@@ -197,8 +202,8 @@ export const Question: React.FC<QuestionProps> = ({
 		console.log('handleNext 被调用')
 		dispatch(resetResult())
 		const newQuestion = generateNewQuestion(
-			minNumber,
-			maxNumber,
+			currentLimits.min,
+			currentLimits.max,
 			operation,
 			wrongQuestionsRef.current,
 			currentQuestion || undefined,
@@ -209,11 +214,10 @@ export const Question: React.FC<QuestionProps> = ({
 		setShowCelebration(false)
 	}, [
 		dispatch,
-		minNumber,
-		maxNumber,
 		operation,
 		currentQuestion,
 		currentWordProblemMode,
+		currentLimits,
 	])
 
 	const handleCelebrationComplete = useCallback(() => {

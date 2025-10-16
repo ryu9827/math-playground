@@ -160,6 +160,44 @@
 				box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
 			}
 		}
+
+		.input-hint {
+			display: block;
+			color: $text-dim;
+			font-size: 0.8rem;
+			margin-top: $spacing-xs;
+			font-style: italic;
+		}
+	}
+
+	.operation-limit-group {
+		background: rgba(99, 102, 241, 0.1);
+		padding: $spacing-md;
+		border-radius: $radius-md;
+		margin-bottom: $spacing-md;
+
+		h4 {
+			color: $text-light;
+			font-size: 1.2rem;
+			margin: 0 0 $spacing-md 0;
+		}
+
+		.limit-inputs {
+			display: flex;
+			gap: $spacing-lg;
+			margin-bottom: $spacing-sm;
+		}
+
+		.error-message {
+			color: $error-color;
+			font-size: 0.9rem;
+			font-weight: 600;
+			padding: $spacing-sm;
+			background: rgba(239, 68, 68, 0.1);
+			border-radius: $radius-sm;
+			border-left: 4px solid $error-color;
+			margin-top: $spacing-sm;
+		}
 	}
 
 	.sound-toggle {
