@@ -49,8 +49,10 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 
 	React.useEffect(() => {
 		if (show) {
-			// 每次显示时随机选择一个新动画（0-99）
-			const newAnimationType = Math.floor(Math.random() * 100)
+			// 每次显示时随机选择一个新动画
+			// 加法有200种动画（0-199），其他运算有100种（0-99）
+			const maxAnimations = operation === '+' ? 200 : 100
+			const newAnimationType = Math.floor(Math.random() * maxAnimations)
 			setAnimationType(newAnimationType)
 			console.log('CelebrationAnimation - 显示动画, 类型:', newAnimationType)
 
@@ -166,7 +168,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 				// 语音播放是异步的，不应该被组件卸载打断
 			}
 		}
-	}, [show, soundEnabled, language])
+	}, [show, soundEnabled, language, operation])
 
 	return (
 		<AnimatePresence>
