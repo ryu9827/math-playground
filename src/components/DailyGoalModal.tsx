@@ -21,10 +21,18 @@ export const DailyGoalModal: React.FC<DailyGoalModalProps> = ({
 	)
 	const t = translations[language]
 
-	const [localGoal, setLocalGoal] = useState(dailyGoal)
+	const [localGoal, setLocalGoal] = useState<number | string>(dailyGoal)
+
+	// 当弹窗打开时，同步 Redux 状态到本地状态
+	React.useEffect(() => {
+		if (isOpen) {
+			setLocalGoal(dailyGoal)
+		}
+	}, [isOpen, dailyGoal])
 
 	const handleSave = () => {
-		const validGoal = Math.max(1, Math.min(localGoal, 200))
+		const goalNum = typeof localGoal === 'string' ? parseInt(localGoal) || 1 : localGoal
+		const validGoal = Math.max(1, Math.min(goalNum, 200))
 		dispatch(setDailyGoal(validGoal))
 		onClose()
 	}
@@ -71,7 +79,13 @@ export const DailyGoalModal: React.FC<DailyGoalModalProps> = ({
 								<input
 									type='number'
 									value={localGoal}
-									onChange={(e) => setLocalGoal(parseInt(e.target.value) || 1)}
+									onChange={(e) => setLocalGoal(e.target.value)}
+									onBlur={() => {
+										// 失去焦点时，如果为空则设为1
+										if (localGoal === '' || localGoal === 0) {
+											setLocalGoal(1)
+										}
+									}}
 									min='1'
 									max='200'
 									className='goal-input'

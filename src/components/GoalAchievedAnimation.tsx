@@ -101,16 +101,18 @@ export const GoalAchievedAnimation: React.FC<GoalAchievedAnimationProps> = ({
 					<div className='goal-achieved-backdrop' />
 
 					{/* 中心文字 */}
-					<motion.div
-						className='goal-achieved-center'
-						initial={{ scale: 0, rotate: -180 }}
-						animate={{
-							scale: [0, 1.2, 1, 1.1, 1],
-							rotate: [0, 360],
-						}}
-						transition={{ duration: 2, ease: 'easeOut' }}
-					>
-						<div className='goal-trophy'>🏆</div>
+					<div className='goal-achieved-center'>
+						<motion.div
+							className='goal-trophy'
+							initial={{ scale: 0, rotate: -180 }}
+							animate={{
+								scale: [0, 1.2, 1, 1.1, 1],
+								rotate: [0, 360],
+							}}
+							transition={{ duration: 2, ease: 'easeOut' }}
+						>
+							🏆
+						</motion.div>
 						<motion.h1
 							className='goal-title'
 							animate={{
@@ -134,7 +136,7 @@ export const GoalAchievedAnimation: React.FC<GoalAchievedAnimationProps> = ({
 						>
 							⭐ ⭐ ⭐
 						</motion.div>
-					</motion.div>
+					</div>
 
 					{/* 飘动的小动物 */}
 					{randomAnimals.map((item, index) => (

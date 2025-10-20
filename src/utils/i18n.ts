@@ -41,6 +41,10 @@ export const translations = {
 		maxNumber: '上限',
 		additionMinHint: '加法中两个数字都必须大于等于此值',
 		additionMaxHint: '加法结果不得大于此值',
+		subtractionMinuendMax: '被减数上限',
+		subtractionSubtrahendMin: '减数下限',
+		subtractionMinuendMaxHint: '被减数不得大于此值',
+		subtractionSubtrahendMinHint: '减数必须大于等于此值',
 		minMaxError: '下限必须小于上限',
 	},
 	en: {
@@ -83,6 +87,11 @@ export const translations = {
 		maxNumber: 'Max',
 		additionMinHint: 'Both numbers must be greater than or equal to this value',
 		additionMaxHint: 'Sum must not exceed this value',
+		subtractionMinuendMax: 'Minuend Max',
+		subtractionSubtrahendMin: 'Subtrahend Min',
+		subtractionMinuendMaxHint: 'Minuend must not exceed this value',
+		subtractionSubtrahendMinHint:
+			'Subtrahend must be greater than or equal to this value',
 		minMaxError: 'Min must be less than Max',
 	},
 }

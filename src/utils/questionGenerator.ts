@@ -142,15 +142,20 @@ const generateNewQuestionInternal = (
 				break
 
 			case '-':
-				// 减法：确保结果在 [min, max] 范围内
-				answer =
-					Math.floor(Math.random() * (max - effectiveMin + 1)) + effectiveMin
-				num2 =
-					Math.floor(
-						Math.random() *
-							Math.min(answer - effectiveMin + 1, max - effectiveMin + 1)
-					) + effectiveMin
-				num1 = answer + num2
+				// 减法：min=减数下限，max=被减数上限
+				// num1（被减数）<= max，num2（减数）>= min，且 num1 > num2
+				// 先确保 min < max，否则使用默认值
+				if (effectiveMin >= max) {
+					// 如果减数下限 >= 被减数上限，无法生成有效题目，使用默认逻辑
+					num1 = Math.floor(Math.random() * (max - 1)) + 2 // 被减数至少为2
+					num2 = Math.floor(Math.random() * (num1 - 1)) + 1 // 减数至少为1，且小于被减数
+				} else {
+					// 生成被减数：在 [min+1, max] 范围内（确保至少比减数大1）
+					num1 = Math.floor(Math.random() * (max - effectiveMin)) + effectiveMin + 1
+					// 生成减数：在 [min, num1-1] 范围内
+					num2 = Math.floor(Math.random() * (num1 - effectiveMin)) + effectiveMin
+				}
+				answer = num1 - num2
 				break
 
 			case '×':

@@ -43,8 +43,11 @@ export const Question: React.FC<QuestionProps> = ({
 
 	// 获取当前运算类型的应用题模式状态
 	const currentWordProblemMode = wordProblemMode[operation]
-	// 获取当前运算类型的上下限
-	const currentLimits = operationLimits[operation]
+	// 获取当前运算类型的上下限，使用 useMemo 避免无限循环
+	const currentLimits = useMemo(
+		() => operationLimits[operation],
+		[operationLimits, operation]
+	)
 
 	const [options, setOptions] = useState<number[]>([])
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)

@@ -28,13 +28,46 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 	const t = translations[language]
 
 	const [localSound, setLocalSound] = React.useState(soundEnabled)
-	const [additionMin, setAdditionMin] = React.useState(operationLimits['+'].min)
-	const [additionMax, setAdditionMax] = React.useState(operationLimits['+'].max)
+
+	// 加法状态
+	const [additionMin, setAdditionMin] = React.useState<number | string>(
+		operationLimits['+'].min
+	)
+	const [additionMax, setAdditionMax] = React.useState<number | string>(
+		operationLimits['+'].max
+	)
 	const [additionError, setAdditionError] = React.useState('')
 
+	// 减法状态
+	const [subtractionMinuendMax, setSubtractionMinuendMax] = React.useState<
+		number | string
+	>(operationLimits['-'].max)
+	const [subtractionSubtrahendMin, setSubtractionSubtrahendMin] =
+		React.useState<number | string>(operationLimits['-'].min)
+	const [subtractionError, setSubtractionError] = React.useState('')
+
+	// 当弹窗打开或 Redux 状态变化时，同步到本地状态
+	React.useEffect(() => {
+		if (isOpen) {
+			setLocalSound(soundEnabled)
+			setAdditionMin(operationLimits['+'].min)
+			setAdditionMax(operationLimits['+'].max)
+			setSubtractionMinuendMax(operationLimits['-'].max)
+			setSubtractionSubtrahendMin(operationLimits['-'].min)
+			setAdditionError('')
+			setSubtractionError('')
+		}
+	}, [isOpen, soundEnabled, operationLimits])
+
 	// 验证加法的上下限
-	const validateAdditionLimits = (min: number, max: number): boolean => {
-		if (min >= max) {
+	const validateAdditionLimits = (
+		min: number | string,
+		max: number | string
+	): boolean => {
+		const minNum = typeof min === 'string' ? parseInt(min) || 1 : min
+		const maxNum = typeof max === 'string' ? parseInt(max) || 1 : max
+
+		if (minNum >= maxNum) {
 			setAdditionError(t.minMaxError)
 			return false
 		}
@@ -42,30 +75,130 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 		return true
 	}
 
-	const handleAdditionMinChange = (value: number) => {
+	// onChange 时只更新值，不验证
+	const handleAdditionMinChange = (value: string) => {
+		setAdditionMin(value)
+	}
+
+	const handleAdditionMaxChange = (value: string) => {
+		setAdditionMax(value)
+	}
+
+	// onBlur 时才验证并格式化
+	const handleAdditionMinBlur = () => {
+		const value =
+			typeof additionMin === 'string' ? parseInt(additionMin) || 1 : additionMin
 		setAdditionMin(value)
 		validateAdditionLimits(value, additionMax)
 	}
 
-	const handleAdditionMaxChange = (value: number) => {
+	const handleAdditionMaxBlur = () => {
+		const value =
+			typeof additionMax === 'string' ? parseInt(additionMax) || 1 : additionMax
 		setAdditionMax(value)
 		validateAdditionLimits(additionMin, value)
 	}
 
+	// 减法验证：减数下限必须小于被减数上限
+	const validateSubtractionLimits = (
+		subtrahendMin: number | string,
+		minuendMax: number | string
+	): boolean => {
+		const subtrahendMinNum =
+			typeof subtrahendMin === 'string'
+				? parseInt(subtrahendMin) || 1
+				: subtrahendMin
+		const minuendMaxNum =
+			typeof minuendMax === 'string' ? parseInt(minuendMax) || 1 : minuendMax
+
+		if (subtrahendMinNum >= minuendMaxNum) {
+			setSubtractionError(t.minMaxError)
+			return false
+		}
+		setSubtractionError('')
+		return true
+	}
+
+	// onChange 时只更新值，不验证
+	const handleSubtractionMinuendMaxChange = (value: string) => {
+		setSubtractionMinuendMax(value)
+	}
+
+	const handleSubtractionSubtrahendMinChange = (value: string) => {
+		setSubtractionSubtrahendMin(value)
+	}
+
+	// onBlur 时才验证并格式化
+	const handleSubtractionMinuendMaxBlur = () => {
+		const value =
+			typeof subtractionMinuendMax === 'string'
+				? parseInt(subtractionMinuendMax) || 1
+				: subtractionMinuendMax
+		setSubtractionMinuendMax(value)
+		validateSubtractionLimits(subtractionSubtrahendMin, value)
+	}
+
+	const handleSubtractionSubtrahendMinBlur = () => {
+		const value =
+			typeof subtractionSubtrahendMin === 'string'
+				? parseInt(subtractionSubtrahendMin) || 1
+				: subtractionSubtrahendMin
+		setSubtractionSubtrahendMin(value)
+		validateSubtractionLimits(value, subtractionMinuendMax)
+	}
+
 	const handleSave = () => {
+		// 转换为数字 - 加法
+		const additionMinNum =
+			typeof additionMin === 'string' ? parseInt(additionMin) || 1 : additionMin
+		const additionMaxNum =
+			typeof additionMax === 'string' ? parseInt(additionMax) || 1 : additionMax
+
+		// 转换为数字 - 减法
+		const subtractionSubtrahendMinNum =
+			typeof subtractionSubtrahendMin === 'string'
+				? parseInt(subtractionSubtrahendMin) || 1
+				: subtractionSubtrahendMin
+		const subtractionMinuendMaxNum =
+			typeof subtractionMinuendMax === 'string'
+				? parseInt(subtractionMinuendMax) || 1
+				: subtractionMinuendMax
+
 		// 验证加法上下限
-		if (!validateAdditionLimits(additionMin, additionMax)) {
+		if (!validateAdditionLimits(additionMinNum, additionMaxNum)) {
+			return // 如果验证失败，不保存
+		}
+
+		// 验证减法限制
+		if (
+			!validateSubtractionLimits(
+				subtractionSubtrahendMinNum,
+				subtractionMinuendMaxNum
+			)
+		) {
 			return // 如果验证失败，不保存
 		}
 
 		dispatch(setSoundEnabled(localSound))
+
+		// 保存加法设置
 		dispatch(
 			setOperationLimits({
 				operation: '+',
-				min: additionMin,
-				max: additionMax,
+				min: additionMinNum,
+				max: additionMaxNum,
 			})
 		)
+
+		// 保存减法设置（min是减数下限，max是被减数上限）
+		dispatch(
+			setOperationLimits({
+				operation: '-',
+				min: subtractionSubtrahendMinNum,
+				max: subtractionMinuendMaxNum,
+			})
+		)
+
 		onClose() // 保存后自动关闭
 	}
 
@@ -134,8 +267,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 												type='number'
 												value={additionMin}
 												onChange={(e) =>
-													handleAdditionMinChange(parseInt(e.target.value) || 1)
+													handleAdditionMinChange(e.target.value)
 												}
+												onBlur={handleAdditionMinBlur}
 												min='1'
 												max='1000'
 											/>
@@ -147,8 +281,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 												type='number'
 												value={additionMax}
 												onChange={(e) =>
-													handleAdditionMaxChange(parseInt(e.target.value) || 1)
+													handleAdditionMaxChange(e.target.value)
 												}
+												onBlur={handleAdditionMaxBlur}
 												min='1'
 												max='1000'
 											/>
@@ -157,6 +292,48 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 									</div>
 									{additionError && (
 										<div className='error-message'>{additionError}</div>
+									)}
+								</div>
+
+								{/* 减法限制 */}
+								<div className='operation-limit-group'>
+									<h4>➖ {t.subtraction}</h4>
+									<div className='limit-inputs'>
+										<div className='input-group'>
+											<label>{t.subtractionMinuendMax}</label>
+											<input
+												type='number'
+												value={subtractionMinuendMax}
+												onChange={(e) =>
+													handleSubtractionMinuendMaxChange(e.target.value)
+												}
+												onBlur={handleSubtractionMinuendMaxBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.subtractionMinuendMaxHint}
+											</span>
+										</div>
+										<div className='input-group'>
+											<label>{t.subtractionSubtrahendMin}</label>
+											<input
+												type='number'
+												value={subtractionSubtrahendMin}
+												onChange={(e) =>
+													handleSubtractionSubtrahendMinChange(e.target.value)
+												}
+												onBlur={handleSubtractionSubtrahendMinBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.subtractionSubtrahendMinHint}
+											</span>
+										</div>
+									</div>
+									{subtractionError && (
+										<div className='error-message'>{subtractionError}</div>
 									)}
 								</div>
 							</div>

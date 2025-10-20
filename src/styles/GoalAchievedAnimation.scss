@@ -25,7 +25,7 @@
 	backdrop-filter: blur(8px);
 }
 
-.goal-achieved-center {
+.goal-achieved-overlay .goal-achieved-center {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -35,17 +35,21 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	gap: $spacing-lg;
-	width: 100%;
-	max-width: 800px;
+	width: auto;
+	max-width: 90vw;
 	padding: $spacing-xl;
+	pointer-events: none;
 
 	.goal-trophy {
 		font-size: 8rem;
+		line-height: 1;
 		filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
 		animation: trophy-rotate 3s ease-in-out infinite;
 		position: relative;
 		z-index: 100001;
+		margin: 0;
 	}
 
 	.goal-title {
@@ -58,6 +62,8 @@
 		letter-spacing: 0.1em;
 		position: relative;
 		z-index: 100001;
+		line-height: 1.2;
+		white-space: nowrap;
 	}
 
 	.goal-subtitle {
@@ -67,13 +73,16 @@
 		margin: 0;
 		position: relative;
 		z-index: 100001;
+		line-height: 1.4;
 	}
 
 	.goal-stars {
 		font-size: 3rem;
+		line-height: 1;
 		filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
 		position: relative;
 		z-index: 100001;
+		margin: 0;
 	}
 }
 
