@@ -43,11 +43,8 @@ export const Question: React.FC<QuestionProps> = ({
 
 	// 获取当前运算类型的应用题模式状态
 	const currentWordProblemMode = wordProblemMode[operation]
-	// 获取当前运算类型的上下限，使用 useMemo 避免无限循环
-	const currentLimits = useMemo(
-		() => operationLimits[operation],
-		[operationLimits, operation]
-	)
+	// 获取当前运算类型的上下限
+	const currentLimits = operationLimits[operation]
 
 	const [options, setOptions] = useState<number[]>([])
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -56,63 +53,71 @@ export const Question: React.FC<QuestionProps> = ({
 	// 使用 ref 跟踪上一次的 operation (初始化为 null 表示首次加载)
 	const prevOperationRef = useRef<OperationType | null>(null)
 
-	// 使用 ref 保存最新的 wrongQuestions，避免作为依赖触发 useEffect
+	// 使用 ref 保存最新的值，避免作为依赖触发 useEffect
 	const wrongQuestionsRef = useRef(wrongQuestions)
+	const currentQuestionRef = useRef(currentQuestion)
+	const currentLimitsRef = useRef(currentLimits)
+	const currentWordProblemModeRef = useRef(currentWordProblemMode)
+
 	useEffect(() => {
 		wrongQuestionsRef.current = wrongQuestions
 	}, [wrongQuestions])
 
 	useEffect(() => {
-		// 如果 operation 改变了，但 currentQuestion 已经匹配这个 operation
-		// 说明是从错题本点击"练习"进来的，不需要生成新题目
-		if (
-			currentQuestion &&
-			currentQuestion.operation === operation &&
-			prevOperationRef.current !== null &&
-			prevOperationRef.current !== operation
-		) {
-			prevOperationRef.current = operation
-			// 不生成新题目，但需要重置状态
-			setSelectedAnswer(null)
-			setShowCelebration(false)
-			// 不生成新题目，保持 currentQuestion
-			return
-		}
+		currentQuestionRef.current = currentQuestion
+	}, [currentQuestion])
 
-		// 正常情况：首次加载或当运算类型改变时，生成新问题
+	useEffect(() => {
+		currentLimitsRef.current = currentLimits
+	}, [currentLimits])
+
+	useEffect(() => {
+		currentWordProblemModeRef.current = currentWordProblemMode
+	}, [currentWordProblemMode])
+
+	useEffect(() => {
+		// 当运算类型改变时，生成新问题
 		if (prevOperationRef.current !== operation) {
 			prevOperationRef.current = operation
-			const newQuestion = generateNewQuestion(
-				currentLimits.min,
-				currentLimits.max,
-				operation,
-				wrongQuestionsRef.current,
-				currentQuestion || undefined,
-				currentWordProblemMode
-			)
-			dispatch(setCurrentQuestion(newQuestion))
-			dispatch(resetResult())
-			setSelectedAnswer(null)
-			setShowCelebration(false)
+			
+			// 检查是否从错题本来的（已经有匹配的题目）
+			const hasMatchingQuestion = 
+				currentQuestionRef.current && 
+				currentQuestionRef.current.operation === operation
+			
+			if (hasMatchingQuestion) {
+				// 从错题本来的，保持题目，只重置状态
+				setSelectedAnswer(null)
+				setShowCelebration(false)
+				// 不需要生成新题目，也不需要 dispatch，因为 WrongQuestions 已经设置了
+			} else {
+				// 正常切换，生成新题目
+				const newQuestion = generateNewQuestion(
+					currentLimitsRef.current.min,
+					currentLimitsRef.current.max,
+					operation,
+					wrongQuestionsRef.current,
+					currentQuestionRef.current || undefined,
+					currentWordProblemModeRef.current
+				)
+				dispatch(setCurrentQuestion(newQuestion))
+				dispatch(resetResult())
+				setSelectedAnswer(null)
+				setShowCelebration(false)
+			}
 		}
-	}, [
-		operation,
-		dispatch,
-		currentQuestion,
-		currentWordProblemMode,
-		currentLimits,
-	])
+	}, [operation, dispatch]) // 只依赖 operation 和 dispatch
 
 	useEffect(() => {
 		// 当题目改变时，生成新选项
 		if (currentQuestion) {
 			const newOptions = generateOptions(
 				currentQuestion.answer,
-				currentLimits.max
+				currentLimitsRef.current.max
 			)
 			setOptions(newOptions)
 		}
-	}, [currentQuestion, currentLimits])
+	}, [currentQuestion]) // 只依赖 currentQuestion
 
 	useEffect(() => {
 		console.log(
@@ -132,11 +137,11 @@ export const Question: React.FC<QuestionProps> = ({
 		// 循环生成新题目，直到找到不含0的题目
 		do {
 			newQuestion = generateNewQuestion(
-				currentLimits.min,
-				currentLimits.max,
+				currentLimitsRef.current.min,
+				currentLimitsRef.current.max,
 				operation,
 				wrongQuestionsRef.current,
-				currentQuestion || undefined,
+				currentQuestionRef.current || undefined,
 				true // avoidZero = true
 			)
 			attempts++
@@ -146,7 +151,7 @@ export const Question: React.FC<QuestionProps> = ({
 		)
 
 		return newQuestion
-	}, [operation, currentQuestion, currentLimits])
+	}, [operation]) // 只依赖 operation
 
 	const handleOptionClick = (option: number) => {
 		if (!showResult) {
@@ -205,23 +210,17 @@ export const Question: React.FC<QuestionProps> = ({
 		console.log('handleNext 被调用')
 		dispatch(resetResult())
 		const newQuestion = generateNewQuestion(
-			currentLimits.min,
-			currentLimits.max,
+			currentLimitsRef.current.min,
+			currentLimitsRef.current.max,
 			operation,
 			wrongQuestionsRef.current,
-			currentQuestion || undefined,
-			currentWordProblemMode
+			currentQuestionRef.current || undefined,
+			currentWordProblemModeRef.current
 		)
 		dispatch(setCurrentQuestion(newQuestion))
 		setSelectedAnswer(null)
 		setShowCelebration(false)
-	}, [
-		dispatch,
-		operation,
-		currentQuestion,
-		currentWordProblemMode,
-		currentLimits,
-	])
+	}, [dispatch, operation]) // 只依赖 dispatch 和 operation
 
 	const handleCelebrationComplete = useCallback(() => {
 		console.log('庆祝动画完成，准备进入下一题')

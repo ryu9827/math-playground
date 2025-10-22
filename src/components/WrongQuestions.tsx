@@ -4,6 +4,7 @@ import { RootState } from '../store/store'
 import {
 	removeWrongQuestion,
 	setCurrentQuestion,
+	resetResult,
 } from '../store/questionsSlice'
 import { translations } from '../utils/i18n'
 import { motion } from 'framer-motion'
@@ -23,7 +24,9 @@ export const WrongQuestions: React.FC<WrongQuestionsProps> = ({
 	const t = translations[language]
 
 	const handlePractice = (question: any) => {
-		// 先设置题目
+		// 先重置结果状态
+		dispatch(resetResult())
+		// 设置题目
 		dispatch(
 			setCurrentQuestion({
 				id: question.id,
@@ -33,8 +36,10 @@ export const WrongQuestions: React.FC<WrongQuestionsProps> = ({
 				answer: question.answer,
 			})
 		)
-		// 然后切换到对应的运算类型标签页
-		onNavigateToQuestion(question.operation)
+		// 使用 setTimeout 确保状态更新完成后再切换页面
+		setTimeout(() => {
+			onNavigateToQuestion(question.operation)
+		}, 0)
 	}
 
 	if (wrongQuestions.length === 0) {

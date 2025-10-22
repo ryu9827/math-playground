@@ -17,8 +17,16 @@ export const generateOptions = (
 	const options = new Set<number>()
 	options.add(correctAnswer)
 
-	// 生成3个错误答案
-	while (options.size < 4) {
+	// 根据正确答案动态确定合理范围
+	// 如果答案超出了 max*2，使用答案本身来确定范围
+	const upperBound = Math.max(max * 2, correctAnswer + 20)
+
+	// 生成3个错误答案，添加防止无限循环的计数器
+	let attempts = 0
+	const maxAttempts = 100
+	
+	while (options.size < 4 && attempts < maxAttempts) {
+		attempts++
 		let wrongAnswer: number
 		const offset = Math.floor(Math.random() * 5) + 1 // 1-5的偏移量
 
@@ -28,14 +36,20 @@ export const generateOptions = (
 			wrongAnswer = correctAnswer - offset
 		}
 
-		// 确保错误答案在合理范围内
+		// 确保错误答案在合理范围内且非负
 		if (
 			wrongAnswer >= 0 &&
-			wrongAnswer <= max * 2 &&
+			wrongAnswer <= upperBound &&
 			wrongAnswer !== correctAnswer
 		) {
 			options.add(wrongAnswer)
 		}
+	}
+
+	// 如果还是没有生成足够的选项（理论上不应该发生），强制添加一些
+	while (options.size < 4) {
+		const offset = options.size
+		options.add(Math.max(0, correctAnswer + offset))
 	}
 
 	// 随机打乱选项顺序
@@ -151,9 +165,11 @@ const generateNewQuestionInternal = (
 					num2 = Math.floor(Math.random() * (num1 - 1)) + 1 // 减数至少为1，且小于被减数
 				} else {
 					// 生成被减数：在 [min+1, max] 范围内（确保至少比减数大1）
-					num1 = Math.floor(Math.random() * (max - effectiveMin)) + effectiveMin + 1
+					num1 =
+						Math.floor(Math.random() * (max - effectiveMin)) + effectiveMin + 1
 					// 生成减数：在 [min, num1-1] 范围内
-					num2 = Math.floor(Math.random() * (num1 - effectiveMin)) + effectiveMin
+					num2 =
+						Math.floor(Math.random() * (num1 - effectiveMin)) + effectiveMin
 				}
 				answer = num1 - num2
 				break

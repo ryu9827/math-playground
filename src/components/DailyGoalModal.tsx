@@ -31,7 +31,8 @@ export const DailyGoalModal: React.FC<DailyGoalModalProps> = ({
 	}, [isOpen, dailyGoal])
 
 	const handleSave = () => {
-		const goalNum = typeof localGoal === 'string' ? parseInt(localGoal) || 1 : localGoal
+		const goalNum =
+			typeof localGoal === 'string' ? parseInt(localGoal) || 1 : localGoal
 		const validGoal = Math.max(1, Math.min(goalNum, 200))
 		dispatch(setDailyGoal(validGoal))
 		onClose()
