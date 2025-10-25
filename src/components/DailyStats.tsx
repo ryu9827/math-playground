@@ -14,6 +14,27 @@ export const DailyStats: React.FC = () => {
 
 	const [count, setCount] = useState(getTodayQuestionsCount())
 	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [currentDate, setCurrentDate] = useState(new Date().toDateString())
+
+	// 检查日期变化，重置计数
+	useEffect(() => {
+		const checkDateChange = () => {
+			const today = new Date().toDateString()
+			if (today !== currentDate) {
+				// 新的一天，更新日期和计数
+				setCurrentDate(today)
+				setCount(getTodayQuestionsCount())
+			}
+		}
+
+		// 每分钟检查一次日期是否改变
+		const interval = setInterval(checkDateChange, 60000)
+
+		// 组件挂载时也检查一次
+		checkDateChange()
+
+		return () => clearInterval(interval)
+	}, [currentDate])
 
 	// 当答题结果显示时，更新计数
 	useEffect(() => {
