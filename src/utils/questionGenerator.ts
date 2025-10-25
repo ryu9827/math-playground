@@ -24,7 +24,7 @@ export const generateOptions = (
 	// 生成3个错误答案，添加防止无限循环的计数器
 	let attempts = 0
 	const maxAttempts = 100
-	
+
 	while (options.size < 4 && attempts < maxAttempts) {
 		attempts++
 		let wrongAnswer: number

@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from './store/store'
 import { Navigation } from './components/Navigation'
 import { Question } from './components/Question'
 import { WrongQuestions } from './components/WrongQuestions'
 import { SettingsModal } from './components/SettingsModal'
 import { DailyStats } from './components/DailyStats'
 import { GoalAchievedAnimation } from './components/GoalAchievedAnimation'
+import { MilestoneReward } from './components/MilestoneReward'
 import './App.scss'
 
 export type OperationType = '+' | '-' | '×' | '÷'
@@ -42,6 +45,7 @@ const saveCurrentTab = (tab: TabType) => {
 }
 
 function App() {
+	const { language } = useSelector((state: RootState) => state.settings)
 	const [currentTab, setCurrentTab] = useState<TabType>(loadCurrentTab())
 	const [currentOperation, setCurrentOperation] = useState<OperationType>(
 		() => {
@@ -56,6 +60,9 @@ function App() {
 	)
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 	const [showGoalAnimation, setShowGoalAnimation] = useState(false)
+	const [showMilestoneReward, setShowMilestoneReward] = useState(false)
+	const [currentMilestone, setCurrentMilestone] = useState(0)
+	const [currentMilestoneCount, setCurrentMilestoneCount] = useState(0)
 
 	const handleTabChange = (tab: TabType) => {
 		setCurrentTab(tab)
@@ -83,6 +90,11 @@ function App() {
 					<Question
 						operation={currentOperation}
 						onGoalAchieved={() => setShowGoalAnimation(true)}
+						onMilestoneAchieved={(milestone, milestoneCount) => {
+							setCurrentMilestone(milestone)
+							setCurrentMilestoneCount(milestoneCount)
+							setShowMilestoneReward(true)
+						}}
 					/>
 				)}
 				{currentTab === 'wrong' && (
@@ -98,6 +110,14 @@ function App() {
 			<GoalAchievedAnimation
 				show={showGoalAnimation}
 				onComplete={() => setShowGoalAnimation(false)}
+			/>
+
+			<MilestoneReward
+				isOpen={showMilestoneReward}
+				onClose={() => setShowMilestoneReward(false)}
+				milestone={currentMilestone}
+				milestoneCount={currentMilestoneCount}
+				language={language}
 			/>
 		</div>
 	)

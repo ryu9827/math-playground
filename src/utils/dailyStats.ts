@@ -5,6 +5,7 @@ interface DailyStats {
 	date: string // YYYY-MM-DD format
 	questionsAnswered: number
 	goalAchieved: boolean // 今天是否已达成目标并播放过动画
+	milestonesAchieved: number[] // 已经触发过奖励的里程碑，例如 [20, 40, 60]
 }
 
 // 获取今天的日期字符串
@@ -27,9 +28,15 @@ export const loadDailyStats = (): DailyStats => {
 					date: today,
 					questionsAnswered: 0,
 					goalAchieved: false,
+					milestonesAchieved: [],
 				}
 				saveDailyStats(newStats)
 				return newStats
+			}
+
+			// 向后兼容：如果旧数据没有 milestonesAchieved，添加它
+			if (!stats.milestonesAchieved) {
+				stats.milestonesAchieved = []
 			}
 
 			return stats
@@ -43,6 +50,7 @@ export const loadDailyStats = (): DailyStats => {
 		date: getTodayString(),
 		questionsAnswered: 0,
 		goalAchieved: false,
+		milestonesAchieved: [],
 	}
 	saveDailyStats(newStats)
 	return newStats
@@ -82,4 +90,35 @@ export const markGoalAchieved = (): void => {
 export const hasGoalBeenAchieved = (): boolean => {
 	const stats = loadDailyStats()
 	return stats.goalAchieved
+}
+
+// 检查是否达到新的里程碑（每日目标的倍数）
+// 返回新达到的里程碑数值，如果没有则返回 null
+export const checkMilestone = (dailyGoal: number): number | null => {
+	const stats = loadDailyStats()
+	const count = stats.questionsAnswered
+
+	// 计算当前应该在哪个里程碑（向下取整）
+	const currentMilestone = Math.floor(count / dailyGoal) * dailyGoal
+
+	// 如果当前里程碑大于0且不在已达成列表中，说明是新里程碑
+	if (
+		currentMilestone > 0 &&
+		!stats.milestonesAchieved.includes(currentMilestone)
+	) {
+		// 记录这个里程碑
+		stats.milestonesAchieved.push(currentMilestone)
+		saveDailyStats(stats)
+		return currentMilestone
+	}
+
+	return null
+}
+
+// 获取里程碑次数（第几次达成目标）
+export const getMilestoneCount = (
+	milestone: number,
+	dailyGoal: number
+): number => {
+	return milestone / dailyGoal
 }

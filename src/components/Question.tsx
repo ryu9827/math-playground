@@ -15,8 +15,8 @@ import {
 import { generateWordProblem } from '../utils/wordProblemGenerator'
 import {
 	incrementQuestionsAnswered,
-	hasGoalBeenAchieved,
-	markGoalAchieved,
+	checkMilestone,
+	getMilestoneCount,
 } from '../utils/dailyStats'
 import { setWordProblemMode } from '../store/settingsSlice'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -27,11 +27,13 @@ import '../styles/Question.scss'
 interface QuestionProps {
 	operation: OperationType
 	onGoalAchieved: () => void
+	onMilestoneAchieved: (milestone: number, milestoneCount: number) => void
 }
 
 export const Question: React.FC<QuestionProps> = ({
 	operation,
 	onGoalAchieved,
+	onMilestoneAchieved,
 }) => {
 	const dispatch = useDispatch()
 	const { currentQuestion, showResult, isCorrect, wrongQuestions } =
@@ -79,12 +81,12 @@ export const Question: React.FC<QuestionProps> = ({
 		// 当运算类型改变时，生成新问题
 		if (prevOperationRef.current !== operation) {
 			prevOperationRef.current = operation
-			
+
 			// 检查是否从错题本来的（已经有匹配的题目）
-			const hasMatchingQuestion = 
-				currentQuestionRef.current && 
+			const hasMatchingQuestion =
+				currentQuestionRef.current &&
 				currentQuestionRef.current.operation === operation
-			
+
 			if (hasMatchingQuestion) {
 				// 从错题本来的，保持题目，只重置状态
 				setSelectedAnswer(null)
@@ -166,7 +168,7 @@ export const Question: React.FC<QuestionProps> = ({
 			dispatch(submitAnswer())
 
 			// 增加每日答题计数
-			const newCount = incrementQuestionsAnswered()
+			incrementQuestionsAnswered()
 
 			const isAnswerCorrect =
 				currentQuestion && selectedAnswer === currentQuestion.answer
@@ -185,19 +187,19 @@ export const Question: React.FC<QuestionProps> = ({
 				isCorrect
 			)
 
-			// 检查是否达到目标
-			if (newCount >= dailyGoal && !hasGoalBeenAchieved() && isAnswerCorrect) {
-				// 标记目标已达成
-				markGoalAchieved()
-				// 延迟触发目标动画，让普通庆祝动画先播放
-				setTimeout(() => {
-					onGoalAchieved()
-				}, 2000)
-			}
-
-			// 如果答对了，显示庆祝动画
-			// 庆祝动画完成后会自动调用 onComplete，然后触发 handleNext
+			// 答对才检查里程碑
 			if (isAnswerCorrect) {
+				// 检查是否达到新的里程碑
+				const newMilestone = checkMilestone(dailyGoal)
+				if (newMilestone) {
+					const milestoneCount = getMilestoneCount(newMilestone, dailyGoal)
+					// 延迟触发里程碑动画，让普通庆祝动画先播放
+					setTimeout(() => {
+						onMilestoneAchieved(newMilestone, milestoneCount)
+					}, 2000)
+				}
+
+				// 显示庆祝动画
 				console.log('答对了！显示庆祝动画')
 				setShowCelebration(true)
 			} else {
