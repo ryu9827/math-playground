@@ -5,7 +5,6 @@ import { Navigation } from './components/Navigation'
 import { Question } from './components/Question'
 import { WrongQuestions } from './components/WrongQuestions'
 import { NumberSplit } from './components/NumberSplit'
-import { EmojiDebugger } from './components/EmojiDebugger'
 import { SettingsModal } from './components/SettingsModal'
 import { DailyStats } from './components/DailyStats'
 import { GoalAchievedAnimation } from './components/GoalAchievedAnimation'
@@ -13,7 +12,7 @@ import { MilestoneReward } from './components/MilestoneReward'
 import './App.scss'
 
 export type OperationType = '+' | '-' | '×' | '÷'
-export type TabType = OperationType | 'wrong' | 'split' | 'emoji-debug'
+export type TabType = OperationType | 'wrong' | 'split'
 
 const STORAGE_KEY = 'math-playground-current-tab'
 
@@ -113,7 +112,6 @@ function App() {
 				{currentTab === 'wrong' && (
 					<WrongQuestions onNavigateToQuestion={handleTabChange} />
 				)}
-				{currentTab === 'emoji-debug' && <EmojiDebugger />}
 			</main>
 
 			<SettingsModal

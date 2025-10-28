@@ -73,15 +73,6 @@ export const Navigation: React.FC<NavigationProps> = ({
 						<span className='badge'>{wrongQuestions.length}</span>
 					)}
 				</button>
-				<button
-					className={`nav-tab ${currentTab === 'emoji-debug' ? 'active' : ''}`}
-					onClick={() => onTabChange('emoji-debug')}
-					data-tab='emoji-debug'
-					style={{ backgroundColor: '#ff9800', color: 'white' }}
-				>
-					<span className='tab-symbol'>🔍</span>
-					Emoji Debug
-				</button>
 			</div>
 
 			<button
