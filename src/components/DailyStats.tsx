@@ -41,6 +41,19 @@ export const DailyStats: React.FC = () => {
 		setCount(getTodayQuestionsCount())
 	}, [showResult])
 
+	// 监听拆数字组件的更新事件
+	useEffect(() => {
+		const handleDailyStatsUpdate = () => {
+			setCount(getTodayQuestionsCount())
+		}
+
+		window.addEventListener('dailyStatsUpdated', handleDailyStatsUpdate)
+
+		return () => {
+			window.removeEventListener('dailyStatsUpdated', handleDailyStatsUpdate)
+		}
+	}, [])
+
 	return (
 		<>
 			<motion.div

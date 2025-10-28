@@ -6,6 +6,7 @@ export interface SettingsState {
 	language: Language
 	soundEnabled: boolean
 	dailyGoal: number
+	numberSplitMaxTarget: number
 	wordProblemMode: {
 		'+': boolean
 		'-': boolean
@@ -75,6 +76,7 @@ const loadSettings = (): SettingsState => {
 				soundEnabled:
 					settings.soundEnabled !== undefined ? settings.soundEnabled : true,
 				dailyGoal: settings.dailyGoal || 20,
+				numberSplitMaxTarget: settings.numberSplitMaxTarget || 10,
 				wordProblemMode: wordProblemModeValue,
 				operationLimits: settings.operationLimits || {
 					'+': { min: 1, max: 100 },
@@ -91,6 +93,7 @@ const loadSettings = (): SettingsState => {
 		language: 'zh',
 		soundEnabled: true,
 		dailyGoal: 20,
+		numberSplitMaxTarget: 10,
 		wordProblemMode: {
 			'+': false,
 			'-': false,
@@ -133,6 +136,10 @@ const settingsSlice = createSlice({
 			state.dailyGoal = action.payload
 			saveSettings(state)
 		},
+		setNumberSplitMaxTarget: (state, action: PayloadAction<number>) => {
+			state.numberSplitMaxTarget = action.payload
+			saveSettings(state)
+		},
 		setWordProblemMode: (
 			state,
 			action: PayloadAction<WordProblemModePayload>
@@ -157,6 +164,7 @@ export const {
 	setLanguage,
 	setSoundEnabled,
 	setDailyGoal,
+	setNumberSplitMaxTarget,
 	setWordProblemMode,
 	setOperationLimits,
 } = settingsSlice.actions

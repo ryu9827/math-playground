@@ -46,6 +46,9 @@ export const translations = {
 		subtractionMinuendMaxHint: '被减数不得大于此值',
 		subtractionSubtrahendMinHint: '减数必须大于等于此值',
 		minMaxError: '下限必须小于上限',
+		numberSplitSettings: '拆数字设置',
+		numberSplitMaxTarget: '目标数字上限',
+		numberSplitMaxTargetHint: '拆数字游戏中目标数字的最大值',
 	},
 	en: {
 		wrongQuestions: 'Wrong Questions',
@@ -93,5 +96,8 @@ export const translations = {
 		subtractionSubtrahendMinHint:
 			'Subtrahend must be greater than or equal to this value',
 		minMaxError: 'Min must be less than Max',
+		numberSplitSettings: 'Number Split Settings',
+		numberSplitMaxTarget: 'Max Target Number',
+		numberSplitMaxTargetHint: 'Maximum target number in Number Split game',
 	},
 }

@@ -5,6 +5,7 @@ import {
 	setLanguage,
 	setSoundEnabled,
 	setOperationLimits,
+	setNumberSplitMaxTarget,
 } from '../store/settingsSlice'
 import { translations } from '../utils/i18n'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -22,12 +23,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 	onClose,
 }) => {
 	const dispatch = useDispatch()
-	const { language, soundEnabled, operationLimits } = useSelector(
-		(state: RootState) => state.settings
-	)
+	const { language, soundEnabled, operationLimits, numberSplitMaxTarget } =
+		useSelector((state: RootState) => state.settings)
 	const t = translations[language]
 
 	const [localSound, setLocalSound] = React.useState(soundEnabled)
+	const [localNumberSplitMax, setLocalNumberSplitMax] = React.useState<
+		number | string
+	>(numberSplitMaxTarget)
 
 	// 加法状态
 	const [additionMin, setAdditionMin] = React.useState<number | string>(
@@ -50,6 +53,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 	React.useEffect(() => {
 		if (isOpen) {
 			setLocalSound(soundEnabled)
+			setLocalNumberSplitMax(numberSplitMaxTarget)
 			setAdditionMin(operationLimits['+'].min)
 			setAdditionMax(operationLimits['+'].max)
 			setSubtractionMinuendMax(operationLimits['-'].max)
@@ -57,7 +61,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 			setAdditionError('')
 			setSubtractionError('')
 		}
-	}, [isOpen, soundEnabled, operationLimits])
+	}, [isOpen, soundEnabled, operationLimits, numberSplitMaxTarget])
 
 	// 验证加法的上下限
 	const validateAdditionLimits = (
@@ -180,6 +184,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 		}
 
 		dispatch(setSoundEnabled(localSound))
+
+		// 保存拆数字上限设置
+		const numberSplitMaxNum =
+			typeof localNumberSplitMax === 'string'
+				? parseInt(localNumberSplitMax) || 10
+				: localNumberSplitMax
+		if (numberSplitMaxNum >= 3 && numberSplitMaxNum <= 100) {
+			dispatch(setNumberSplitMaxTarget(numberSplitMaxNum))
+		}
 
 		// 保存加法设置
 		dispatch(
@@ -335,6 +348,29 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 									{subtractionError && (
 										<div className='error-message'>{subtractionError}</div>
 									)}
+								</div>
+							</div>
+
+							<div className='setting-section'>
+								<h3>🔢 {t.numberSplitSettings}</h3>
+								<p className='setting-hint'>{t.numberSplitMaxTargetHint}</p>
+								<div className='input-group'>
+									<label>{t.numberSplitMaxTarget}</label>
+									<input
+										type='number'
+										value={localNumberSplitMax}
+										onChange={(e) => setLocalNumberSplitMax(e.target.value)}
+										onBlur={() => {
+											const value =
+												typeof localNumberSplitMax === 'string'
+													? parseInt(localNumberSplitMax) || 10
+													: localNumberSplitMax
+											const clampedValue = Math.min(100, Math.max(3, value))
+											setLocalNumberSplitMax(clampedValue)
+										}}
+										min='3'
+										max='100'
+									/>
 								</div>
 							</div>
 

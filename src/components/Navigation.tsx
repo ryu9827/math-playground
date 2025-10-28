@@ -56,6 +56,14 @@ export const Navigation: React.FC<NavigationProps> = ({
 					{t.division}
 				</button>
 				<button
+					className={`nav-tab ${currentTab === 'split' ? 'active' : ''}`}
+					onClick={() => onTabChange('split')}
+					data-tab='split'
+				>
+					<span className='tab-symbol'>🔢</span>
+					{language === 'zh' ? '拆数字' : 'Split'}
+				</button>
+				<button
 					className={`nav-tab ${currentTab === 'wrong' ? 'active' : ''}`}
 					onClick={() => onTabChange('wrong')}
 					data-tab='wrong'
@@ -64,6 +72,15 @@ export const Navigation: React.FC<NavigationProps> = ({
 					{wrongQuestions.length > 0 && (
 						<span className='badge'>{wrongQuestions.length}</span>
 					)}
+				</button>
+				<button
+					className={`nav-tab ${currentTab === 'emoji-debug' ? 'active' : ''}`}
+					onClick={() => onTabChange('emoji-debug')}
+					data-tab='emoji-debug'
+					style={{ backgroundColor: '#ff9800', color: 'white' }}
+				>
+					<span className='tab-symbol'>🔍</span>
+					Emoji Debug
 				</button>
 			</div>
 

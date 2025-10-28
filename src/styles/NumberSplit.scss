@@ -1,0 +1,295 @@
+@import './variables';
+
+.number-split {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: calc(100vh - 200px);
+	padding: $spacing-xl;
+}
+
+.split-card {
+	background: $bg-card;
+	border-radius: $radius-lg;
+	padding: $spacing-xl;
+	max-width: 600px;
+	width: 100%;
+	box-shadow: $shadow-lg;
+}
+
+.split-title {
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: $primary-color;
+	text-align: center;
+	margin: 0 0 $spacing-xl 0;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.target-number {
+	text-align: center;
+	margin-bottom: $spacing-xl;
+	padding: $spacing-lg;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: $radius-md;
+	box-shadow: $shadow-md;
+
+	.target-label {
+		font-size: 1.3rem;
+		color: rgba(255, 255, 255, 0.9);
+		font-weight: 500;
+	}
+
+	.target-value {
+		font-size: 3rem;
+		font-weight: bold;
+		color: #fff;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+		margin-left: $spacing-sm;
+	}
+}
+
+.split-instruction {
+	text-align: center;
+	font-size: 1.1rem;
+	color: $text-dim;
+	margin-bottom: $spacing-xl;
+	line-height: 1.5;
+}
+
+.split-inputs {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+	margin-bottom: $spacing-xl;
+}
+
+.input-row {
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md;
+	background: rgba(99, 102, 241, 0.05);
+	border-radius: $radius-md;
+	transition: all 0.3s ease;
+	position: relative;
+
+	&:hover {
+		background: rgba(99, 102, 241, 0.1);
+		transform: translateX(5px);
+	}
+
+	.split-input {
+		width: 80px;
+		padding: $spacing-md;
+		font-size: 1.5rem;
+		text-align: center;
+		border: 2px solid rgba(255, 255, 255, 0.1);
+		border-radius: $radius-sm;
+		background: $bg-light;
+		color: $text-light;
+		transition: all 0.3s ease;
+		font-weight: 600;
+
+		&:focus {
+			outline: none;
+			border-color: $primary-color;
+			box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+			transform: scale(1.05);
+		}
+
+		&::placeholder {
+			color: $text-dim;
+			opacity: 0.5;
+		}
+
+		// 隐藏数字输入框的上下箭头
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		&[type='number'] {
+			-moz-appearance: textfield;
+			appearance: textfield;
+		}
+	}
+
+	.plus-sign,
+	.equals-sign {
+		font-size: 1.8rem;
+		font-weight: bold;
+		color: $primary-color;
+	}
+
+	.result-number {
+		font-size: 1.8rem;
+		font-weight: bold;
+		color: $text-light;
+		min-width: 60px;
+		text-align: center;
+	}
+
+	.check-mark {
+		position: absolute;
+		right: $spacing-md;
+		font-size: 2rem;
+		color: #4caf50;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		background: rgba(76, 175, 80, 0.1);
+		border-radius: 50%;
+		box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+	}
+
+	.wrong-mark {
+		position: absolute;
+		right: $spacing-md;
+		font-size: 2rem;
+		color: #f44336;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		background: rgba(244, 67, 54, 0.1);
+		border-radius: 50%;
+		box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+	}
+
+	.duplicate-mark {
+		position: absolute;
+		right: $spacing-md;
+		font-size: 0.9rem;
+		color: #ff9800;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: $spacing-xs $spacing-sm;
+		background: rgba(255, 152, 0, 0.1);
+		border-radius: $radius-sm;
+		box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+		white-space: nowrap;
+	}
+}
+
+.progress-info {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-lg;
+	font-size: 1.2rem;
+	color: $text-dim;
+	padding: $spacing-lg;
+	background: rgba(99, 102, 241, 0.05);
+	border-radius: $radius-md;
+	margin-bottom: $spacing-lg;
+
+	strong {
+		color: $primary-color;
+		font-size: 1.4rem;
+		font-weight: bold;
+	}
+
+	.submit-button {
+		padding: $spacing-sm $spacing-lg;
+		font-size: 1.1rem;
+		font-weight: bold;
+		background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+		color: white;
+		border: none;
+		border-radius: 50px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+
+		&:hover {
+			background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+			box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+		}
+
+		&:active {
+			transform: scale(0.95);
+		}
+	}
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+	.number-split {
+		padding: $spacing-md;
+	}
+
+	.split-card {
+		padding: $spacing-lg;
+	}
+
+	.split-title {
+		font-size: 2rem;
+	}
+
+	.target-number {
+		.target-label {
+			font-size: 1.1rem;
+		}
+
+		.target-value {
+			font-size: 2.5rem;
+		}
+	}
+
+	.input-row {
+		gap: $spacing-sm;
+		padding: $spacing-sm;
+
+		.split-input {
+			width: 60px;
+			padding: $spacing-sm;
+			font-size: 1.3rem;
+		}
+
+		.plus-sign,
+		.equals-sign {
+			font-size: 1.5rem;
+		}
+
+		.result-number {
+			font-size: 1.5rem;
+			min-width: 50px;
+		}
+
+		.check-mark {
+			font-size: 1.5rem;
+			width: 30px;
+			height: 30px;
+		}
+
+		.wrong-mark {
+			font-size: 1.5rem;
+			width: 30px;
+			height: 30px;
+		}
+
+		.duplicate-mark {
+			font-size: 0.8rem;
+			padding: 4px 8px;
+		}
+	}
+
+	.progress-info {
+		flex-direction: column;
+		gap: $spacing-sm;
+
+		.submit-button {
+			padding: $spacing-xs $spacing-md;
+			font-size: 1rem;
+		}
+	}
+}
