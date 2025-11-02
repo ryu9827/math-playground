@@ -125,10 +125,30 @@ export const NumberSplit: React.FC<NumberSplitProps> = ({
 		value: string
 	) => {
 		const newInputs = [...userInputs]
+		const oldInput = { ...newInputs[index] }
 		newInputs[index][field] = value
 		setUserInputs(newInputs)
 
 		const newStatuses = [...inputStatuses]
+
+		// 如果当前行之前是正确的，并且用户正在修改它，需要从 correctPairs 中移除旧的组合
+		if (inputStatuses[index].isCorrect) {
+			const oldN1 = parseInt(oldInput.num1)
+			const oldN2 = parseInt(oldInput.num2)
+			if (!isNaN(oldN1) && !isNaN(oldN2)) {
+				const [oldSmall, oldLarge] =
+					oldN1 <= oldN2 ? [oldN1, oldN2] : [oldN2, oldN1]
+				const oldKey = `${oldSmall}+${oldLarge}`
+
+				// 从 correctPairs 中移除旧的组合
+				const newCorrectPairs = new Set(correctPairs)
+				newCorrectPairs.delete(oldKey)
+				setCorrectPairs(newCorrectPairs)
+
+				// 更新完成状态
+				setAllCompleted(false)
+			}
+		}
 
 		// 如果两个输入框都有值，检查是否正确
 		const { num1, num2 } = newInputs[index]
