@@ -26,7 +26,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 	)
 	// 初始化为 -1，表示还未选择动画
 	const [animationType, setAnimationType] = React.useState(-1)
-	const animationsRef = React.useRef(generateAnimations(operation, language))
+	const animationsRef = React.useRef(generateAnimations(operation, language, true))
 
 	// 使用 ref 来保存最新的 onComplete，避免依赖问题
 	const onCompleteRef = React.useRef(onComplete)
@@ -42,7 +42,7 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 
 	// 当运算类型或语言改变时，重新生成动画，并重置动画类型
 	React.useEffect(() => {
-		animationsRef.current = generateAnimations(operation, language)
+		animationsRef.current = generateAnimations(operation, language, true)
 		// 重置动画类型，避免显示旧的动画
 		setAnimationType(-1)
 	}, [operation, language])

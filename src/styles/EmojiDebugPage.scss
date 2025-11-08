@@ -1,0 +1,569 @@
+.emoji-debug-page {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 2rem;
+	background: #f5f5f5;
+	min-height: 100vh;
+
+	.debug-header {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		margin-bottom: 2rem;
+
+		h1 {
+			color: #333;
+			margin: 0 0 1rem 0;
+			font-size: 2rem;
+		}
+
+		.description {
+			color: #666;
+			line-height: 1.8;
+			margin: 0 0 1.5rem 0;
+
+			strong {
+				color: #2196f3;
+				display: block;
+				margin-bottom: 0.5rem;
+			}
+
+			.warning {
+				color: #ff5722;
+				margin-top: 0.5rem;
+			}
+		}
+
+		.controls {
+			margin-top: 1rem;
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			flex-wrap: wrap;
+
+			.toggle-btn {
+				background: #2196f3;
+				color: white;
+				border: none;
+				padding: 0.75rem 1.5rem;
+				border-radius: 8px;
+				font-size: 1rem;
+				cursor: pointer;
+				transition: all 0.3s ease;
+
+				&:hover {
+					background: #1976d2;
+					transform: translateY(-2px);
+					box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+				}
+
+				&.active {
+					background: #4caf50;
+
+					&:hover {
+						background: #45a049;
+					}
+				}
+			}
+
+			.info-text {
+				color: #999;
+				font-size: 0.9rem;
+				flex: 1;
+			}
+		}
+	}
+
+	.emoji-list-section {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		margin-bottom: 2rem;
+
+		h2 {
+			color: #2196f3;
+			margin: 0 0 1rem 0;
+		}
+
+		> p {
+			color: #666;
+			line-height: 1.6;
+			margin-bottom: 2rem;
+			padding: 1rem;
+			background: #e3f2fd;
+			border-radius: 8px;
+		}
+
+		.emoji-static-grid {
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+		}
+
+		.emoji-category-static {
+			border: 2px solid #e0e0e0;
+			border-radius: 8px;
+			padding: 1.5rem;
+			background: #fafafa;
+
+			h3 {
+				color: #333;
+				margin: 0 0 1rem 0;
+				font-size: 1.3rem;
+			}
+
+			.emoji-row {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+
+				span {
+					font-size: 2rem;
+					line-height: 1.8;
+					word-spacing: 0.3rem;
+					background: white;
+					padding: 0.5rem;
+					border-radius: 4px;
+					border: 1px solid #e0e0e0;
+				}
+			}
+		}
+
+		.comparison-note {
+			margin-top: 2rem;
+			padding: 1.5rem;
+			background: #fff3cd;
+			border-left: 4px solid #ffc107;
+			border-radius: 8px;
+
+			h4 {
+				color: #f57c00;
+				margin: 0 0 1rem 0;
+			}
+
+			ul {
+				margin: 0;
+				padding-left: 1.5rem;
+				color: #555;
+
+				li {
+					margin-bottom: 0.5rem;
+					line-height: 1.6;
+
+					strong {
+						color: #333;
+					}
+				}
+			}
+		}
+	}
+
+	.emoji-category {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		margin-bottom: 2rem;
+
+		.category-title {
+			color: #2196f3;
+			margin: 0 0 1rem 0;
+			font-size: 1.5rem;
+			border-bottom: 2px solid #e0e0e0;
+			padding-bottom: 0.5rem;
+
+			.count {
+				color: #999;
+				font-size: 1rem;
+				font-weight: normal;
+				margin-left: 0.5rem;
+			}
+		}
+
+		.section-description {
+			color: #666;
+			margin-bottom: 1.5rem;
+			font-size: 0.95rem;
+			font-style: italic;
+		}
+
+		.emoji-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+			gap: 1rem;
+		}
+
+		.emoji-card {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			padding: 1rem;
+			background: #fafafa;
+			border: 2px solid #e0e0e0;
+			border-radius: 8px;
+			transition: all 0.2s ease;
+			min-height: 200px;
+			position: relative;
+			overflow: visible; // 改为 visible 让动画不被裁剪
+
+			&:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				border-color: #2196f3;
+			}
+
+			.animation-wrapper {
+				flex: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				min-height: 120px;
+				position: relative;
+				background: #f0f0f0; // 添加背景色以便看到容器边界
+
+				// 继承 CelebrationAnimation 的样式
+				.animation-container {
+					position: relative;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 100%;
+					min-height: 120px;
+				}
+
+				.emoji-large {
+					font-size: 3rem !important;
+					line-height: 1;
+					display: block !important;
+					visibility: visible !important;
+					opacity: 1 !important;
+				}
+
+				// 确保飘落效果中的 emoji 可见
+				.falling-item {
+					font-size: 2.5rem !important;
+					display: block !important;
+					visibility: visible !important;
+					opacity: 1 !important;
+				}
+
+				// 确保中心 emoji 可见
+				.center-emoji {
+					font-size: 3rem !important;
+					display: block !important;
+					visibility: visible !important;
+					opacity: 1 !important;
+				}
+
+				// 粒子效果
+				.particle {
+					display: block !important;
+				}
+
+				// 波纹效果
+				.ripple {
+					display: block !important;
+				}
+
+				.text-celebration {
+					display: none !important; // 隐藏文字，只显示 emoji
+				}
+			}
+
+			.emoji-animated,
+			.emoji-static {
+				font-size: 3rem;
+				margin-bottom: 0.5rem;
+				min-height: 3rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.emoji-display {
+				font-size: 3rem;
+				margin-bottom: 0.5rem;
+				min-height: 3rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.emoji-info {
+				text-align: center;
+				font-size: 0.85rem;
+				margin-top: 0.5rem;
+				width: 100%;
+				background: white;
+				padding: 0.5rem;
+				border-radius: 4px;
+
+				.emoji-char {
+					font-size: 1.5rem;
+					margin-bottom: 0.25rem;
+				}
+
+				.line-number {
+					color: #2196f3;
+					font-weight: bold;
+					margin-bottom: 0.25rem;
+				}
+
+				.index-number {
+					color: #999;
+				}
+			}
+		}
+	}
+
+	// 暂停状态下禁用所有动画
+	&.paused {
+		.animation-wrapper * {
+			animation-play-state: paused !important;
+		}
+	}
+
+	.debug-footer {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+		h3 {
+			color: #333;
+			margin: 0 0 1rem 0;
+		}
+
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0 0 2rem 0;
+
+			li {
+				padding: 0.5rem 0;
+				color: #666;
+
+				strong {
+					color: #2196f3;
+					font-size: 1.1rem;
+				}
+			}
+		}
+
+		.tips {
+			background: #e3f2fd;
+			padding: 1.5rem;
+			border-radius: 8px;
+			border-left: 4px solid #2196f3;
+
+			h4 {
+				color: #1976d2;
+				margin: 0 0 1rem 0;
+			}
+
+			ol {
+				margin: 0;
+				padding-left: 1.5rem;
+				color: #555;
+
+				li {
+					margin-bottom: 0.5rem;
+					line-height: 1.6;
+				}
+			}
+
+			code {
+				background: #fff;
+				padding: 0.2rem 0.5rem;
+				border-radius: 4px;
+				font-family: 'Courier New', monospace;
+				color: #d63384;
+			}
+		}
+	}
+}
+
+// 飘动小动物测试区域样式
+.floating-animals-test {
+	background: white;
+	padding: 2rem;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 2rem;
+
+	.test-header {
+		margin-bottom: 2rem;
+
+		h2 {
+			color: #333;
+			margin: 0 0 1rem 0;
+			font-size: 1.8rem;
+		}
+
+		.test-description {
+			color: #666;
+			line-height: 1.8;
+			margin: 0 0 1.5rem 0;
+
+			strong {
+				color: #2196f3;
+			}
+
+			.warning {
+				color: #ff5722;
+				display: block;
+				margin-top: 0.5rem;
+			}
+		}
+
+		.test-type-selector {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			padding: 1rem;
+			background: #f5f5f5;
+			border-radius: 8px;
+			flex-wrap: wrap;
+
+			label {
+				font-weight: bold;
+				color: #333;
+			}
+
+			.type-select {
+				padding: 0.5rem 1rem;
+				border: 2px solid #2196f3;
+				border-radius: 8px;
+				font-size: 1rem;
+				background: white;
+				color: #333;
+				cursor: pointer;
+				transition: all 0.3s ease;
+
+				&:hover {
+					border-color: #1976d2;
+					box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+				}
+
+				&:focus {
+					outline: none;
+					border-color: #1976d2;
+					box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+				}
+			}
+
+			.type-info {
+				color: #666;
+				font-size: 0.9rem;
+				background: white;
+				padding: 0.5rem 1rem;
+				border-radius: 6px;
+			}
+		}
+	}
+
+	.floating-test-container {
+		position: relative;
+		width: 100%;
+		height: 400px;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border-radius: 12px;
+		overflow: hidden;
+		margin-bottom: 2rem;
+
+		.test-floating-animal {
+			position: absolute;
+			font-size: 3rem;
+			filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+			pointer-events: none;
+			z-index: 5;
+		}
+	}
+
+	.animals-reference {
+		h3 {
+			color: #333;
+			margin: 0 0 1rem 0;
+			font-size: 1.4rem;
+		}
+
+		.animals-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+			gap: 1rem;
+
+			.animal-ref-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 1rem;
+				background: #f5f5f5;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+
+				&:hover {
+					background: #e3f2fd;
+					transform: translateY(-2px);
+					box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				}
+
+				.animal-emoji {
+					font-size: 2.5rem;
+					line-height: 1;
+				}
+
+				.animal-index {
+					font-size: 0.9rem;
+					color: #666;
+					font-weight: bold;
+					background: #fff;
+					padding: 0.25rem 0.5rem;
+					border-radius: 4px;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.emoji-debug-page {
+		padding: 1rem;
+
+		.emoji-category .emoji-grid {
+			grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+			gap: 0.5rem;
+		}
+
+		.emoji-card .emoji-display {
+			font-size: 2rem;
+		}
+	}
+
+	.floating-animals-test {
+		padding: 1rem;
+
+		.floating-test-container {
+			height: 300px;
+
+			.test-floating-animal {
+				font-size: 2rem;
+			}
+		}
+
+		.animals-reference .animals-grid {
+			grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+
+			.animal-ref-item .animal-emoji {
+				font-size: 2rem;
+			}
+		}
+	}
+}
+

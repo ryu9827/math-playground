@@ -598,10 +598,19 @@ const colorSchemes = {
 	division: ['#98FB98', '#00FA9A', '#00FF7F', '#3CB371', '#2E8B57'],
 }
 
+// emoji 在文件中的起始行号
+const emojiLineNumbers = {
+	addition: 10, // 'addition' 数组第一个 emoji 的行号
+	subtraction: 148,
+	multiplication: 175,
+	division: 202,
+}
+
 // 生成动画函数
 export const generateAnimations = (
 	operation: OperationType,
-	language: 'zh' | 'en' = 'zh'
+	language: 'zh' | 'en' = 'zh',
+	showDebugInfo: boolean = false // 是否显示调试信息（行号）
 ): ReactElement[] => {
 	const animations: ReactElement[] = []
 	const operationType = getOperationCategory(operation)
@@ -613,12 +622,25 @@ export const generateAnimations = (
 	// 加法生成200个动画，其他运算生成100个
 	const animationCount = operation === '+' ? 200 : 100
 	for (let i = 0; i < animationCount; i++) {
-		const emoji = emojiSet[i % emojiSet.length]
+		const emojiIndex = i % emojiSet.length
+		const emoji = emojiSet[emojiIndex]
 		const praise = praiseSet[i % praiseSet.length]
 		const color = colors[i % colors.length]
 		const animationIndex = i % 10 // 使用10种基本动画模式
+		
+		// 计算 emoji 的实际行号
+		const emojiLineNumber = emojiLineNumbers[operationType] + emojiIndex
 
-		animations.push(createAnimation(animationIndex, emoji, praise, color, i))
+		animations.push(
+			createAnimation(
+				animationIndex,
+				emoji,
+				praise,
+				color,
+				i,
+				showDebugInfo ? emojiLineNumber : undefined
+			)
+		)
 	}
 
 	return animations
@@ -660,9 +682,36 @@ const createAnimation = (
 	emoji: string,
 	praise: string,
 	color: string,
-	index: number
+	index: number,
+	lineNumber?: number // 可选的行号参数
 ): ReactElement => {
 	const key = `anim-${index}`
+	
+	// 如果提供了行号，在 emoji 旁边显示行号标签
+	const emojiWithLineNumber = lineNumber ? (
+		<div style={{ position: 'relative', display: 'inline-block' }}>
+			{emoji}
+			<div
+				style={{
+					position: 'absolute',
+					top: '-8px',
+					right: '-8px',
+					background: '#ff5722',
+					color: 'white',
+					fontSize: '10px',
+					padding: '2px 4px',
+					borderRadius: '4px',
+					fontWeight: 'bold',
+					zIndex: 1000,
+					boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+				}}
+			>
+				L{lineNumber}
+			</div>
+		</div>
+	) : (
+		emoji
+	)
 
 	switch (type) {
 		case 0: // 爆炸效果
@@ -688,7 +737,7 @@ const createAnimation = (
 						animate={{ scale: [0, 1.5, 1] }}
 						transition={{ duration: 0.5 }}
 					>
-						{emoji}
+						{emojiWithLineNumber}
 					</motion.div>
 				</div>
 			)
@@ -703,7 +752,7 @@ const createAnimation = (
 					transition={{ duration: 1.5 }}
 				>
 					<div className='emoji-large' style={{ color }}>
-						{emoji}
+						{emojiWithLineNumber}
 					</div>
 					<motion.div className='text-celebration' style={{ color: '#FFFFFF' }}>
 						{praise}
@@ -720,7 +769,7 @@ const createAnimation = (
 					animate={{ scale: [0, 1.2, 1], rotate: 360 }}
 					transition={{ duration: 1 }}
 				>
-					<div className='emoji-large'>{emoji}</div>
+					<div className='emoji-large'>{emojiWithLineNumber}</div>
 					<motion.div
 						className='sparkles'
 						animate={{ rotate: 360 }}
@@ -741,7 +790,7 @@ const createAnimation = (
 					animate={{ scale: [0, 1.5, 1] }}
 					transition={{ duration: 0.8 }}
 				>
-					<div className='emoji-large'>{emoji}</div>
+					<div className='emoji-large'>{emojiWithLineNumber}</div>
 					<motion.div
 						className='text-celebration'
 						initial={{ opacity: 0, y: 20 }}
@@ -770,7 +819,7 @@ const createAnimation = (
 							transition={{ duration: 2, delay: i * 0.1 }}
 							style={{ fontSize: '2rem' }}
 						>
-							{emoji}
+							{emojiWithLineNumber}
 						</motion.div>
 					))}
 					<motion.div
@@ -798,7 +847,7 @@ const createAnimation = (
 						className='emoji-large'
 						style={{ filter: `drop-shadow(0 0 20px ${color})` }}
 					>
-						{emoji}
+						{emojiWithLineNumber}
 					</div>
 					<motion.div
 						className='text-celebration'
@@ -824,7 +873,7 @@ const createAnimation = (
 							style={{ borderColor: color }}
 						/>
 					))}
-					<div className='emoji-large'>{emoji}</div>
+					<div className='emoji-large'>{emojiWithLineNumber}</div>
 					<motion.div className='text-celebration' style={{ color: '#FFFFFF' }}>
 						{praise}
 					</motion.div>
@@ -839,7 +888,7 @@ const createAnimation = (
 					animate={{ rotate: [-10, 10, -10, 10, 0] }}
 					transition={{ duration: 1 }}
 				>
-					<div className='emoji-large'>{emoji}</div>
+					<div className='emoji-large'>{emojiWithLineNumber}</div>
 					<motion.div
 						className='text-celebration'
 						initial={{ y: 20, opacity: 0 }}
@@ -863,7 +912,7 @@ const createAnimation = (
 						className='emoji-large'
 						style={{ textShadow: `0 0 20px ${color}` }}
 					>
-						{emoji}
+						{emojiWithLineNumber}
 					</div>
 					<motion.div className='text-celebration' style={{ color: '#FFFFFF' }}>
 						{praise}
@@ -884,7 +933,7 @@ const createAnimation = (
 					}}
 					transition={{ duration: 1.5 }}
 				>
-					<div className='emoji-large'>{emoji}</div>
+					<div className='emoji-large'>{emojiWithLineNumber}</div>
 					<motion.div
 						className='text-celebration'
 						initial={{ y: 50, opacity: 0 }}
@@ -915,4 +964,36 @@ const createAnimation = (
 				</motion.div>
 			)
 	}
+}
+
+// 导出 emoji 数据供调试页面使用
+export const getEmojisByOperation = (operation: OperationType) => {
+	const emojiLineNumbers = {
+		'+': 10,
+		'-': 148,
+		'×': 175,
+		'÷': 202,
+	}
+	
+	let emojiArray: string[] = []
+	switch (operation) {
+		case '+':
+			emojiArray = emojis.addition
+			break
+		case '-':
+			emojiArray = emojis.subtraction
+			break
+		case '×':
+			emojiArray = emojis.multiplication
+			break
+		case '÷':
+			emojiArray = emojis.division
+			break
+	}
+	
+	return emojiArray.map((emoji, index) => ({
+		emoji,
+		lineNumber: emojiLineNumbers[operation] + index,
+		operation,
+	}))
 }

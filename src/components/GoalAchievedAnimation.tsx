@@ -69,14 +69,15 @@ export const GoalAchievedAnimation: React.FC<GoalAchievedAnimationProps> = ({
 
 	// 生成随机动物
 	const randomAnimals = Array.from({ length: 30 }, () => {
-		const animal = animals[Math.floor(Math.random() * animals.length)]
+		const animalIndex = Math.floor(Math.random() * animals.length)
+		const animal = animals[animalIndex]
 		const startX = Math.random() * 100
 		const endX = Math.random() * 100
 		const startY = Math.random() * 100
 		const duration = 8 + Math.random() * 12 // 8-20秒
 		const delay = Math.random() * 5 // 0-5秒延迟
 
-		return { animal, startX, endX, startY, duration, delay }
+		return { animal, animalIndex, startX, endX, startY, duration, delay }
 	})
 
 	// 生成烟花粒子
@@ -111,7 +112,27 @@ export const GoalAchievedAnimation: React.FC<GoalAchievedAnimationProps> = ({
 							}}
 							transition={{ duration: 2, ease: 'easeOut' }}
 						>
-							🏆
+							<span style={{ position: 'relative', display: 'inline-block' }}>
+								🏆
+								<span
+									style={{
+										position: 'absolute',
+										top: '-10px',
+										right: '-15px',
+										background: '#ff0000',
+										color: 'white',
+										fontSize: '14px',
+										fontWeight: 'bold',
+										padding: '3px 6px',
+										borderRadius: '4px',
+										lineHeight: 1,
+										boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
+										zIndex: 10000,
+									}}
+								>
+									L-TROPHY
+								</span>
+							</span>
 						</motion.div>
 						<motion.h1
 							className='goal-title'
@@ -168,7 +189,26 @@ export const GoalAchievedAnimation: React.FC<GoalAchievedAnimationProps> = ({
 								ease: 'easeInOut',
 							}}
 						>
-							{item.animal}
+							<span style={{ position: 'relative', display: 'inline-block' }}>
+								{item.animal}
+								<span
+									style={{
+										position: 'absolute',
+										top: '-5px',
+										right: '-8px',
+										background: '#ff0000',
+										color: 'white',
+										fontSize: '10px',
+										fontWeight: 'bold',
+										padding: '2px 4px',
+										borderRadius: '3px',
+										lineHeight: 1,
+										boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+									}}
+								>
+									L{item.animalIndex}
+								</span>
+							</span>
 						</motion.div>
 					))}
 

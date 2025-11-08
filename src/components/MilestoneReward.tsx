@@ -38,21 +38,20 @@ const animals = [
 ]
 
 // 奖杯样式（不同的emoji）
-const trophyEmojis = [
-	'�',
-	'🥇',
-	'🎖️',
-	'�',
-	'⭐',
-	'💎',
-	'🌟',
-	'✨',
-	'🎯',
-	'�',
-	'💪',
-	'🚀',
+export const trophyEmojis = [
+	'🏆', // L0
+	'🥇', // L1
+	'🎖️', // L2
+	'👑', // L3
+	'⭐', // L4
+	'💎', // L5
+	'🌟', // L6
+	'✨', // L7
+	'🎯', // L8
+	'🔥', // L9
+	'💪', // L10
+	'🚀', // L11
 ]
-
 // 祝贺文字（中文）
 const congratulationsZh = [
 	'太棒了！',
@@ -90,6 +89,7 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 }) => {
 	const { soundEnabled } = useSelector((state: RootState) => state.settings)
 	const [trophy, setTrophy] = useState('🏆')
+	const [trophyIndex, setTrophyIndex] = useState(0)
 	const [congratulation, setCongratulation] = useState('')
 	const onCloseRef = useRef(onClose)
 
@@ -100,9 +100,10 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 	useEffect(() => {
 		if (isOpen) {
 			// 随机选择奖杯
-			const randomTrophy =
-				trophyEmojis[Math.floor(Math.random() * trophyEmojis.length)]
+			const randomIndex = Math.floor(Math.random() * trophyEmojis.length)
+			const randomTrophy = trophyEmojis[randomIndex]
 			setTrophy(randomTrophy)
+			setTrophyIndex(randomIndex)
 
 			// 随机选择祝贺文字
 			const congratsList =
@@ -129,14 +130,15 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 
 	// 生成随机动物
 	const randomAnimals = Array.from({ length: 30 }, () => {
-		const animal = animals[Math.floor(Math.random() * animals.length)]
+		const animalIndex = Math.floor(Math.random() * animals.length)
+		const animal = animals[animalIndex]
 		const startX = Math.random() * 100
 		const endX = Math.random() * 100
 		const startY = Math.random() * 100
 		const duration = 8 + Math.random() * 12 // 8-20秒
 		const delay = Math.random() * 5 // 0-5秒延迟
 
-		return { animal, startX, endX, startY, duration, delay }
+		return { animal, animalIndex, startX, endX, startY, duration, delay }
 	})
 
 	// 生成烟花粒子
@@ -171,7 +173,27 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 							}}
 							transition={{ duration: 2, ease: 'easeOut' }}
 						>
-							{trophy}
+							<span style={{ position: 'relative', display: 'inline-block' }}>
+								{trophy}
+								<span
+									style={{
+										position: 'absolute',
+										top: '-10px',
+										right: '-15px',
+										background: '#ff0000',
+										color: 'white',
+										fontSize: '14px',
+										fontWeight: 'bold',
+										padding: '3px 6px',
+										borderRadius: '4px',
+										lineHeight: 1,
+										boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
+										zIndex: 10000,
+									}}
+								>
+									L{trophyIndex}
+								</span>
+							</span>
 						</motion.div>
 						<motion.h1
 							className='milestone-title'
@@ -245,7 +267,26 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 								ease: 'easeInOut',
 							}}
 						>
-							{item.animal}
+							<span style={{ position: 'relative', display: 'inline-block' }}>
+								{item.animal}
+								<span
+									style={{
+										position: 'absolute',
+										top: '-5px',
+										right: '-8px',
+										background: '#ff0000',
+										color: 'white',
+										fontSize: '10px',
+										fontWeight: 'bold',
+										padding: '2px 4px',
+										borderRadius: '3px',
+										lineHeight: 1,
+										boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+									}}
+								>
+									L{item.animalIndex}
+								</span>
+							</span>
 						</motion.div>
 					))}
 
