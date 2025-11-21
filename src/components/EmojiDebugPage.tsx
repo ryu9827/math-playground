@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { generateAnimations, getEmojisByOperation, OperationType } from '../utils/animationGenerator'
+import {
+	generateAnimations,
+	getEmojisByOperation,
+	OperationType,
+} from '../utils/animationGenerator'
 import { trophyEmojis } from './MilestoneReward'
 import '../styles/EmojiDebugPage.scss'
 
@@ -36,10 +40,10 @@ interface AnimationSectionProps {
 	animationCount: number
 }
 
-const AnimationSection: React.FC<AnimationSectionProps> = ({ 
-	operation, 
-	operationName, 
-	animationCount 
+const AnimationSection: React.FC<AnimationSectionProps> = ({
+	operation,
+	operationName,
+	animationCount,
 }) => {
 	const animations = React.useMemo(() => {
 		return generateAnimations(operation, 'zh')
@@ -57,15 +61,26 @@ const AnimationSection: React.FC<AnimationSectionProps> = ({
 			<div className='emoji-grid'>
 				{animations.slice(0, animationCount).map((animation, index) => (
 					<div key={`${operation}-${index}`} className='emoji-card'>
-						<div className='animation-wrapper'>
-							{animation}
-						</div>
+						<div className='animation-wrapper'>{animation}</div>
 						<div className='emoji-info'>
 							<div className='index-number'>
 								#{index + 1} | 动画类型: {index % 10}
 							</div>
 							<div className='animation-type'>
-								{['爆炸', '跳跃', '旋转', '放大', '飘落', '脉冲', '波纹', '摇摆', '闪烁', '组合'][index % 10]}
+								{
+									[
+										'爆炸',
+										'跳跃',
+										'旋转',
+										'放大',
+										'飘落',
+										'脉冲',
+										'波纹',
+										'摇摆',
+										'闪烁',
+										'组合',
+									][index % 10]
+								}
 							</div>
 						</div>
 					</div>
@@ -79,35 +94,37 @@ export const EmojiDebugPage: React.FC = () => {
 	const [pauseAll, setPauseAll] = useState(false)
 	const [showEmojiList, setShowEmojiList] = useState(false)
 	const [showFloatingTest, setShowFloatingTest] = useState(false)
-	const [floatingTestType, setFloatingTestType] = useState<FloatingTestType>('animals')
+	const [floatingTestType, setFloatingTestType] =
+		useState<FloatingTestType>('animals')
 
 	// 生成飘动的 emoji（模拟大型庆祝动画）
 	const floatingEmojis = React.useMemo(() => {
 		// 获取要测试的 emoji 列表
 		const getTestEmojis = () => {
 			if (floatingTestType === 'animals') {
-				return animals.map((emoji, index) => ({ 
-					emoji, 
-					lineNumber: index, 
-					type: 'animals' as const
+				return animals.map((emoji, index) => ({
+					emoji,
+					lineNumber: index,
+					type: 'animals' as const,
 				}))
 			} else if (floatingTestType === 'trophies') {
-				return trophyEmojis.map((emoji, index) => ({ 
-					emoji, 
-					lineNumber: index, 
-					type: 'trophies' as const
+				return trophyEmojis.map((emoji, index) => ({
+					emoji,
+					lineNumber: index,
+					type: 'trophies' as const,
 				}))
 			} else {
 				return getEmojisByOperation(floatingTestType as OperationType)
 			}
 		}
-		
+
 		const testEmojis = getTestEmojis()
 		// 动物和奖杯显示30个，其他emoji类型显示50个
-		const displayCount = (floatingTestType === 'animals' || floatingTestType === 'trophies') 
-			? 30 
-			: Math.min(50, testEmojis.length * 2)
-		
+		const displayCount =
+			floatingTestType === 'animals' || floatingTestType === 'trophies'
+				? 30
+				: Math.min(50, testEmojis.length * 2)
+
 		return Array.from({ length: displayCount }, (_, idx) => {
 			const emojiData = testEmojis[idx % testEmojis.length]
 			const startX = (idx * 100) / displayCount // 均匀分布
@@ -116,15 +133,15 @@ export const EmojiDebugPage: React.FC = () => {
 			const duration = 8 + (idx % 6) * 2 // 8-18秒
 			const delay = (idx % 8) * 0.3 // 0-2.1秒延迟
 
-			return { 
+			return {
 				emoji: emojiData.emoji,
 				lineNumber: emojiData.lineNumber,
 				type: floatingTestType,
-				startX, 
-				endX, 
-				startY, 
-				duration, 
-				delay 
+				startX,
+				endX,
+				startY,
+				duration,
+				delay,
 			}
 		})
 	}, [floatingTestType])
@@ -132,14 +149,14 @@ export const EmojiDebugPage: React.FC = () => {
 	// 获取当前类型的参考列表
 	const referenceEmojis = React.useMemo(() => {
 		if (floatingTestType === 'animals') {
-			return animals.map((emoji, index) => ({ 
-				emoji, 
-				lineNumber: index, 
+			return animals.map((emoji, index) => ({
+				emoji,
+				lineNumber: index,
 			}))
 		} else if (floatingTestType === 'trophies') {
-			return trophyEmojis.map((emoji, index) => ({ 
-				emoji, 
-				lineNumber: index, 
+			return trophyEmojis.map((emoji, index) => ({
+				emoji,
+				lineNumber: index,
 			}))
 		} else {
 			return getEmojisByOperation(floatingTestType as OperationType)
@@ -159,8 +176,7 @@ export const EmojiDebugPage: React.FC = () => {
 					（爆炸、跳跃、旋转、放大、飘落、脉冲、波纹、摇摆、闪烁、组合效果）
 					<br />
 					<strong className='warning'>
-						⚠️ 如果你看到方框 □ 或问号 �，说明该 emoji
-						在你的浏览器/系统中不支持
+						⚠️ 如果你看到方框 □ 或问号 �，说明该 emoji 在你的浏览器/系统中不支持
 					</strong>
 					<br />
 					这是真实的庆祝动画效果，能够发现实际使用中的渲染问题
@@ -185,7 +201,10 @@ export const EmojiDebugPage: React.FC = () => {
 						{showFloatingTest ? '🎬 隐藏飘动测试' : '🎆 测试飘动 Emoji'}
 					</button>
 					<div className='info-text'>
-						💡 提示：{showEmojiList ? '列表模式显示所有原始emoji' : '点击暂停可以方便查看哪些 emoji 显示异常'}
+						💡 提示：
+						{showEmojiList
+							? '列表模式显示所有原始emoji'
+							: '点击暂停可以方便查看哪些 emoji 显示异常'}
 					</div>
 				</div>
 			</div>
@@ -196,19 +215,24 @@ export const EmojiDebugPage: React.FC = () => {
 					<div className='test-header'>
 						<h2>🎆 飘动 Emoji 测试（大型庆祝动画效果）</h2>
 						<p className='test-description'>
-							这个测试区域模拟大型庆祝动画（GoalAchievedAnimation 和 MilestoneReward）中的飘动效果。
+							这个测试区域模拟大型庆祝动画（GoalAchievedAnimation 和
+							MilestoneReward）中的飘动效果。
 							<br />
-							<strong>选择要测试的 emoji 类型</strong>，每个 emoji 都会显示其行号。
+							<strong>选择要测试的 emoji 类型</strong>，每个 emoji
+							都会显示其行号。
 							<br />
 							<strong className='warning'>
-								⚠️ 如果你看到方框 □ 或问号 �，说明该 emoji 在大型庆祝动画中也会出现问题！
+								⚠️ 如果你看到方框 □ 或问号 �，说明该 emoji
+								在大型庆祝动画中也会出现问题！
 							</strong>
 						</p>
 						<div className='test-type-selector'>
 							<label>选择测试类型：</label>
-							<select 
-								value={floatingTestType} 
-								onChange={(e) => setFloatingTestType(e.target.value as FloatingTestType)}
+							<select
+								value={floatingTestType}
+								onChange={(e) =>
+									setFloatingTestType(e.target.value as FloatingTestType)
+								}
 								className='type-select'
 							>
 								<option value='animals'>🐰 小动物 (20种)</option>
@@ -219,11 +243,12 @@ export const EmojiDebugPage: React.FC = () => {
 								<option value='÷'>➗ 除法 Emoji (25种)</option>
 							</select>
 							<span className='type-info'>
-								当前显示：{
-									floatingTestType === 'animals' ? '30个飘动动物' : 
-									floatingTestType === 'trophies' ? '30个飘动奖杯' :
-									`50个飘动emoji（循环显示）`
-								}
+								当前显示：
+								{floatingTestType === 'animals'
+									? '30个飘动动物'
+									: floatingTestType === 'trophies'
+									? '30个飘动奖杯'
+									: `50个飘动emoji（循环显示）`}
 							</span>
 						</div>
 					</div>
@@ -282,11 +307,15 @@ export const EmojiDebugPage: React.FC = () => {
 						))}
 					</div>
 					<div className='animals-reference'>
-						<h3>📋 {
-							floatingTestType === 'animals' ? '小动物' : 
-							floatingTestType === 'trophies' ? '大型奖杯' :
-							`${floatingTestType} 运算 Emoji`
-						} 索引参考</h3>
+						<h3>
+							📋{' '}
+							{floatingTestType === 'animals'
+								? '小动物'
+								: floatingTestType === 'trophies'
+								? '大型奖杯'
+								: `${floatingTestType} 运算 Emoji`}{' '}
+							索引参考
+						</h3>
 						<div className='animals-grid'>
 							{referenceEmojis.map((item, index) => (
 								<div key={`ref-${index}`} className='animal-ref-item'>
@@ -304,21 +333,33 @@ export const EmojiDebugPage: React.FC = () => {
 					<div className='emoji-list-section'>
 						<h2>📝 Emoji 源代码列表（可直接复制检查）</h2>
 						<p>
-							💡 提示：在列表模式下，你可以看到所有 emoji 的原始显示。
-							如果某个 emoji 在这里显示正常，但在动画中显示异常，
-							可能是该 emoji 在特定 CSS 变换或动画效果下有问题。
+							💡 提示：在列表模式下，你可以看到所有 emoji 的原始显示。 如果某个
+							emoji 在这里显示正常，但在动画中显示异常， 可能是该 emoji 在特定
+							CSS 变换或动画效果下有问题。
 						</p>
-						
+
 						<div className='emoji-static-grid'>
 							<div className='emoji-category-static'>
 								<h3>➕ 加法 (139个)</h3>
 								<div className='emoji-row'>
-									<span>😊 🎉 🌟 ✨ 🎊 🎈 🎁 🏆 🌈 ⭐ 💫 🌸 🌺 🌻 🌼 🌷 🍀 🦋 🐝 🐞</span>
-									<span>🎯 🎪 🎨 🦄 🐰 🎀 🍭 🧸 🎂 🍓 🦊 🐱 🎬 🌞 🌝 💖 💝 💗 💓 💕</span>
-									<span>💞 💘 💌 🎵 🎶 🎼 🎤 🎧 🎸 🎹 🥁 🎺 🎷 🎻 🎸 🌹 🌺 🌴 🌵 🌾</span>
-									<span>🌿 🍁 🍂 🍃 🐦 🐦 🐦 🦆 🐦 🦅 🦆 🐣 🐤 🐥 🐦 🐧 🦉 🐸 🐢 🦎</span>
-									<span>🐙 🐙 🦀 🦀 🐠 🐟 🐡 🐬 🐳 🐋 🐟 🐅 🐆 🐴 🐵 🐵 🐘 🦏 🦏 🐪</span>
-									<span>🐫 🐫 🐨 🦒 🐃 🐂 🐄 🐎 🐖 🐏 🐑 🐫 🐐 🐕 🐩 🐕 🐈 🐓 🦃 🐦</span>
+									<span>
+										😊 🎉 🌟 ✨ 🎊 🎈 🎁 🏆 🌈 ⭐ 💫 🌸 🌺 🌻 🌼 🌷 🍀 🦋 🐝 🐞
+									</span>
+									<span>
+										🎯 🎪 🎨 🦄 🐰 🎀 🍭 🧸 🎂 🍓 🦊 🐱 🎬 🌞 🌝 💖 💝 💗 💓 💕
+									</span>
+									<span>
+										💞 💘 💌 🎵 🎶 🎼 🎤 🎧 🎸 🎹 🥁 🎺 🎷 🎻 🎸 🌹 🌺 🌴 🌵 🌾
+									</span>
+									<span>
+										🌿 🍁 🍂 🍃 🐦 🐦 🐦 🦆 🐦 🦅 🦆 🐣 🐤 🐥 🐦 🐧 🦉 🐸 🐢 🦎
+									</span>
+									<span>
+										🐙 🐙 🦀 🦀 🐠 🐟 🐡 🐬 🐳 🐋 🐟 🐅 🐆 🐴 🐵 🐵 🐘 🦏 🦏 🐪
+									</span>
+									<span>
+										🐫 🐫 🐨 🦒 🐃 🐂 🐄 🐎 🐖 🐏 🐑 🐫 🐐 🐕 🐩 🐕 🐈 🐓 🦃 🐦
+									</span>
 									<span>🐦 🦆 🐦 🐦 🐇 🐻 🦔 🦔 🦔 🐻 🐁 🐀 🐹 🐭 🐰</span>
 								</div>
 							</div>
@@ -354,19 +395,31 @@ export const EmojiDebugPage: React.FC = () => {
 						<div className='comparison-note'>
 							<h4>🔍 检查方法</h4>
 							<ul>
-								<li>✅ <strong>所有 emoji 都显示正常</strong> - 说明你的系统支持很好！</li>
-								<li>⚠️ <strong>某些显示为 □ 或 �</strong> - 记录这些 emoji，需要在源代码中替换</li>
-								<li>💡 <strong>对比动画模式</strong> - 切换回动画模式，看是否有 emoji 只在动画中出问题</li>
-								<li>📱 <strong>测试不同设备</strong> - 在手机、平板或其他浏览器上测试</li>
+								<li>
+									✅ <strong>所有 emoji 都显示正常</strong> -
+									说明你的系统支持很好！
+								</li>
+								<li>
+									⚠️ <strong>某些显示为 □ 或 �</strong> - 记录这些
+									emoji，需要在源代码中替换
+								</li>
+								<li>
+									💡 <strong>对比动画模式</strong> - 切换回动画模式，看是否有
+									emoji 只在动画中出问题
+								</li>
+								<li>
+									📱 <strong>测试不同设备</strong> -
+									在手机、平板或其他浏览器上测试
+								</li>
 							</ul>
 						</div>
 					</div>
 				</>
 			) : (
 				<>
-					<AnimationSection 
-						operation='+' 
-						operationName='➕ 加法动画' 
+					<AnimationSection
+						operation='+'
+						operationName='➕ 加法动画'
 						animationCount={139}
 					/>
 
@@ -414,9 +467,7 @@ export const EmojiDebugPage: React.FC = () => {
 							记录下无法显示或显示异常的 emoji，在{' '}
 							<code>src/utils/animationGenerator.tsx</code> 中进行替换
 						</li>
-						<li>
-							建议使用更通用、兼容性更好的 emoji（Emoji 11.0 或更早版本）
-						</li>
+						<li>建议使用更通用、兼容性更好的 emoji（Emoji 11.0 或更早版本）</li>
 					</ol>
 				</div>
 			</div>

@@ -15,13 +15,11 @@ const emojis = {
 		'🎈',
 		'🎁',
 		'🏆',
-		'🌈',
 		'⭐',
 		'💫',
 		'🌸',
 		'🌺',
 		'🌻',
-		'🌼',
 		'🌷',
 		'🍀',
 		'🦋',
@@ -40,7 +38,7 @@ const emojis = {
 		'🦊',
 		'🐱',
 		'🎬',
-		// 新增67个emoji，共100个
+		// 新增emoji，删除了2个无法正常显示的emoji（原L8彩虹和L14花朵），当前共133个
 		'🌞',
 		'🌝',
 		'💖',
@@ -627,7 +625,7 @@ export const generateAnimations = (
 		const praise = praiseSet[i % praiseSet.length]
 		const color = colors[i % colors.length]
 		const animationIndex = i % 10 // 使用10种基本动画模式
-		
+
 		// 计算 emoji 的实际行号
 		const emojiLineNumber = emojiLineNumbers[operationType] + emojiIndex
 
@@ -686,7 +684,7 @@ const createAnimation = (
 	lineNumber?: number // 可选的行号参数
 ): ReactElement => {
 	const key = `anim-${index}`
-	
+
 	// 如果提供了行号，在 emoji 旁边显示行号标签
 	const emojiWithLineNumber = lineNumber ? (
 		<div style={{ position: 'relative', display: 'inline-block' }}>
@@ -974,7 +972,7 @@ export const getEmojisByOperation = (operation: OperationType) => {
 		'×': 175,
 		'÷': 202,
 	}
-	
+
 	let emojiArray: string[] = []
 	switch (operation) {
 		case '+':
@@ -990,7 +988,7 @@ export const getEmojisByOperation = (operation: OperationType) => {
 			emojiArray = emojis.division
 			break
 	}
-	
+
 	return emojiArray.map((emoji, index) => ({
 		emoji,
 		lineNumber: emojiLineNumbers[operation] + index,
