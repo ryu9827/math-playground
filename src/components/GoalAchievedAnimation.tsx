@@ -206,7 +206,7 @@ export const GoalAchievedAnimation: React.FC<GoalAchievedAnimationProps> = ({
 										boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
 									}}
 								>
-									L{item.animalIndex}
+									{item.animalIndex}
 								</span>
 							</span>
 						</motion.div>

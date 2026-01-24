@@ -7,221 +7,220 @@ export type OperationType = '+' | '-' | '×' | '÷'
 // Emoji 集合
 const emojis = {
 	addition: [
-		'😊',
-		'🎉',
-		'🌟',
-		'✨',
-		'🎊',
-		'🎈',
-		'🎁',
-		'🏆',
-		'⭐',
-		'💫',
-		'🌸',
-		'🌺',
-		'🌻',
-		'🌷',
-		'🍀',
-		'🦋',
-		'🐝',
-		'🐞',
-		'🎯',
-		'🎪',
-		'🎨',
-		'🦄',
-		'🐰',
-		'🎀',
-		'🍭',
-		'🧸',
-		'🎂',
-		'🍓',
-		'🦊',
-		'🐱',
-		'🎬',
+		{ number: 1, value: '😊' },
+		{ number: 2, value: '🎉' },
+		{ number: 3, value: '🌟' },
+		{ number: 4, value: '✨' },
+		{ number: 5, value: '🎊' },
+		{ number: 6, value: '🎈' },
+		{ number: 7, value: '🎁' },
+		{ number: 8, value: '🏆' },
+		{ number: 9, value: '⭐' },
+		{ number: 10, value: '💫' },
+		{ number: 11, value: '🌸' },
+		{ number: 12, value: '🌺' },
+		{ number: 13, value: '🌻' },
+		{ number: 14, value: '🍀' },
+		{ number: 15, value: '🦋' },
+		{ number: 16, value: '🐝' },
+		{ number: 17, value: '🐞' },
+		{ number: 18, value: '🎯' },
+		{ number: 19, value: '🎪' },
+		{ number: 20, value: '🎨' },
+		{ number: 21, value: '🦄' },
+		{ number: 22, value: '🐰' },
+		{ number: 23, value: '🎀' },
+		{ number: 24, value: '🍭' },
+		{ number: 25, value: '🧸' },
+		{ number: 26, value: '🎂' },
+		{ number: 27, value: '🍓' },
+		{ number: 28, value: '🦊' },
+		{ number: 29, value: '🐱' },
+		{ number: 30, value: '🎬' },
 		// 新增emoji，删除了2个无法正常显示的emoji（原L8彩虹和L14花朵），当前共133个
-		'🌞',
-		'🌝',
-		'💖',
-		'💝',
-		'💗',
-		'💓',
-		'💕',
-		'💞',
-		'💘',
-		'💌',
-		'🎵',
-		'🎶',
-		'🎼',
-		'🎤',
-		'🎧',
-		'🎸',
-		'🎹',
-		'🥁',
-		'🎺',
-		'🎷',
-		'🎻',
-		'🎸',
-		'🌹',
-		'🌺',
-		'🌴',
-		'🌵',
-		'🌾',
-		'🌿',
-		'🍁',
-		'🍂',
-		'🍃',
-		'🐦',
-		'🐦',
-		'🐦',
-		'🦆',
-		'🐦',
-		'🦅',
-		'🦆',
-		'🐣',
-		'🐤',
-		'🐥',
-		'🐦',
-		'🐧',
-		'🦉',
-		'🐸',
-		'🐢',
-		'🦎',
-		'🐙',
-		'🐙',
-		'🦀',
-		'🦀',
-		'🐠',
-		'🐟',
-		'🐡',
-		'🐬',
-		'🐳',
-		'🐋',
-		'🐟',
-		'🐅',
-		'🐆',
-		'🐴',
-		'🐵',
-		'🐵',
-		'🐘',
-		'🦏',
-		'🦏',
-		'🐪',
-		'🐫',
-		'🐫',
-		'🐨',
-		'🦒',
-		'🐃',
-		'🐂',
-		'🐄',
-		'🐎',
-		'🐖',
-		'🐏',
-		'🐑',
-		'🐫',
-		'🐐',
-		'🐕',
-		'🐩',
-		'🐕',
-		'🐈',
-		'🐓',
-		'🦃',
-		'🐦',
-		'🐦',
-		'🦆',
-		'🐦',
-		'🐦',
-		'🐇',
-		'🐻',
-		'🦔',
-		'🦔',
-		'🦔',
-		'🐻',
-		'🐁',
-		'🐀',
-		'🐹',
-		'🐭',
-		'🐰',
+		{ number: 31, value: '🌞' },
+		{ number: 32, value: '🌝' },
+		{ number: 33, value: '💖' },
+		{ number: 34, value: '💝' },
+		{ number: 35, value: '💗' },
+		{ number: 36, value: '💓' },
+		{ number: 37, value: '💕' },
+		{ number: 38, value: '💞' },
+		{ number: 39, value: '💘' },
+		{ number: 40, value: '💌' },
+		{ number: 41, value: '🎵' },
+		{ number: 42, value: '🎶' },
+		{ number: 43, value: '🎼' },
+		{ number: 44, value: '🎤' },
+		{ number: 45, value: '🎧' },
+		{ number: 46, value: '🎸' },
+		{ number: 47, value: '🎹' },
+		{ number: 48, value: '🥁' },
+		{ number: 49, value: '🎺' },
+		{ number: 50, value: '🎷' },
+		{ number: 51, value: '🎻' },
+		{ number: 52, value: '🎸' },
+		{ number: 53, value: '🌹' },
+		{ number: 54, value: '🌺' },
+		{ number: 55, value: '🌴' },
+		{ number: 56, value: '🌵' },
+		{ number: 57, value: '🌾' },
+		{ number: 58, value: '🌿' },
+		{ number: 59, value: '🍁' },
+		{ number: 60, value: '🍂' },
+		{ number: 61, value: '🍃' },
+		{ number: 62, value: '🐦' },
+		{ number: 63, value: '🐦' },
+		{ number: 64, value: '🐦' },
+		{ number: 65, value: '🦆' },
+		{ number: 66, value: '🐦' },
+		{ number: 67, value: '🦅' },
+		{ number: 68, value: '🦆' },
+		{ number: 69, value: '🐣' },
+		{ number: 70, value: '🐤' },
+		{ number: 71, value: '🐥' },
+		{ number: 72, value: '🐦' },
+		{ number: 73, value: '🐧' },
+		{ number: 74, value: '🦉' },
+		{ number: 75, value: '🐸' },
+		{ number: 76, value: '🐢' },
+		{ number: 77, value: '🦎' },
+		{ number: 78, value: '🐙' },
+		{ number: 79, value: '🐙' },
+		{ number: 80, value: '🦀' },
+		{ number: 81, value: '🦀' },
+		{ number: 82, value: '🐠' },
+		{ number: 83, value: '🐟' },
+		{ number: 84, value: '🐡' },
+		{ number: 85, value: '🐬' },
+		{ number: 86, value: '🐳' },
+		{ number: 87, value: '🐋' },
+		{ number: 88, value: '🐟' },
+		{ number: 89, value: '🐅' },
+		{ number: 90, value: '🐆' },
+		{ number: 91, value: '🐴' },
+		{ number: 92, value: '🐵' },
+		{ number: 93, value: '🐵' },
+		{ number: 94, value: '🐘' },
+		{ number: 95, value: '🦏' },
+		{ number: 96, value: '🦏' },
+		{ number: 97, value: '🐪' },
+		{ number: 98, value: '🐫' },
+		{ number: 99, value: '🐫' },
+		{ number: 100, value: '🐨' },
+		{ number: 101, value: '🦒' },
+		{ number: 102, value: '🐃' },
+		{ number: 103, value: '🐂' },
+		{ number: 104, value: '🐄' },
+		{ number: 105, value: '🐎' },
+		{ number: 106, value: '🐖' },
+		{ number: 107, value: '🐏' },
+		{ number: 108, value: '🐑' },
+		{ number: 109, value: '🐫' },
+		{ number: 110, value: '🐐' },
+		{ number: 111, value: '🐕' },
+		{ number: 112, value: '🐩' },
+		{ number: 113, value: '🐕' },
+		{ number: 114, value: '🐈' },
+		{ number: 115, value: '🐓' },
+		{ number: 116, value: '🦃' },
+		{ number: 117, value: '🐦' },
+		{ number: 118, value: '🐦' },
+		{ number: 119, value: '🦆' },
+		{ number: 120, value: '🐦' },
+		{ number: 121, value: '🐦' },
+		{ number: 122, value: '🐇' },
+		{ number: 123, value: '🐻' },
+		{ number: 124, value: '🦔' },
+		{ number: 125, value: '🦔' },
+		{ number: 126, value: '🦔' },
+		{ number: 127, value: '🐻' },
+		{ number: 128, value: '🐁' },
+		{ number: 129, value: '🐀' },
+		{ number: 130, value: '🐹' },
+		{ number: 131, value: '🐭' },
+		{ number: 132, value: '🐰' },
 	],
 	subtraction: [
-		'🤔',
-		'🧠',
-		'💡',
-		'🔍',
-		'📚',
-		'✏',
-		'📝',
-		'🎓',
-		'🦉',
-		'🧩',
-		'🎲',
-		'🔬',
-		'🔭',
-		'🧪',
-		'🧪',
-		'📊',
-		'📈',
-		'🔑',
-		'🔑',
-		'🎯',
-		'🧮',
-		'💎',
-		'🏅',
-		'🌟',
-		'⭐',
+		{ number: 133, value: '🤔' },
+		{ number: 134, value: '🧠' },
+		{ number: 135, value: '💡' },
+		{ number: 136, value: '🔍' },
+		{ number: 137, value: '📚' },
+		{ number: 138, value: '✏' },
+		{ number: 139, value: '📝' },
+		{ number: 140, value: '🎓' },
+		{ number: 141, value: '🦉' },
+		{ number: 142, value: '🧩' },
+		{ number: 143, value: '🎲' },
+		{ number: 144, value: '🔬' },
+		{ number: 145, value: '🔭' },
+		{ number: 146, value: '🧪' },
+		{ number: 147, value: '🧪' },
+		{ number: 148, value: '📊' },
+		{ number: 149, value: '📈' },
+		{ number: 150, value: '🔑' },
+		{ number: 151, value: '🔑' },
+		{ number: 152, value: '🎯' },
+		{ number: 153, value: '🧮' },
+		{ number: 154, value: '💎' },
+		{ number: 155, value: '🏅' },
+		{ number: 156, value: '🌟' },
+		{ number: 157, value: '⭐' },
 	],
 	multiplication: [
-		'🚀',
-		'⚡',
-		'💥',
-		'🔥',
-		'💪',
-		'💪',
-		'💪',
-		'🎸',
-		'🎵',
-		'🎶',
-		'🎤',
-		'🥁',
-		'🎺',
-		'🎷',
-		'🎻',
-		'🏃',
-		'⚽',
-		'🏀',
-		'🎾',
-		'🏐',
-		'🏈',
-		'⚾',
-		'🥊',
-		'🏋',
-		'🤸',
+		{ number: 158, value: '🚀' },
+		{ number: 159, value: '⚡' },
+		{ number: 160, value: '💥' },
+		{ number: 161, value: '🔥' },
+		{ number: 162, value: '💪' },
+		{ number: 163, value: '💪' },
+		{ number: 164, value: '💪' },
+		{ number: 165, value: '🎸' },
+		{ number: 166, value: '🎵' },
+		{ number: 167, value: '🎶' },
+		{ number: 168, value: '🎤' },
+		{ number: 169, value: '🥁' },
+		{ number: 170, value: '🎺' },
+		{ number: 171, value: '🎷' },
+		{ number: 172, value: '🎻' },
+		{ number: 173, value: '🏃' },
+		{ number: 174, value: '⚽' },
+		{ number: 175, value: '🏀' },
+		{ number: 176, value: '🎾' },
+		{ number: 177, value: '🏐' },
+		{ number: 178, value: '🏈' },
+		{ number: 179, value: '⚾' },
+		{ number: 180, value: '🥊' },
+		{ number: 181, value: '🏋' },
+		{ number: 182, value: '🤸' },
 	],
 	division: [
-		'🧘',
-		'🕉',
-		'☯',
-		'🎋',
-		'🍃',
-		'🌿',
-		'🌾',
-		'🌱',
-		'🪴',
-		'🐦',
-		'🦆',
-		'🐦',
-		'🐬',
-		'🐳',
-		'🐋',
-		'🌊',
-		'🏝',
-		'🗻',
-		'🌄',
-		'🌅',
-		'🌌',
-		'🌙',
-		'⭐',
-		'💫',
-		'✨',
+		{ number: 183, value: '🧘' },
+		{ number: 184, value: '🕉' },
+		{ number: 185, value: '☯' },
+		{ number: 186, value: '🎋' },
+		{ number: 187, value: '🍃' },
+		{ number: 188, value: '🌿' },
+		{ number: 189, value: '🌾' },
+		{ number: 190, value: '🌱' },
+		{ number: 191, value: '🪴' },
+		{ number: 192, value: '🐦' },
+		{ number: 193, value: '🦆' },
+		{ number: 194, value: '🐦' },
+		{ number: 195, value: '🐬' },
+		{ number: 196, value: '🐳' },
+		{ number: 197, value: '🐋' },
+		{ number: 198, value: '🌊' },
+		{ number: 199, value: '🏝' },
+		{ number: 200, value: '🗻' },
+		{ number: 201, value: '🌄' },
+		{ number: 202, value: '🌅' },
+		{ number: 203, value: '🌌' },
+		{ number: 204, value: '🌙' },
+		{ number: 205, value: '⭐' },
+		{ number: 206, value: '💫' },
+		{ number: 207, value: '✨' },
 	],
 }
 
@@ -596,13 +595,24 @@ const colorSchemes = {
 	division: ['#98FB98', '#00FA9A', '#00FF7F', '#3CB371', '#2E8B57'],
 }
 
-// emoji 在文件中的起始行号
-const emojiLineNumbers = {
-	addition: 10, // 'addition' 数组第一个 emoji 的行号
-	subtraction: 148,
-	multiplication: 175,
-	division: 202,
-}
+/**
+ * Emoji 编号系统（用于调试模式）
+ * ================================
+ * 新规则：每个 emoji 对象包含 number 和 value 属性
+ * - number: emoji 的唯一编号（1-207，跨所有运算类型）
+ * - value: emoji 字符本身
+ *
+ * 编号范围分配：
+ * - addition: 1-132 (132 个)
+ * - subtraction: 133-157 (25 个)
+ * - multiplication: 158-182 (25 个)
+ * - division: 183-207 (25 个)
+ *
+ * 显示格式：在调试模式下，emoji 右上角会显示编号标签
+ * 例如：{ number: 8, value: '�' } → 显示为 🏆 带标签 "8"
+ *
+ * 这样即使删除某些 emoji，其他 emoji 的编号也不会变化，便于追踪和调试
+ */
 
 // 生成动画函数
 export const generateAnimations = (
@@ -617,17 +627,45 @@ export const generateAnimations = (
 		language === 'en' ? praisesEn[operationType] : praises[operationType]
 	const colors = colorSchemes[operationType]
 
+	// 🔍 DEBUG MODE: 只显示 L8 和 L14 用于检查
+	const debugMode = true // TODO: 改回 false 恢复正常
+	if (debugMode && showDebugInfo) {
+		// 只创建 L8 (索引7) 和 L14 (索引13)
+		const testIndices = [7, 13]
+		testIndices.forEach((emojiIndex, i) => {
+			const emojiItem = emojiSet[emojiIndex]
+			const emoji = typeof emojiItem === 'string' ? emojiItem : emojiItem.value
+			const emojiNumber =
+				typeof emojiItem === 'string' ? emojiIndex + 1 : emojiItem.number
+			const praise = praiseSet[0]
+			const color = colors[0]
+
+			// 创建静止的动画（type 999 表示静止）
+			animations.push(
+				createAnimation(
+					999, // 特殊的静止动画类型
+					emoji,
+					praise,
+					color,
+					i,
+					emojiNumber // 使用 emoji 对象的 number 属性
+				)
+			)
+		})
+		return animations
+	}
+
 	// 加法生成200个动画，其他运算生成100个
 	const animationCount = operation === '+' ? 200 : 100
 	for (let i = 0; i < animationCount; i++) {
 		const emojiIndex = i % emojiSet.length
-		const emoji = emojiSet[emojiIndex]
+		const emojiItem = emojiSet[emojiIndex]
+		const emoji = typeof emojiItem === 'string' ? emojiItem : emojiItem.value
+		const emojiNumber =
+			typeof emojiItem === 'string' ? emojiIndex + 1 : emojiItem.number
 		const praise = praiseSet[i % praiseSet.length]
 		const color = colors[i % colors.length]
 		const animationIndex = i % 10 // 使用10种基本动画模式
-
-		// 计算 emoji 的实际行号
-		const emojiLineNumber = emojiLineNumbers[operationType] + emojiIndex
 
 		animations.push(
 			createAnimation(
@@ -636,7 +674,7 @@ export const generateAnimations = (
 				praise,
 				color,
 				i,
-				showDebugInfo ? emojiLineNumber : undefined
+				showDebugInfo ? emojiNumber : undefined // 使用 emoji 对象的 number 属性
 			)
 		)
 	}
@@ -685,10 +723,10 @@ const createAnimation = (
 ): ReactElement => {
 	const key = `anim-${index}`
 
-	// 如果提供了行号，在 emoji 旁边显示行号标签
+	// 如果提供了行号，在 emoji 旁边显示编号标签
 	const emojiWithLineNumber = lineNumber ? (
 		<div style={{ position: 'relative', display: 'inline-block' }}>
-			{emoji}
+			<span style={{ fontSize: '1em' }}>{emoji}</span>
 			<div
 				style={{
 					position: 'absolute',
@@ -704,12 +742,31 @@ const createAnimation = (
 					boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
 				}}
 			>
-				L{lineNumber}
+				{lineNumber}
 			</div>
 		</div>
 	) : (
 		emoji
 	)
+
+	// 🔍 DEBUG: 静止动画，用于检查 emoji
+	if (type === 999) {
+		return (
+			<div
+				key={key}
+				style={{
+					position: 'fixed',
+					top: lineNumber === 8 ? '200px' : '350px', // L8 在上，L14 在下
+					left: '50%',
+					transform: 'translateX(-50%)',
+					fontSize: '80px',
+					zIndex: 9999,
+				}}
+			>
+				{emojiWithLineNumber}
+			</div>
+		)
+	}
 
 	switch (type) {
 		case 0: // 爆炸效果
@@ -964,16 +1021,12 @@ const createAnimation = (
 	}
 }
 
-// 导出 emoji 数据供调试页面使用
+/**
+ * 导出 emoji 数据供调试页面使用
+ * 返回指定运算类型的所有 emoji 及其行号标签
+ */
 export const getEmojisByOperation = (operation: OperationType) => {
-	const emojiLineNumbers = {
-		'+': 10,
-		'-': 148,
-		'×': 175,
-		'÷': 202,
-	}
-
-	let emojiArray: string[] = []
+	let emojiArray: (string | { number: number; value: string })[] = []
 	switch (operation) {
 		case '+':
 			emojiArray = emojis.addition
@@ -989,9 +1042,14 @@ export const getEmojisByOperation = (operation: OperationType) => {
 			break
 	}
 
-	return emojiArray.map((emoji, index) => ({
-		emoji,
-		lineNumber: emojiLineNumbers[operation] + index,
-		operation,
-	}))
+	return emojiArray.map((emojiItem, index) => {
+		const emoji = typeof emojiItem === 'string' ? emojiItem : emojiItem.value
+		const lineNumber =
+			typeof emojiItem === 'string' ? index + 1 : emojiItem.number
+		return {
+			emoji,
+			lineNumber,
+			operation,
+		}
+	})
 }

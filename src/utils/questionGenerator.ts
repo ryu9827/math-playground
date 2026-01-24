@@ -175,25 +175,18 @@ const generateNewQuestionInternal = (
 				break
 
 			case '×':
-				// 乘法：确保 num1 * num2 在 [min, max] 范围内
-				const maxMultiplier = Math.min(Math.floor(Math.sqrt(max)), 12)
-				const minMultiplier = avoidZero ? 1 : 0
+				// 乘法：确保两个乘数都在 [min, max] 范围内
+				// min 和 max 表示乘数的范围（不是结果的范围）
+				const minMultiplier = effectiveMin
+				const maxMultiplier = max
+
 				num1 =
 					Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) +
 					minMultiplier
-				// 如果 num1 为 0，则强制 num1 至少为 1（避免除以0）
-				if (num1 === 0) num1 = 1
-				const maxNum2 = Math.min(Math.floor(max / num1), 12)
 				num2 =
-					Math.floor(Math.random() * (maxNum2 - minMultiplier + 1)) +
+					Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) +
 					minMultiplier
 				answer = num1 * num2
-				// 如果结果小于 min，重新调整
-				if (answer < effectiveMin) {
-					num1 = Math.max(2, Math.floor(Math.sqrt(effectiveMin)))
-					num2 = Math.ceil(effectiveMin / num1)
-					answer = num1 * num2
-				}
 				break
 
 			case '÷':

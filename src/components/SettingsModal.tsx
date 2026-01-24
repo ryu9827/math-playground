@@ -49,6 +49,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 		React.useState<number | string>(operationLimits['-'].min)
 	const [subtractionError, setSubtractionError] = React.useState('')
 
+	// 乘法状态
+	const [multiplicationMin, setMultiplicationMin] = React.useState<
+		number | string
+	>(operationLimits['×'].min)
+	const [multiplicationMax, setMultiplicationMax] = React.useState<
+		number | string
+	>(operationLimits['×'].max)
+	const [multiplicationError, setMultiplicationError] = React.useState('')
+
 	// 当弹窗打开或 Redux 状态变化时，同步到本地状态
 	React.useEffect(() => {
 		if (isOpen) {
@@ -58,8 +67,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 			setAdditionMax(operationLimits['+'].max)
 			setSubtractionMinuendMax(operationLimits['-'].max)
 			setSubtractionSubtrahendMin(operationLimits['-'].min)
+			setMultiplicationMin(operationLimits['×'].min)
+			setMultiplicationMax(operationLimits['×'].max)
 			setAdditionError('')
 			setSubtractionError('')
+			setMultiplicationError('')
 		}
 	}, [isOpen, soundEnabled, operationLimits, numberSplitMaxTarget])
 
@@ -151,6 +163,50 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 		validateSubtractionLimits(value, subtractionMinuendMax)
 	}
 
+	// 乘法验证：下限必须小于上限
+	const validateMultiplicationLimits = (
+		min: number | string,
+		max: number | string
+	): boolean => {
+		const minNum = typeof min === 'string' ? parseInt(min) || 1 : min
+		const maxNum = typeof max === 'string' ? parseInt(max) || 1 : max
+
+		if (minNum >= maxNum) {
+			setMultiplicationError(t.minMaxError)
+			return false
+		}
+		setMultiplicationError('')
+		return true
+	}
+
+	// onChange 时只更新值，不验证
+	const handleMultiplicationMinChange = (value: string) => {
+		setMultiplicationMin(value)
+	}
+
+	const handleMultiplicationMaxChange = (value: string) => {
+		setMultiplicationMax(value)
+	}
+
+	// onBlur 时才验证并格式化
+	const handleMultiplicationMinBlur = () => {
+		const value =
+			typeof multiplicationMin === 'string'
+				? parseInt(multiplicationMin) || 1
+				: multiplicationMin
+		setMultiplicationMin(value)
+		validateMultiplicationLimits(value, multiplicationMax)
+	}
+
+	const handleMultiplicationMaxBlur = () => {
+		const value =
+			typeof multiplicationMax === 'string'
+				? parseInt(multiplicationMax) || 1
+				: multiplicationMax
+		setMultiplicationMax(value)
+		validateMultiplicationLimits(multiplicationMin, value)
+	}
+
 	const handleSave = () => {
 		// 转换为数字 - 加法
 		const additionMinNum =
@@ -168,6 +224,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 				? parseInt(subtractionMinuendMax) || 1
 				: subtractionMinuendMax
 
+		// 转换为数字 - 乘法
+		const multiplicationMinNum =
+			typeof multiplicationMin === 'string'
+				? parseInt(multiplicationMin) || 1
+				: multiplicationMin
+		const multiplicationMaxNum =
+			typeof multiplicationMax === 'string'
+				? parseInt(multiplicationMax) || 1
+				: multiplicationMax
+
 		// 验证加法上下限
 		if (!validateAdditionLimits(additionMinNum, additionMaxNum)) {
 			return // 如果验证失败，不保存
@@ -179,6 +245,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 				subtractionSubtrahendMinNum,
 				subtractionMinuendMaxNum
 			)
+		) {
+			return // 如果验证失败，不保存
+		}
+
+		// 验证乘法限制
+		if (
+			!validateMultiplicationLimits(multiplicationMinNum, multiplicationMaxNum)
 		) {
 			return // 如果验证失败，不保存
 		}
@@ -209,6 +282,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 				operation: '-',
 				min: subtractionSubtrahendMinNum,
 				max: subtractionMinuendMaxNum,
+			})
+		)
+
+		// 保存乘法设置
+		dispatch(
+			setOperationLimits({
+				operation: '×',
+				min: multiplicationMinNum,
+				max: multiplicationMaxNum,
 			})
 		)
 
@@ -347,6 +429,48 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 									</div>
 									{subtractionError && (
 										<div className='error-message'>{subtractionError}</div>
+									)}
+								</div>
+
+								{/* 乘法限制 */}
+								<div className='operation-limit-group'>
+									<h4>✖️ {t.multiplication}</h4>
+									<div className='limit-inputs'>
+										<div className='input-group'>
+											<label>{t.multiplicationMin}</label>
+											<input
+												type='number'
+												value={multiplicationMin}
+												onChange={(e) =>
+													handleMultiplicationMinChange(e.target.value)
+												}
+												onBlur={handleMultiplicationMinBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.multiplicationMinHint}
+											</span>
+										</div>
+										<div className='input-group'>
+											<label>{t.multiplicationMax}</label>
+											<input
+												type='number'
+												value={multiplicationMax}
+												onChange={(e) =>
+													handleMultiplicationMaxChange(e.target.value)
+												}
+												onBlur={handleMultiplicationMaxBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.multiplicationMaxHint}
+											</span>
+										</div>
+									</div>
+									{multiplicationError && (
+										<div className='error-message'>{multiplicationError}</div>
 									)}
 								</div>
 							</div>

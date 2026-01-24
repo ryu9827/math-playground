@@ -81,7 +81,7 @@ const loadSettings = (): SettingsState => {
 				operationLimits: settings.operationLimits || {
 					'+': { min: 1, max: 100 },
 					'-': { min: 1, max: 100 },
-					'×': { min: 1, max: 100 },
+					'×': { min: 2, max: 10 },
 					'÷': { min: 1, max: 100 },
 				},
 			}
@@ -103,7 +103,7 @@ const loadSettings = (): SettingsState => {
 		operationLimits: {
 			'+': { min: 1, max: 100 },
 			'-': { min: 1, max: 100 },
-			'×': { min: 1, max: 100 },
+			'×': { min: 2, max: 10 },
 			'÷': { min: 1, max: 100 },
 		},
 	}

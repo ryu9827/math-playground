@@ -15,42 +15,42 @@ interface MilestoneRewardProps {
 
 // 可爱的小动物 emoji（与 GoalAchievedAnimation 保持一致）
 const animals = [
-	'🐰',
-	'🦊',
-	'🐱',
-	'🐶',
-	'🐼',
-	'🐨',
-	'🐹',
-	'🦄',
-	'�',
-	'🦁',
-	'🐯',
-	'🐸',
-	'🐷',
-	'🐮',
-	'�',
-	'🦆',
-	'🦉',
-	'🐝',
-	'🦋',
-	'🐞',
+	{ number: 1, value: '🐰' },
+	{ number: 2, value: '🦊' },
+	{ number: 3, value: '🐱' },
+	{ number: 4, value: '🐶' },
+	{ number: 5, value: '🐼' },
+	{ number: 6, value: '🐨' },
+	{ number: 7, value: '🐹' },
+	{ number: 8, value: '🦄' },
+	{ number: 9, value: '🐻' },
+	{ number: 10, value: '🦁' },
+	{ number: 11, value: '🐯' },
+	{ number: 12, value: '🐸' },
+	{ number: 13, value: '🐷' },
+	{ number: 14, value: '🐮' },
+	{ number: 15, value: '🐔' },
+	{ number: 16, value: '🦆' },
+	{ number: 17, value: '🦉' },
+	{ number: 18, value: '🐝' },
+	{ number: 19, value: '🦋' },
+	{ number: 20, value: '🐞' },
 ]
 
 // 奖杯样式（不同的emoji）
 export const trophyEmojis = [
-	'🏆', // L0
-	'🥇', // L1
-	'🎖️', // L2
-	'👑', // L3
-	'⭐', // L4
-	'💎', // L5
-	'🌟', // L6
-	'✨', // L7
-	'🎯', // L8
-	'🔥', // L9
-	'💪', // L10
-	'🚀', // L11
+	{ number: 21, value: '🏆' },
+	{ number: 22, value: '🥇' },
+	{ number: 23, value: '🎖️' },
+	{ number: 24, value: '👑' },
+	{ number: 25, value: '⭐' },
+	{ number: 26, value: '💎' },
+	{ number: 27, value: '🌟' },
+	{ number: 28, value: '✨' },
+	{ number: 29, value: '🎯' },
+	{ number: 30, value: '🔥' },
+	{ number: 31, value: '💪' },
+	{ number: 32, value: '🚀' },
 ]
 // 祝贺文字（中文）
 const congratulationsZh = [
@@ -101,9 +101,9 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 		if (isOpen) {
 			// 随机选择奖杯
 			const randomIndex = Math.floor(Math.random() * trophyEmojis.length)
-			const randomTrophy = trophyEmojis[randomIndex]
-			setTrophy(randomTrophy)
-			setTrophyIndex(randomIndex)
+			const randomTrophyItem = trophyEmojis[randomIndex]
+			setTrophy(randomTrophyItem.value)
+			setTrophyIndex(randomTrophyItem.number)
 
 			// 随机选择祝贺文字
 			const congratsList =
@@ -131,14 +131,16 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 	// 生成随机动物
 	const randomAnimals = Array.from({ length: 30 }, () => {
 		const animalIndex = Math.floor(Math.random() * animals.length)
-		const animal = animals[animalIndex]
+		const animalItem = animals[animalIndex]
+		const animal = animalItem.value
+		const animalNumber = animalItem.number
 		const startX = Math.random() * 100
 		const endX = Math.random() * 100
 		const startY = Math.random() * 100
 		const duration = 8 + Math.random() * 12 // 8-20秒
 		const delay = Math.random() * 5 // 0-5秒延迟
 
-		return { animal, animalIndex, startX, endX, startY, duration, delay }
+		return { animal, animalNumber, startX, endX, startY, duration, delay }
 	})
 
 	// 生成烟花粒子
@@ -191,7 +193,7 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 										zIndex: 10000,
 									}}
 								>
-									L{trophyIndex}
+									{trophyIndex}
 								</span>
 							</span>
 						</motion.div>
@@ -284,7 +286,7 @@ export const MilestoneReward: React.FC<MilestoneRewardProps> = ({
 										boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
 									}}
 								>
-									L{item.animalIndex}
+									{item.animalNumber}
 								</span>
 							</span>
 						</motion.div>

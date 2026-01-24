@@ -45,6 +45,10 @@ export const translations = {
 		subtractionSubtrahendMin: '减数下限',
 		subtractionMinuendMaxHint: '被减数不得大于此值',
 		subtractionSubtrahendMinHint: '减数必须大于等于此值',
+		multiplicationMin: '乘数下限',
+		multiplicationMax: '乘数上限',
+		multiplicationMinHint: '两个乘数都必须大于等于此值',
+		multiplicationMaxHint: '两个乘数都不得大于此值',
 		minMaxError: '下限必须小于上限',
 		numberSplitSettings: '拆数字设置',
 		numberSplitMaxTarget: '目标数字上限',
@@ -95,6 +99,11 @@ export const translations = {
 		subtractionMinuendMaxHint: 'Minuend must not exceed this value',
 		subtractionSubtrahendMinHint:
 			'Subtrahend must be greater than or equal to this value',
+		multiplicationMin: 'Multiplier Min',
+		multiplicationMax: 'Multiplier Max',
+		multiplicationMinHint:
+			'Both multipliers must be greater than or equal to this value',
+		multiplicationMaxHint: 'Both multipliers must not exceed this value',
 		minMaxError: 'Min must be less than Max',
 		numberSplitSettings: 'Number Split Settings',
 		numberSplitMaxTarget: 'Max Target Number',
