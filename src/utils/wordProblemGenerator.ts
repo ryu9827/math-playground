@@ -3,230 +3,189 @@ import { Language } from './i18n'
 
 interface WordProblemTemplate {
 	question: (num1: number, num2: number) => string
-	scenarios: string[]
 }
 
-// 中文应用题模板
+// 中文应用题模板（用词简单，适合小学生）
 const chineseTemplates: Record<OperationType, WordProblemTemplate[]> = {
 	'+': [
-		{
-			question: (num1, num2) =>
-				`小明有${num1}个苹果，姐姐又给了小明${num2}个苹果，请问小明现在一共有几个苹果？`,
-			scenarios: ['苹果', '糖果', '玩具'],
-		},
-		{
-			question: (num1, num2) =>
-				`书架上有${num1}本书，妈妈又买了${num2}本书放上去，请问书架上现在一共有几本书？`,
-			scenarios: ['书', '本子', '铅笔'],
-		},
-		{
-			question: (num1, num2) =>
-				`公园里有${num1}只小鸟，又飞来了${num2}只小鸟，请问现在一共有几只小鸟？`,
-			scenarios: ['小鸟', '蝴蝶', '兔子'],
-		},
-		{
-			question: (num1, num2) =>
-				`停车场有${num1}辆车，又开进来${num2}辆车，请问现在一共有几辆车？`,
-			scenarios: ['车', '自行车', '公交车'],
-		},
-		{
-			question: (num1, num2) =>
-				`花园里开了${num1}朵花，第二天又开了${num2}朵花，请问一共开了几朵花？`,
-			scenarios: ['花', '玫瑰', '向日葵'],
-		},
+		{ question: (n1, n2) => `小明有${n1}个苹果，姐姐又给了他${n2}个苹果，小明现在有几个苹果？` },
+		{ question: (n1, n2) => `书架上有${n1}本书，妈妈又买了${n2}本书放上去，书架上现在有几本书？` },
+		{ question: (n1, n2) => `树上有${n1}只小鸟，又飞来了${n2}只小鸟，树上现在有几只小鸟？` },
+		{ question: (n1, n2) => `停车场里有${n1}辆车，又来了${n2}辆车，停车场里现在有几辆车？` },
+		{ question: (n1, n2) => `花园里有${n1}朵花开了，第二天又开了${n2}朵花，一共开了几朵花？` },
+		{ question: (n1, n2) => `鱼缸里有${n1}条金鱼，爸爸又买了${n2}条金鱼，鱼缸里现在有几条金鱼？` },
+		{ question: (n1, n2) => `篮子里有${n1}个鸡蛋，奶奶又放进去${n2}个鸡蛋，篮子里现在有几个鸡蛋？` },
+		{ question: (n1, n2) => `操场上有${n1}个小朋友在玩，又来了${n2}个小朋友，操场上现在有几个小朋友？` },
+		{ question: (n1, n2) => `小明早上读了${n1}页书，下午又读了${n2}页书，他今天一共读了几页书？` },
+		{ question: (n1, n2) => `小花有${n1}朵小红花，今天又得到了${n2}朵小红花，她现在一共有几朵小红花？` },
+		{ question: (n1, n2) => `小朋友们折了${n1}只纸鹤，又折了${n2}只纸鹤，一共折了几只纸鹤？` },
+		{ question: (n1, n2) => `湖里有${n1}只鸭子，又来了${n2}只鸭子，湖里现在有几只鸭子？` },
+		{ question: (n1, n2) => `妈妈买了${n1}个橙子，爸爸又买了${n2}个橙子，家里一共有几个橙子？` },
+		{ question: (n1, n2) => `院子里种了${n1}棵小树，今天又种了${n2}棵小树，院子里一共有几棵小树？` },
+		{ question: (n1, n2) => `小丽有${n1}颗弹珠，妈妈又给了她${n2}颗弹珠，小丽现在有几颗弹珠？` },
+		{ question: (n1, n2) => `动物园里有${n1}只小兔子，又来了${n2}只小兔子，动物园里现在有几只小兔子？` },
+		{ question: (n1, n2) => `冰箱里有${n1}瓶牛奶，妈妈又放进去${n2}瓶牛奶，冰箱里现在有几瓶牛奶？` },
+		{ question: (n1, n2) => `小明有${n1}张贴纸，哥哥送给他${n2}张贴纸，小明现在有几张贴纸？` },
+		{ question: (n1, n2) => `教室里有${n1}把椅子，又搬来了${n2}把椅子，教室里现在有几把椅子？` },
+		{ question: (n1, n2) => `小红有${n1}块饼干，妈妈又给了她${n2}块饼干，小红现在有几块饼干？` },
 	],
 	'-': [
-		{
-			question: (num1, num2) =>
-				`小红有${num1}颗糖，吃掉了${num2}颗糖，请问小红还剩几颗糖？`,
-			scenarios: ['糖', '饼干', '巧克力'],
-		},
-		{
-			question: (num1, num2) =>
-				`树上有${num1}个桃子，被小猴摘走了${num2}个，请问树上还剩几个桃子？`,
-			scenarios: ['桃子', '苹果', '梨'],
-		},
-		{
-			question: (num1, num2) =>
-				`教室里有${num1}个同学，走了${num2}个同学，请问还剩几个同学？`,
-			scenarios: ['同学', '小朋友', '学生'],
-		},
-		{
-			question: (num1, num2) =>
-				`盒子里有${num1}支铅笔，用掉了${num2}支，请问还剩几支铅笔？`,
-			scenarios: ['铅笔', '蜡笔', '钢笔'],
-		},
-		{
-			question: (num1, num2) =>
-				`水池里有${num1}条小鱼，游走了${num2}条，请问还剩几条小鱼？`,
-			scenarios: ['小鱼', '金鱼', '小虾'],
-		},
+		{ question: (n1, n2) => `小红有${n1}颗糖，吃掉了${n2}颗糖，小红还剩几颗糖？` },
+		{ question: (n1, n2) => `树上有${n1}个桃子，小猴摘走了${n2}个，树上还剩几个桃子？` },
+		{ question: (n1, n2) => `教室里有${n1}个小朋友，走了${n2}个小朋友，教室里还剩几个小朋友？` },
+		{ question: (n1, n2) => `盒子里有${n1}支铅笔，用掉了${n2}支，盒子里还剩几支铅笔？` },
+		{ question: (n1, n2) => `水池里有${n1}条小鱼，游走了${n2}条，水池里还剩几条小鱼？` },
+		{ question: (n1, n2) => `停车场里有${n1}辆车，开走了${n2}辆车，停车场里还剩几辆车？` },
+		{ question: (n1, n2) => `书架上有${n1}本书，小明借走了${n2}本，书架上还剩几本书？` },
+		{ question: (n1, n2) => `花篮里有${n1}朵花，拿走了${n2}朵花，花篮里还剩几朵花？` },
+		{ question: (n1, n2) => `小明有${n1}张贴纸，送给了朋友${n2}张，小明还剩几张贴纸？` },
+		{ question: (n1, n2) => `操场上有${n1}个小朋友在玩，有${n2}个小朋友回家了，操场上还剩几个小朋友？` },
+		{ question: (n1, n2) => `篮子里有${n1}个苹果，妈妈拿走了${n2}个，篮子里还剩几个苹果？` },
+		{ question: (n1, n2) => `农场里有${n1}只小鸡，卖掉了${n2}只，农场里还剩几只小鸡？` },
+		{ question: (n1, n2) => `小华有${n1}颗弹珠，输掉了${n2}颗，小华还剩几颗弹珠？` },
+		{ question: (n1, n2) => `糖果罐里有${n1}块糖，小朋友们吃掉了${n2}块，糖果罐里还剩几块糖？` },
+		{ question: (n1, n2) => `冰箱里有${n1}瓶果汁，喝掉了${n2}瓶，冰箱里还剩几瓶果汁？` },
+		{ question: (n1, n2) => `湖边有${n1}只天鹅，飞走了${n2}只，湖边还剩几只天鹅？` },
+		{ question: (n1, n2) => `盘子里有${n1}个橘子，吃掉了${n2}个，盘子里还剩几个橘子？` },
+		{ question: (n1, n2) => `小明有${n1}块饼干，吃掉了${n2}块饼干，小明还剩几块饼干？` },
+		{ question: (n1, n2) => `班里有${n1}个同学，有${n2}个同学请假了，班里现在有几个同学上课？` },
+		{ question: (n1, n2) => `花坛里有${n1}朵花，被风吹落了${n2}朵，花坛里还剩几朵花？` },
 	],
 	'×': [
-		{
-			question: (num1, num2) =>
-				`每个盘子里有${num1}个橘子，有${num2}个盘子，请问一共有几个橘子？`,
-			scenarios: ['橘子', '苹果', '梨'],
-		},
-		{
-			question: (num1, num2) =>
-				`每束花有${num1}朵，买了${num2}束花，请问一共有几朵花？`,
-			scenarios: ['花', '玫瑰', '郁金香'],
-		},
-		{
-			question: (num1, num2) =>
-				`每个文具盒有${num1}支笔，有${num2}个文具盒，请问一共有几支笔？`,
-			scenarios: ['笔', '铅笔', '钢笔'],
-		},
-		{
-			question: (num1, num2) =>
-				`每排有${num1}个座位，有${num2}排，请问一共有几个座位？`,
-			scenarios: ['座位', '椅子', '凳子'],
-		},
-		{
-			question: (num1, num2) =>
-				`每盒有${num1}块巧克力，买了${num2}盒，请问一共有几块巧克力？`,
-			scenarios: ['巧克力', '糖果', '饼干'],
-		},
+		{ question: (n1, n2) => `每个盘子里有${n1}个橘子，有${n2}个盘子，一共有几个橘子？` },
+		{ question: (n1, n2) => `每束花有${n1}朵，有${n2}束花，一共有几朵花？` },
+		{ question: (n1, n2) => `每个文具盒里有${n1}支铅笔，有${n2}个文具盒，一共有几支铅笔？` },
+		{ question: (n1, n2) => `每排有${n1}个椅子，有${n2}排，一共有几个椅子？` },
+		{ question: (n1, n2) => `每盒有${n1}块饼干，有${n2}盒，一共有几块饼干？` },
+		{ question: (n1, n2) => `每个书架放${n1}本书，有${n2}个书架，一共放了几本书？` },
+		{ question: (n1, n2) => `每辆小车有${n1}个座位，有${n2}辆小车，一共有几个座位？` },
+		{ question: (n1, n2) => `每张桌子旁坐${n1}个小朋友，有${n2}张桌子，一共坐了几个小朋友？` },
+		{ question: (n1, n2) => `每袋糖果里有${n1}颗糖，有${n2}袋糖果，一共有几颗糖？` },
+		{ question: (n1, n2) => `小明每天做${n1}道数学题，做了${n2}天，小明一共做了几道数学题？` },
+		{ question: (n1, n2) => `每个花坛里种了${n1}棵花，有${n2}个花坛，一共种了几棵花？` },
+		{ question: (n1, n2) => `每箱苹果有${n1}个，有${n2}箱苹果，一共有几个苹果？` },
+		{ question: (n1, n2) => `每个蛋糕切成${n1}块，有${n2}个蛋糕，一共可以切出几块蛋糕？` },
+		{ question: (n1, n2) => `每棵果树结了${n1}个果子，有${n2}棵果树，一共有几个果子？` },
+		{ question: (n1, n2) => `每包饼干里有${n1}块饼干，买了${n2}包，一共有几块饼干？` },
+		{ question: (n1, n2) => `每个班有${n1}个同学，有${n2}个班，全校一共有几个同学？` },
+		{ question: (n1, n2) => `每页写了${n1}个字，写了${n2}页，一共写了几个字？` },
+		{ question: (n1, n2) => `每只小狗有${n1}条腿，有${n2}只小狗，一共有几条腿？` },
+		{ question: (n1, n2) => `每盒彩笔有${n1}支，有${n2}盒彩笔，一共有几支彩笔？` },
+		{ question: (n1, n2) => `小红每天喝${n1}杯水，喝了${n2}天，小红一共喝了几杯水？` },
 	],
 	'÷': [
-		{
-			question: (num1, num2) =>
-				`有${num1}个苹果，平均分给${num2}个小朋友，每个小朋友能分到几个苹果？`,
-			scenarios: ['苹果', '橘子', '糖果'],
-		},
-		{
-			question: (num1, num2) =>
-				`有${num1}本书，平均放到${num2}个书架上，每个书架放几本书？`,
-			scenarios: ['书', '本子', '铅笔'],
-		},
-		{
-			question: (num1, num2) =>
-				`有${num1}朵花，平均插入${num2}个花瓶，每个花瓶插几朵花？`,
-			scenarios: ['花', '玫瑰', '百合'],
-		},
-		{
-			question: (num1, num2) =>
-				`有${num1}块巧克力，平均分成${num2}份，每份有几块巧克力？`,
-			scenarios: ['巧克力', '糖果', '饼干'],
-		},
-		{
-			question: (num1, num2) =>
-				`有${num1}支铅笔，平均分给${num2}个同学，每个同学分到几支铅笔？`,
-			scenarios: ['铅笔', '钢笔', '蜡笔'],
-		},
+		{ question: (n1, n2) => `有${n1}个苹果，平均分给${n2}个小朋友，每个小朋友分到几个苹果？` },
+		{ question: (n1, n2) => `有${n1}本书，平均放到${n2}个书架上，每个书架放几本书？` },
+		{ question: (n1, n2) => `有${n1}朵花，平均插入${n2}个花瓶，每个花瓶插几朵花？` },
+		{ question: (n1, n2) => `有${n1}块饼干，平均分成${n2}份，每份有几块饼干？` },
+		{ question: (n1, n2) => `有${n1}支铅笔，平均分给${n2}个同学，每个同学分到几支铅笔？` },
+		{ question: (n1, n2) => `有${n1}个橘子，平均装入${n2}个篮子，每个篮子装几个橘子？` },
+		{ question: (n1, n2) => `有${n1}颗糖，平均分给${n2}个小朋友，每个小朋友分到几颗糖？` },
+		{ question: (n1, n2) => `有${n1}张贴纸，平均分给${n2}个同学，每个同学分到几张贴纸？` },
+		{ question: (n1, n2) => `有${n1}个气球，平均分给${n2}个小朋友，每个小朋友分到几个气球？` },
+		{ question: (n1, n2) => `农场里有${n1}只小鸡，平均关在${n2}个笼子里，每个笼子里有几只小鸡？` },
+		{ question: (n1, n2) => `有${n1}个蛋糕，平均分给${n2}个班，每个班分到几个蛋糕？` },
+		{ question: (n1, n2) => `老师有${n1}块橡皮，平均发给${n2}个同学，每个同学分到几块橡皮？` },
+		{ question: (n1, n2) => `有${n1}个玩具，平均放入${n2}个箱子，每个箱子放几个玩具？` },
+		{ question: (n1, n2) => `有${n1}朵小红花，平均奖励给${n2}个同学，每个同学得到几朵小红花？` },
+		{ question: (n1, n2) => `有${n1}个面包，平均放入${n2}个袋子，每个袋子放几个面包？` },
+		{ question: (n1, n2) => `有${n1}张画，平均挂在${n2}面墙上，每面墙挂几张画？` },
+		{ question: (n1, n2) => `有${n1}颗弹珠，平均放进${n2}个袋子，每个袋子放几颗弹珠？` },
+		{ question: (n1, n2) => `有${n1}根胡萝卜，平均分给${n2}只兔子，每只兔子分到几根胡萝卜？` },
+		{ question: (n1, n2) => `有${n1}支彩笔，平均分给${n2}个小朋友，每个小朋友分到几支彩笔？` },
+		{ question: (n1, n2) => `有${n1}块积木，平均分成${n2}堆，每堆有几块积木？` },
 	],
 }
 
-// 英文应用题模板
+// 英文应用题模板（用词简单，适合小学生）
 const englishTemplates: Record<OperationType, WordProblemTemplate[]> = {
 	'+': [
-		{
-			question: (num1, num2) =>
-				`Tom has ${num1} apples. His sister gave him ${num2} more apples. How many apples does Tom have now?`,
-			scenarios: ['apples', 'candies', 'toys'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} books on the shelf. Mom bought ${num2} more books. How many books are there now?`,
-			scenarios: ['books', 'notebooks', 'pencils'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} birds in the park. ${num2} more birds flew in. How many birds are there now?`,
-			scenarios: ['birds', 'butterflies', 'rabbits'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} cars in the parking lot. ${num2} more cars drove in. How many cars are there now?`,
-			scenarios: ['cars', 'bikes', 'buses'],
-		},
-		{
-			question: (num1, num2) =>
-				`${num1} flowers bloomed in the garden. ${num2} more flowers bloomed the next day. How many flowers bloomed in total?`,
-			scenarios: ['flowers', 'roses', 'sunflowers'],
-		},
+		{ question: (n1, n2) => `Tom has ${n1} apples. His sister gave him ${n2} more apples. How many apples does Tom have now?` },
+		{ question: (n1, n2) => `There are ${n1} books on the shelf. Mom bought ${n2} more books. How many books are there now?` },
+		{ question: (n1, n2) => `There are ${n1} birds in the tree. ${n2} more birds flew over. How many birds are there now?` },
+		{ question: (n1, n2) => `There are ${n1} cars in the car park. ${n2} more cars came in. How many cars are there now?` },
+		{ question: (n1, n2) => `${n1} flowers are open in the garden. ${n2} more flowers opened today. How many flowers are open in total?` },
+		{ question: (n1, n2) => `There are ${n1} fish in the tank. Dad bought ${n2} more fish. How many fish are there now?` },
+		{ question: (n1, n2) => `There are ${n1} eggs in the basket. Grandma put in ${n2} more eggs. How many eggs are there now?` },
+		{ question: (n1, n2) => `${n1} children are playing outside. ${n2} more children came to play. How many children are there now?` },
+		{ question: (n1, n2) => `Sam read ${n1} pages in the morning and ${n2} pages in the afternoon. How many pages did Sam read today?` },
+		{ question: (n1, n2) => `Lily has ${n1} gold stars. She got ${n2} more gold stars today. How many gold stars does she have now?` },
+		{ question: (n1, n2) => `The children made ${n1} paper birds. Then they made ${n2} more. How many paper birds did they make in total?` },
+		{ question: (n1, n2) => `There are ${n1} ducks on the lake. ${n2} more ducks came over. How many ducks are there now?` },
+		{ question: (n1, n2) => `Mom bought ${n1} oranges and Dad bought ${n2} more oranges. How many oranges are there in total?` },
+		{ question: (n1, n2) => `${n1} small trees have been planted. ${n2} more trees were planted today. How many trees are there in total?` },
+		{ question: (n1, n2) => `Amy has ${n1} marbles. Her mom gave her ${n2} more marbles. How many marbles does Amy have now?` },
+		{ question: (n1, n2) => `The zoo has ${n1} rabbits. ${n2} more rabbits arrived. How many rabbits are there now?` },
+		{ question: (n1, n2) => `There are ${n1} bottles of milk in the fridge. Mom put in ${n2} more bottles. How many bottles are there now?` },
+		{ question: (n1, n2) => `Tom has ${n1} stickers. His brother gave him ${n2} more stickers. How many stickers does Tom have now?` },
+		{ question: (n1, n2) => `There are ${n1} chairs in the classroom. ${n2} more chairs were brought in. How many chairs are there now?` },
+		{ question: (n1, n2) => `Anna has ${n1} cookies. Mom gave her ${n2} more cookies. How many cookies does Anna have now?` },
 	],
 	'-': [
-		{
-			question: (num1, num2) =>
-				`Amy has ${num1} candies. She ate ${num2} candies. How many candies does Amy have left?`,
-			scenarios: ['candies', 'cookies', 'chocolates'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} peaches on the tree. A monkey picked ${num2} peaches. How many peaches are left?`,
-			scenarios: ['peaches', 'apples', 'pears'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} students in the classroom. ${num2} students left. How many students are left?`,
-			scenarios: ['students', 'children', 'pupils'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} pencils in the box. ${num2} pencils were used. How many pencils are left?`,
-			scenarios: ['pencils', 'crayons', 'pens'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} fish in the pond. ${num2} fish swam away. How many fish are left?`,
-			scenarios: ['fish', 'goldfish', 'shrimp'],
-		},
+		{ question: (n1, n2) => `Amy has ${n1} candies. She ate ${n2} candies. How many candies does Amy have left?` },
+		{ question: (n1, n2) => `There are ${n1} peaches on the tree. A monkey took ${n2} peaches. How many peaches are left?` },
+		{ question: (n1, n2) => `There are ${n1} children in the classroom. ${n2} children went home. How many children are left?` },
+		{ question: (n1, n2) => `There are ${n1} pencils in the box. ${n2} pencils were used. How many pencils are left?` },
+		{ question: (n1, n2) => `There are ${n1} fish in the pond. ${n2} fish swam away. How many fish are left?` },
+		{ question: (n1, n2) => `There are ${n1} cars in the car park. ${n2} cars drove away. How many cars are left?` },
+		{ question: (n1, n2) => `There are ${n1} books on the shelf. Tom took ${n2} books. How many books are left?` },
+		{ question: (n1, n2) => `There are ${n1} flowers in the basket. ${n2} flowers were taken out. How many flowers are left?` },
+		{ question: (n1, n2) => `Sam has ${n1} stickers. He gave ${n2} stickers to his friend. How many stickers does Sam have left?` },
+		{ question: (n1, n2) => `There are ${n1} children playing outside. ${n2} children went home. How many children are still outside?` },
+		{ question: (n1, n2) => `There are ${n1} apples in the basket. Mom took ${n2} apples. How many apples are left?` },
+		{ question: (n1, n2) => `The farm has ${n1} chickens. ${n2} chickens were sold. How many chickens are left?` },
+		{ question: (n1, n2) => `Mike has ${n1} marbles. He lost ${n2} marbles. How many marbles does Mike have left?` },
+		{ question: (n1, n2) => `There are ${n1} cookies in the jar. The children ate ${n2} cookies. How many cookies are left?` },
+		{ question: (n1, n2) => `There are ${n1} juice bottles in the fridge. ${n2} bottles were drunk. How many bottles are left?` },
+		{ question: (n1, n2) => `There are ${n1} swans by the lake. ${n2} swans flew away. How many swans are left?` },
+		{ question: (n1, n2) => `There are ${n1} oranges on the plate. ${n2} oranges were eaten. How many oranges are left?` },
+		{ question: (n1, n2) => `Tom has ${n1} cookies. He ate ${n2} cookies. How many cookies does Tom have left?` },
+		{ question: (n1, n2) => `There are ${n1} students in the class. ${n2} students are away today. How many students are in class today?` },
+		{ question: (n1, n2) => `There are ${n1} flowers in the pot. ${n2} flowers fell off. How many flowers are left?` },
 	],
 	'×': [
-		{
-			question: (num1, num2) =>
-				`There are ${num1} oranges on each plate. There are ${num2} plates. How many oranges are there in total?`,
-			scenarios: ['oranges', 'apples', 'pears'],
-		},
-		{
-			question: (num1, num2) =>
-				`Each bouquet has ${num1} flowers. There are ${num2} bouquets. How many flowers are there in total?`,
-			scenarios: ['flowers', 'roses', 'tulips'],
-		},
-		{
-			question: (num1, num2) =>
-				`Each pencil case has ${num1} pens. There are ${num2} pencil cases. How many pens are there in total?`,
-			scenarios: ['pens', 'pencils', 'markers'],
-		},
-		{
-			question: (num1, num2) =>
-				`Each row has ${num1} seats. There are ${num2} rows. How many seats are there in total?`,
-			scenarios: ['seats', 'chairs', 'stools'],
-		},
-		{
-			question: (num1, num2) =>
-				`Each box has ${num1} chocolates. There are ${num2} boxes. How many chocolates are there in total?`,
-			scenarios: ['chocolates', 'candies', 'cookies'],
-		},
+		{ question: (n1, n2) => `There are ${n1} oranges on each plate. There are ${n2} plates. How many oranges are there in total?` },
+		{ question: (n1, n2) => `Each bunch has ${n1} flowers. There are ${n2} bunches. How many flowers are there in total?` },
+		{ question: (n1, n2) => `Each pencil case has ${n1} pencils. There are ${n2} pencil cases. How many pencils are there in total?` },
+		{ question: (n1, n2) => `Each row has ${n1} chairs. There are ${n2} rows. How many chairs are there in total?` },
+		{ question: (n1, n2) => `Each box has ${n1} cookies. There are ${n2} boxes. How many cookies are there in total?` },
+		{ question: (n1, n2) => `Each shelf holds ${n1} books. There are ${n2} shelves. How many books are there in total?` },
+		{ question: (n1, n2) => `Each toy car has ${n1} seats. There are ${n2} toy cars. How many seats are there in total?` },
+		{ question: (n1, n2) => `${n1} children sit at each table. There are ${n2} tables. How many children are seated in total?` },
+		{ question: (n1, n2) => `Each bag has ${n1} sweets. There are ${n2} bags. How many sweets are there in total?` },
+		{ question: (n1, n2) => `Sam does ${n1} sums each day. He does this for ${n2} days. How many sums does Sam do in total?` },
+		{ question: (n1, n2) => `Each flower bed has ${n1} flowers. There are ${n2} flower beds. How many flowers are there in total?` },
+		{ question: (n1, n2) => `Each box holds ${n1} apples. There are ${n2} boxes. How many apples are there in total?` },
+		{ question: (n1, n2) => `Each cake is cut into ${n1} slices. There are ${n2} cakes. How many slices are there in total?` },
+		{ question: (n1, n2) => `Each tree has ${n1} fruits on it. There are ${n2} trees. How many fruits are there in total?` },
+		{ question: (n1, n2) => `Each pack has ${n1} biscuits. There are ${n2} packs. How many biscuits are there in total?` },
+		{ question: (n1, n2) => `Each class has ${n1} students. There are ${n2} classes. How many students are there in total?` },
+		{ question: (n1, n2) => `Each page has ${n1} words on it. There are ${n2} pages. How many words are there in total?` },
+		{ question: (n1, n2) => `Each dog has ${n1} legs. There are ${n2} dogs. How many legs are there in total?` },
+		{ question: (n1, n2) => `Each box of crayons has ${n1} crayons. There are ${n2} boxes. How many crayons are there in total?` },
+		{ question: (n1, n2) => `Anna drinks ${n1} cups of water each day. She does this for ${n2} days. How many cups of water does she drink in total?` },
 	],
 	'÷': [
-		{
-			question: (num1, num2) =>
-				`There are ${num1} apples to share equally among ${num2} children. How many apples does each child get?`,
-			scenarios: ['apples', 'oranges', 'candies'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} books to place equally on ${num2} shelves. How many books go on each shelf?`,
-			scenarios: ['books', 'notebooks', 'pencils'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} flowers to put equally into ${num2} vases. How many flowers go in each vase?`,
-			scenarios: ['flowers', 'roses', 'lilies'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} chocolates to divide equally into ${num2} portions. How many chocolates in each portion?`,
-			scenarios: ['chocolates', 'candies', 'cookies'],
-		},
-		{
-			question: (num1, num2) =>
-				`There are ${num1} pencils to share equally among ${num2} students. How many pencils does each student get?`,
-			scenarios: ['pencils', 'pens', 'crayons'],
-		},
+		{ question: (n1, n2) => `There are ${n1} apples to share equally among ${n2} children. How many apples does each child get?` },
+		{ question: (n1, n2) => `There are ${n1} books to put equally on ${n2} shelves. How many books go on each shelf?` },
+		{ question: (n1, n2) => `There are ${n1} flowers to put equally into ${n2} vases. How many flowers go in each vase?` },
+		{ question: (n1, n2) => `There are ${n1} cookies to share equally among ${n2} children. How many cookies does each child get?` },
+		{ question: (n1, n2) => `There are ${n1} pencils to share equally among ${n2} students. How many pencils does each student get?` },
+		{ question: (n1, n2) => `There are ${n1} oranges to put equally into ${n2} baskets. How many oranges go in each basket?` },
+		{ question: (n1, n2) => `There are ${n1} sweets to share equally among ${n2} children. How many sweets does each child get?` },
+		{ question: (n1, n2) => `There are ${n1} stickers to share equally among ${n2} students. How many stickers does each student get?` },
+		{ question: (n1, n2) => `There are ${n1} balloons to share equally among ${n2} children. How many balloons does each child get?` },
+		{ question: (n1, n2) => `There are ${n1} chicks to put equally into ${n2} cages. How many chicks go in each cage?` },
+		{ question: (n1, n2) => `There are ${n1} cakes to share equally among ${n2} classes. How many cakes does each class get?` },
+		{ question: (n1, n2) => `The teacher has ${n1} rubbers to give equally to ${n2} students. How many rubbers does each student get?` },
+		{ question: (n1, n2) => `There are ${n1} toys to put equally into ${n2} boxes. How many toys go in each box?` },
+		{ question: (n1, n2) => `There are ${n1} gold stars to give equally to ${n2} students. How many gold stars does each student get?` },
+		{ question: (n1, n2) => `There are ${n1} bread rolls to put equally into ${n2} bags. How many rolls go in each bag?` },
+		{ question: (n1, n2) => `There are ${n1} pictures to hang equally on ${n2} walls. How many pictures go on each wall?` },
+		{ question: (n1, n2) => `There are ${n1} marbles to put equally into ${n2} bags. How many marbles go in each bag?` },
+		{ question: (n1, n2) => `There are ${n1} carrots to share equally among ${n2} rabbits. How many carrots does each rabbit get?` },
+		{ question: (n1, n2) => `There are ${n1} crayons to share equally among ${n2} children. How many crayons does each child get?` },
+		{ question: (n1, n2) => `There are ${n1} blocks to put equally into ${n2} piles. How many blocks go in each pile?` },
 	],
 }
 

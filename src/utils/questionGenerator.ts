@@ -203,9 +203,9 @@ const generateNewQuestionInternal = (
 				num2 =
 					Math.floor(Math.random() * (maxDivisor - minDivisor + 1)) + minDivisor
 
-				// 商（答案）的范围
-				const quotientMax = Math.min(Math.floor(max / num2), 12)
-				const quotientMin = Math.max(Math.ceil(effectiveMin / num2), 1)
+				// 商（答案）的范围与除数范围一致：[effectiveMin, divisorMax]，同时受被除数上限约束
+				const quotientMax = Math.min(divisorMax ?? 12, Math.floor(max / num2))
+				const quotientMin = Math.max(effectiveMin, 1)
 				answer =
 					Math.floor(Math.random() * (quotientMax - quotientMin + 1)) +
 					quotientMin // 商
