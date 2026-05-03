@@ -1,7 +1,7 @@
 import { Question, WrongQuestion } from '../store/questionsSlice'
 import { OperationType } from '../App'
 
-export const generateQuestionId = (
+const generateQuestionId = (
 	num1: number,
 	num2: number,
 	operation: OperationType
@@ -62,7 +62,8 @@ export const generateNewQuestion = (
 	operationType: OperationType,
 	wrongQuestions: WrongQuestion[],
 	lastQuestion?: Question,
-	avoidZero?: boolean
+	avoidZero?: boolean,
+	divisorMax?: number
 ): Question => {
 	// 30% 概率从错题本中选择（且运算类型相同）
 	const matchingWrongQuestions = wrongQuestions.filter(
@@ -83,7 +84,8 @@ export const generateNewQuestion = (
 				max,
 				operationType,
 				lastQuestion,
-				avoidZero
+				avoidZero,
+				divisorMax
 			)
 		}
 		const question = {
@@ -100,7 +102,8 @@ export const generateNewQuestion = (
 				max,
 				operationType,
 				lastQuestion,
-				avoidZero
+				avoidZero,
+				divisorMax
 			)
 		}
 		return question
@@ -112,7 +115,8 @@ export const generateNewQuestion = (
 		max,
 		operationType,
 		lastQuestion,
-		avoidZero
+		avoidZero,
+		divisorMax
 	)
 }
 
@@ -121,7 +125,8 @@ const generateNewQuestionInternal = (
 	max: number,
 	operationType: OperationType,
 	lastQuestion?: Question,
-	avoidZero?: boolean
+	avoidZero?: boolean,
+	divisorMax?: number
 ): Question => {
 	let num1: number
 	let num2: number
@@ -191,10 +196,10 @@ const generateNewQuestionInternal = (
 
 			case '÷':
 				// 除法：确保商在 [min, max] 范围内，被除数也在范围内
-				// 除数永远不能为0（数学规则）
-				// 优化：除数范围设为 2-12，减少1的出现
-				const minDivisor = avoidZero ? 2 : 1
-				const maxDivisor = Math.min(12, Math.floor(max / 2))
+				// min = 除数下限（来自设置），max = 被除数上限
+				// 除数永远不能为0（数学规则），应用题模式时除数至少为2
+				const minDivisor = Math.max(effectiveMin, avoidZero ? 2 : 1)
+				const maxDivisor = Math.min(divisorMax ?? 12, Math.floor(max / 2))
 				num2 =
 					Math.floor(Math.random() * (maxDivisor - minDivisor + 1)) + minDivisor
 

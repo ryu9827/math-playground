@@ -7,6 +7,7 @@ export interface SettingsState {
 	soundEnabled: boolean
 	dailyGoal: number
 	numberSplitMaxTarget: number
+	divisionDivisorMax: number
 	wordProblemMode: {
 		'+': boolean
 		'-': boolean
@@ -77,12 +78,13 @@ const loadSettings = (): SettingsState => {
 					settings.soundEnabled !== undefined ? settings.soundEnabled : true,
 				dailyGoal: settings.dailyGoal || 20,
 				numberSplitMaxTarget: settings.numberSplitMaxTarget || 10,
+				divisionDivisorMax: settings.divisionDivisorMax || 10,
 				wordProblemMode: wordProblemModeValue,
 				operationLimits: settings.operationLimits || {
 					'+': { min: 1, max: 100 },
 					'-': { min: 1, max: 100 },
 					'×': { min: 2, max: 10 },
-					'÷': { min: 1, max: 100 },
+					'÷': { min: 2, max: 100 },
 				},
 			}
 		}
@@ -94,6 +96,7 @@ const loadSettings = (): SettingsState => {
 		soundEnabled: true,
 		dailyGoal: 20,
 		numberSplitMaxTarget: 10,
+		divisionDivisorMax: 10,
 		wordProblemMode: {
 			'+': false,
 			'-': false,
@@ -104,7 +107,7 @@ const loadSettings = (): SettingsState => {
 			'+': { min: 1, max: 100 },
 			'-': { min: 1, max: 100 },
 			'×': { min: 2, max: 10 },
-			'÷': { min: 1, max: 100 },
+			'÷': { min: 2, max: 100 },
 		},
 	}
 }
@@ -157,6 +160,10 @@ const settingsSlice = createSlice({
 			}
 			saveSettings(state)
 		},
+		setDivisionDivisorMax: (state, action: PayloadAction<number>) => {
+			state.divisionDivisorMax = action.payload
+			saveSettings(state)
+		},
 	},
 })
 
@@ -167,5 +174,6 @@ export const {
 	setNumberSplitMaxTarget,
 	setWordProblemMode,
 	setOperationLimits,
+	setDivisionDivisorMax,
 } = settingsSlice.actions
 export default settingsSlice.reducer

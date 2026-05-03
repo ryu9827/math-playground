@@ -38,7 +38,7 @@ export const Question: React.FC<QuestionProps> = ({
 	const dispatch = useDispatch()
 	const { currentQuestion, showResult, isCorrect, wrongQuestions } =
 		useSelector((state: RootState) => state.questions)
-	const { language, dailyGoal, wordProblemMode, operationLimits } = useSelector(
+	const { language, dailyGoal, wordProblemMode, operationLimits, divisionDivisorMax } = useSelector(
 		(state: RootState) => state.settings
 	)
 	const t = translations[language]
@@ -60,6 +60,7 @@ export const Question: React.FC<QuestionProps> = ({
 	const currentQuestionRef = useRef(currentQuestion)
 	const currentLimitsRef = useRef(currentLimits)
 	const currentWordProblemModeRef = useRef(currentWordProblemMode)
+	const divisionDivisorMaxRef = useRef(divisionDivisorMax)
 
 	useEffect(() => {
 		wrongQuestionsRef.current = wrongQuestions
@@ -76,6 +77,10 @@ export const Question: React.FC<QuestionProps> = ({
 	useEffect(() => {
 		currentWordProblemModeRef.current = currentWordProblemMode
 	}, [currentWordProblemMode])
+
+	useEffect(() => {
+		divisionDivisorMaxRef.current = divisionDivisorMax
+	}, [divisionDivisorMax])
 
 	useEffect(() => {
 		// 当运算类型改变时，生成新问题
@@ -100,7 +105,8 @@ export const Question: React.FC<QuestionProps> = ({
 					operation,
 					wrongQuestionsRef.current,
 					currentQuestionRef.current || undefined,
-					currentWordProblemModeRef.current
+					currentWordProblemModeRef.current,
+					divisionDivisorMaxRef.current
 				)
 				dispatch(setCurrentQuestion(newQuestion))
 				dispatch(resetResult())
@@ -121,15 +127,6 @@ export const Question: React.FC<QuestionProps> = ({
 		}
 	}, [currentQuestion]) // 只依赖 currentQuestion
 
-	useEffect(() => {
-		console.log(
-			'Redux状态变化 - showResult:',
-			showResult,
-			', isCorrect:',
-			isCorrect
-		)
-	}, [showResult, isCorrect])
-
 	// 生成不含0的题目的辅助函数
 	const generateQuestionWithoutZero = useCallback(() => {
 		let newQuestion
@@ -144,7 +141,8 @@ export const Question: React.FC<QuestionProps> = ({
 				operation,
 				wrongQuestionsRef.current,
 				currentQuestionRef.current || undefined,
-				true // avoidZero = true
+				true, // avoidZero = true
+				divisionDivisorMaxRef.current
 			)
 			attempts++
 		} while (
@@ -167,25 +165,11 @@ export const Question: React.FC<QuestionProps> = ({
 		if (selectedAnswer !== null) {
 			dispatch(submitAnswer())
 
-			// 增加每日答题计数
-			incrementQuestionsAnswered()
+			// 增加每日答题计数（按运算类型统计）
+			incrementQuestionsAnswered(operation)
 
 			const isAnswerCorrect =
 				currentQuestion && selectedAnswer === currentQuestion.answer
-			console.log(
-				'handleSubmit - 答案是否正确:',
-				isAnswerCorrect,
-				'选择的答案:',
-				selectedAnswer,
-				'正确答案:',
-				currentQuestion?.answer
-			)
-			console.log(
-				'handleSubmit - Redux状态: showResult =',
-				showResult,
-				', isCorrect =',
-				isCorrect
-			)
 
 			// 答对才检查里程碑
 			if (isAnswerCorrect) {
@@ -200,16 +184,12 @@ export const Question: React.FC<QuestionProps> = ({
 				}
 
 				// 显示庆祝动画
-				console.log('答对了！显示庆祝动画')
 				setShowCelebration(true)
-			} else {
-				console.log('答错了！应该显示错误提示，等待用户点击下一题')
 			}
 		}
 	}
 
 	const handleNext = useCallback(() => {
-		console.log('handleNext 被调用')
 		dispatch(resetResult())
 		const newQuestion = generateNewQuestion(
 			currentLimitsRef.current.min,
@@ -217,7 +197,8 @@ export const Question: React.FC<QuestionProps> = ({
 			operation,
 			wrongQuestionsRef.current,
 			currentQuestionRef.current || undefined,
-			currentWordProblemModeRef.current
+			currentWordProblemModeRef.current,
+			divisionDivisorMaxRef.current
 		)
 		dispatch(setCurrentQuestion(newQuestion))
 		setSelectedAnswer(null)
@@ -225,7 +206,6 @@ export const Question: React.FC<QuestionProps> = ({
 	}, [dispatch, operation]) // 只依赖 dispatch 和 operation
 
 	const handleCelebrationComplete = useCallback(() => {
-		console.log('庆祝动画完成，准备进入下一题')
 		setShowCelebration(false)
 		handleNext()
 	}, [handleNext])

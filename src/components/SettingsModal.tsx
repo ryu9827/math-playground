@@ -6,6 +6,7 @@ import {
 	setSoundEnabled,
 	setOperationLimits,
 	setNumberSplitMaxTarget,
+	setDivisionDivisorMax,
 } from '../store/settingsSlice'
 import { translations } from '../utils/i18n'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,7 +24,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 	onClose,
 }) => {
 	const dispatch = useDispatch()
-	const { language, soundEnabled, operationLimits, numberSplitMaxTarget } =
+	const { language, soundEnabled, operationLimits, numberSplitMaxTarget, divisionDivisorMax } =
 		useSelector((state: RootState) => state.settings)
 	const t = translations[language]
 
@@ -58,6 +59,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 	>(operationLimits['×'].max)
 	const [multiplicationError, setMultiplicationError] = React.useState('')
 
+	// 除法状态
+	const [divisionDividendMax, setDivisionDividendMax] = React.useState<
+		number | string
+	>(operationLimits['÷'].max)
+	const [divisionDivisorMin, setDivisionDivisorMin] = React.useState<
+		number | string
+	>(operationLimits['÷'].min)
+	const [divisionDivisorMaxState, setDivisionDivisorMaxState] = React.useState<
+		number | string
+	>(divisionDivisorMax)
+	const [divisionError, setDivisionError] = React.useState('')
+
 	// 当弹窗打开或 Redux 状态变化时，同步到本地状态
 	React.useEffect(() => {
 		if (isOpen) {
@@ -69,11 +82,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 			setSubtractionSubtrahendMin(operationLimits['-'].min)
 			setMultiplicationMin(operationLimits['×'].min)
 			setMultiplicationMax(operationLimits['×'].max)
+			setDivisionDividendMax(operationLimits['÷'].max)
+			setDivisionDivisorMin(operationLimits['÷'].min)
+			setDivisionDivisorMaxState(divisionDivisorMax)
 			setAdditionError('')
 			setSubtractionError('')
 			setMultiplicationError('')
+			setDivisionError('')
 		}
-	}, [isOpen, soundEnabled, operationLimits, numberSplitMaxTarget])
+	}, [isOpen, soundEnabled, operationLimits, numberSplitMaxTarget, divisionDivisorMax])
 
 	// 验证加法的上下限
 	const validateAdditionLimits = (
@@ -188,6 +205,66 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 		setMultiplicationMax(value)
 	}
 
+	// 除法验证：除数下限 < 除数上限 < 被除数上限
+	const validateDivisionLimits = (
+		divisorMin: number | string,
+		divisorMax: number | string,
+		dividendMax: number | string
+	): boolean => {
+		const divisorMinNum =
+			typeof divisorMin === 'string' ? parseInt(divisorMin) || 1 : divisorMin
+		const divisorMaxNum =
+			typeof divisorMax === 'string' ? parseInt(divisorMax) || 1 : divisorMax
+		const dividendMaxNum =
+			typeof dividendMax === 'string' ? parseInt(dividendMax) || 1 : dividendMax
+
+		if (divisorMinNum >= divisorMaxNum || divisorMaxNum >= dividendMaxNum) {
+			setDivisionError(t.minMaxError)
+			return false
+		}
+		setDivisionError('')
+		return true
+	}
+
+	const handleDivisionDividendMaxChange = (value: string) => {
+		setDivisionDividendMax(value)
+	}
+
+	const handleDivisionDivisorMinChange = (value: string) => {
+		setDivisionDivisorMin(value)
+	}
+
+	const handleDivisionDivisorMaxChange = (value: string) => {
+		setDivisionDivisorMaxState(value)
+	}
+
+	const handleDivisionDividendMaxBlur = () => {
+		const value =
+			typeof divisionDividendMax === 'string'
+				? parseInt(divisionDividendMax) || 1
+				: divisionDividendMax
+		setDivisionDividendMax(value)
+		validateDivisionLimits(divisionDivisorMin, divisionDivisorMaxState, value)
+	}
+
+	const handleDivisionDivisorMinBlur = () => {
+		const value =
+			typeof divisionDivisorMin === 'string'
+				? parseInt(divisionDivisorMin) || 1
+				: divisionDivisorMin
+		setDivisionDivisorMin(value)
+		validateDivisionLimits(value, divisionDivisorMaxState, divisionDividendMax)
+	}
+
+	const handleDivisionDivisorMaxBlur = () => {
+		const value =
+			typeof divisionDivisorMaxState === 'string'
+				? parseInt(divisionDivisorMaxState) || 1
+				: divisionDivisorMaxState
+		setDivisionDivisorMaxState(value)
+		validateDivisionLimits(divisionDivisorMin, value, divisionDividendMax)
+	}
+
 	// onBlur 时才验证并格式化
 	const handleMultiplicationMinBlur = () => {
 		const value =
@@ -234,9 +311,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 				? parseInt(multiplicationMax) || 1
 				: multiplicationMax
 
+		// 转换为数字 - 除法
+		const divisionDividendMaxNum =
+			typeof divisionDividendMax === 'string'
+				? parseInt(divisionDividendMax) || 1
+				: divisionDividendMax
+		const divisionDivisorMinNum =
+			typeof divisionDivisorMin === 'string'
+				? parseInt(divisionDivisorMin) || 1
+				: divisionDivisorMin
+		const divisionDivisorMaxNum =
+			typeof divisionDivisorMaxState === 'string'
+				? parseInt(divisionDivisorMaxState) || 1
+				: divisionDivisorMaxState
+
 		// 验证加法上下限
 		if (!validateAdditionLimits(additionMinNum, additionMaxNum)) {
-			return // 如果验证失败，不保存
+			return
 		}
 
 		// 验证减法限制
@@ -246,14 +337,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 				subtractionMinuendMaxNum
 			)
 		) {
-			return // 如果验证失败，不保存
+			return
 		}
 
 		// 验证乘法限制
 		if (
 			!validateMultiplicationLimits(multiplicationMinNum, multiplicationMaxNum)
 		) {
-			return // 如果验证失败，不保存
+			return
+		}
+
+		// 验证除法限制
+		if (!validateDivisionLimits(divisionDivisorMinNum, divisionDivisorMaxNum, divisionDividendMaxNum)) {
+			return
 		}
 
 		dispatch(setSoundEnabled(localSound))
@@ -293,6 +389,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 				max: multiplicationMaxNum,
 			})
 		)
+
+		// 保存除法设置（min=除数下限，max=被除数上限）
+		dispatch(
+			setOperationLimits({
+				operation: '÷',
+				min: divisionDivisorMinNum,
+				max: divisionDividendMaxNum,
+			})
+		)
+		dispatch(setDivisionDivisorMax(divisionDivisorMaxNum))
 
 		onClose() // 保存后自动关闭
 	}
@@ -471,6 +577,64 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 									</div>
 									{multiplicationError && (
 										<div className='error-message'>{multiplicationError}</div>
+									)}
+								</div>
+
+								{/* 除法限制 */}
+								<div className='operation-limit-group'>
+									<h4>➗ {t.division}</h4>
+									<div className='limit-inputs'>
+										<div className='input-group'>
+											<label>{t.divisionDividendMax}</label>
+											<input
+												type='number'
+												value={divisionDividendMax}
+												onChange={(e) =>
+													handleDivisionDividendMaxChange(e.target.value)
+												}
+												onBlur={handleDivisionDividendMaxBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.divisionDividendMaxHint}
+											</span>
+										</div>
+										<div className='input-group'>
+											<label>{t.divisionDivisorMin}</label>
+											<input
+												type='number'
+												value={divisionDivisorMin}
+												onChange={(e) =>
+													handleDivisionDivisorMinChange(e.target.value)
+												}
+												onBlur={handleDivisionDivisorMinBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.divisionDivisorMinHint}
+											</span>
+										</div>
+										<div className='input-group'>
+											<label>{t.divisionDivisorMax}</label>
+											<input
+												type='number'
+												value={divisionDivisorMaxState}
+												onChange={(e) =>
+													handleDivisionDivisorMaxChange(e.target.value)
+												}
+												onBlur={handleDivisionDivisorMaxBlur}
+												min='1'
+												max='1000'
+											/>
+											<span className='input-hint'>
+												{t.divisionDivisorMaxHint}
+											</span>
+										</div>
+									</div>
+									{divisionError && (
+										<div className='error-message'>{divisionError}</div>
 									)}
 								</div>
 							</div>
