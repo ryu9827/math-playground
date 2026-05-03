@@ -56,11 +56,9 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 			const maxAnimations = operation === '+' ? 200 : 100
 			const newAnimationType = Math.floor(Math.random() * maxAnimations)
 			setAnimationType(newAnimationType)
-			console.log('CelebrationAnimation - 显示动画, 类型:', newAnimationType)
 
 			// 根据设置播放庆祝音效
 			if (soundEnabled) {
-				console.log('CelebrationAnimation - 开始播放庆祝音效')
 				soundEffects.playRandomCelebration()
 
 				// 直接获取当前动画对应的庆祝文字
@@ -69,13 +67,10 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 					newAnimationType,
 					language
 				)
-				console.log('提取的庆祝文字:', praiseText)
 
 				// 音效结束后播放语音（庆祝音效最长600ms）
 				setTimeout(() => {
-					console.log('准备播放语音:', praiseText)
 					const currentLanguage = language === 'zh' ? 'zh-CN' : 'en-US'
-					console.log('当前语言:', currentLanguage)
 
 					// 检查浏览器是否支持语音合成
 					if ('speechSynthesis' in window) {
@@ -88,29 +83,18 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 							const utterance = new SpeechSynthesisUtterance(praiseText)
 							utterance.lang = currentLanguage
 							utterance.pitch = 1.3 // 音调偏高
-							utterance.rate = 1.0 // 正常语速（改为1.0，避免太快）
+							utterance.rate = 1.0 // 正常语速
 							utterance.volume = 1.0 // 音量最大
 
-							// 添加事件监听
-							utterance.onstart = () => {
-								console.log('语音开始播放')
-							}
-							utterance.onend = () => {
-								console.log('语音播放完成')
-							}
+							// 添加错误监听
 							utterance.onerror = (event) => {
 								console.error('语音播放错误:', event)
 							}
 
 							// 获取可用的语音
 							const voices = window.speechSynthesis.getVoices()
-							console.log(
-								'可用的语音列表:',
-								voices.map((v) => `${v.name} (${v.lang})`)
-							)
 
 							if (voices.length === 0) {
-								console.warn('语音库未加载，稍后重试...')
 								// 如果语音库未加载，等待后重试
 								setTimeout(loadVoicesAndSpeak, 100)
 								return
@@ -138,36 +122,26 @@ export const CelebrationAnimation: React.FC<CelebrationAnimationProps> = ({
 							})
 
 							if (femaleVoice) {
-								console.log('选择的女声:', femaleVoice.name)
 								utterance.voice = femaleVoice
-							} else {
-								console.log('未找到合适的女声，使用默认语音')
 							}
 
-							// 播放语音
-							console.log('开始播放语音...')
 							window.speechSynthesis.speak(utterance)
 						}
 
 						// 开始加载并播放
 						loadVoicesAndSpeak()
-					} else {
-						console.warn('浏览器不支持语音合成功能')
 					}
 				}, 600)
 			}
 
 			const timer = setTimeout(() => {
-				console.log('CelebrationAnimation - 2秒后调用 onComplete')
 				onCompleteRef.current()
 			}, 2000)
 
 			// 清理函数：当组件卸载或 show 变为 false 时清除定时器
 			return () => {
-				console.log('CelebrationAnimation - 清理定时器')
 				clearTimeout(timer)
 				// 注意：不要在这里取消语音播放，让语音播放完成
-				// 语音播放是异步的，不应该被组件卸载打断
 			}
 		}
 	}, [show, soundEnabled, language, operation])

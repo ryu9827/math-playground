@@ -75,34 +75,45 @@
 }
 
 .settings-btn {
-	padding: $spacing-sm;
-	width: 44px;
-	height: 44px;
+	padding: $spacing-xs $spacing-sm;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	gap: 6px;
 	background: transparent;
 	border: 2px solid $primary-color;
-	border-radius: 50%;
+	border-radius: $radius-md;
 	color: $primary-color;
 	cursor: pointer;
 	transition: all $transition-fast;
 	flex-shrink: 0;
+	white-space: nowrap;
 
 	svg {
-		width: 24px;
-		height: 24px;
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+		transition: transform $transition-fast;
+	}
+
+	.settings-btn-label {
+		font-size: 0.9rem;
+		font-weight: 600;
 	}
 
 	&:hover {
 		background: $primary-color;
 		color: $text-light;
-		transform: rotate(90deg);
 		box-shadow: $shadow-md;
+
+		svg {
+			transform: rotate(90deg);
+		}
 	}
 
 	&:active {
-		transform: rotate(90deg) scale(0.95);
+		svg {
+			transform: rotate(90deg) scale(0.95);
+		}
 	}
 }
 
@@ -126,13 +137,11 @@
 	}
 
 	.settings-btn {
-		width: 40px;
-		height: 40px;
 		margin-top: $spacing-xs;
+		padding: 6px $spacing-sm;
 
-		svg {
-			width: 20px;
-			height: 20px;
+		.settings-btn-label {
+			font-size: 0.8rem;
 		}
 	}
 }

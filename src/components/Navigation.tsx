@@ -55,16 +55,14 @@ export const Navigation: React.FC<NavigationProps> = ({
 					<span className='tab-symbol'>÷</span>
 					{t.division}
 				</button>
-				{/* 拆数字页签已隐藏
 				<button
-					className={`nav-tab ${currentTab === 'split' ? 'active' : ''}`}
-					onClick={() => onTabChange('split')}
-					data-tab='split'
+					className={`nav-tab ${currentTab === 'random' ? 'active' : ''}`}
+					onClick={() => onTabChange('random')}
+					data-tab='random'
 				>
-					<span className='tab-symbol'>🔢</span>
-					{language === 'zh' ? '拆数字' : 'Split'}
+					<span className='tab-symbol'>❓</span>
+					{t.randomQuiz}
 				</button>
-				*/}
 				<button
 					className={`nav-tab ${currentTab === 'wrong' ? 'active' : ''}`}
 					onClick={() => onTabChange('wrong')}
@@ -83,8 +81,8 @@ export const Navigation: React.FC<NavigationProps> = ({
 				title={t.settings}
 			>
 				<svg
-					width='24'
-					height='24'
+					width='20'
+					height='20'
 					viewBox='0 0 24 24'
 					fill='none'
 					stroke='currentColor'
@@ -93,12 +91,9 @@ export const Navigation: React.FC<NavigationProps> = ({
 					strokeLinejoin='round'
 				>
 					<circle cx='12' cy='12' r='3'></circle>
-					<path d='M12 1v6m0 6v6'></path>
-					<path d='M17 3.34L14.5 6.5m-5 11l-2.5 3.16'></path>
-					<path d='M23 12h-6m-6 0H1'></path>
-					<path d='M20.66 17l-3.16-2.5m-11 0L3.34 17'></path>
-					<path d='M20.66 7l-3.16 2.5m-11 0L3.34 7'></path>
+					<path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'></path>
 				</svg>
+				<span className='settings-btn-label'>{t.settings}</span>
 			</button>
 		</nav>
 	)

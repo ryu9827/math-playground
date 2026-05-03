@@ -225,7 +225,7 @@ export const NumberSplit: React.FC<NumberSplitProps> = ({
 		const correctCount = correctPairs.size
 		let finalCount = 0
 		for (let i = 0; i < correctCount; i++) {
-			finalCount = incrementQuestionsAnswered()
+			finalCount = incrementQuestionsAnswered('+')
 		}
 
 		// 触发一个自定义事件，通知 DailyStats 组件更新

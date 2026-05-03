@@ -1,12 +1,29 @@
+import { OperationType } from '../App'
+
 // 每日统计工具
 const DAILY_STATS_KEY = 'math-playground-daily-stats'
+
+interface OperationCounts {
+	'+': number
+	'-': number
+	'×': number
+	'÷': number
+}
 
 interface DailyStats {
 	date: string // YYYY-MM-DD format
 	questionsAnswered: number
 	goalAchieved: boolean // 今天是否已达成目标并播放过动画
 	milestonesAchieved: number[] // 已经触发过奖励的里程碑，例如 [20, 40, 60]
+	operationCounts: OperationCounts // 各运算类型答题数
 }
+
+const defaultOperationCounts = (): OperationCounts => ({
+	'+': 0,
+	'-': 0,
+	'×': 0,
+	'÷': 0,
+})
 
 // 获取今天的日期字符串
 const getTodayString = (): string => {
@@ -15,7 +32,7 @@ const getTodayString = (): string => {
 }
 
 // 加载每日统计
-export const loadDailyStats = (): DailyStats => {
+const loadDailyStats = (): DailyStats => {
 	try {
 		const saved = localStorage.getItem(DAILY_STATS_KEY)
 		if (saved) {
@@ -24,19 +41,23 @@ export const loadDailyStats = (): DailyStats => {
 
 			// 如果是新的一天，重置计数
 			if (stats.date !== today) {
-				const newStats = {
+				const newStats: DailyStats = {
 					date: today,
 					questionsAnswered: 0,
 					goalAchieved: false,
 					milestonesAchieved: [],
+					operationCounts: defaultOperationCounts(),
 				}
 				saveDailyStats(newStats)
 				return newStats
 			}
 
-			// 向后兼容：如果旧数据没有 milestonesAchieved，添加它
+			// 向后兼容：补全缺失字段
 			if (!stats.milestonesAchieved) {
 				stats.milestonesAchieved = []
+			}
+			if (!stats.operationCounts) {
+				stats.operationCounts = defaultOperationCounts()
 			}
 
 			return stats
@@ -46,18 +67,19 @@ export const loadDailyStats = (): DailyStats => {
 	}
 
 	// 默认返回今天的初始统计
-	const newStats = {
+	const newStats: DailyStats = {
 		date: getTodayString(),
 		questionsAnswered: 0,
 		goalAchieved: false,
 		milestonesAchieved: [],
+		operationCounts: defaultOperationCounts(),
 	}
 	saveDailyStats(newStats)
 	return newStats
 }
 
 // 保存每日统计
-export const saveDailyStats = (stats: DailyStats): void => {
+const saveDailyStats = (stats: DailyStats): void => {
 	try {
 		localStorage.setItem(DAILY_STATS_KEY, JSON.stringify(stats))
 	} catch (error) {
@@ -65,10 +87,13 @@ export const saveDailyStats = (stats: DailyStats): void => {
 	}
 }
 
-// 增加题目计数
-export const incrementQuestionsAnswered = (): number => {
+// 增加题目计数，同时按运算类型统计
+export const incrementQuestionsAnswered = (operation?: OperationType): number => {
 	const stats = loadDailyStats()
 	stats.questionsAnswered += 1
+	if (operation) {
+		stats.operationCounts[operation] = (stats.operationCounts[operation] || 0) + 1
+	}
 	saveDailyStats(stats)
 	return stats.questionsAnswered
 }
@@ -77,6 +102,12 @@ export const incrementQuestionsAnswered = (): number => {
 export const getTodayQuestionsCount = (): number => {
 	const stats = loadDailyStats()
 	return stats.questionsAnswered
+}
+
+// 获取今天各运算类型的答题数量
+export const getOperationCounts = (): OperationCounts => {
+	const stats = loadDailyStats()
+	return stats.operationCounts
 }
 
 // 标记今天目标已达成

@@ -9,10 +9,11 @@ import { SettingsModal } from './components/SettingsModal'
 import { DailyStats } from './components/DailyStats'
 import { GoalAchievedAnimation } from './components/GoalAchievedAnimation'
 import { MilestoneReward } from './components/MilestoneReward'
+import { RandomQuestion } from './components/RandomQuestion'
 import './App.scss'
 
 export type OperationType = '+' | '-' | '×' | '÷'
-export type TabType = OperationType | 'wrong' | 'split'
+export type TabType = OperationType | 'wrong' | 'split' | 'random'
 
 const STORAGE_KEY = 'math-playground-current-tab'
 
@@ -27,7 +28,8 @@ const loadCurrentTab = (): TabType => {
 				saved === '×' ||
 				saved === '÷' ||
 				saved === 'wrong' ||
-				saved === 'split')
+				saved === 'split' ||
+				saved === 'random')
 		) {
 			return saved as TabType
 		}
@@ -101,6 +103,16 @@ function App() {
 				)}
 				{currentTab === 'split' && (
 					<NumberSplit
+						onGoalAchieved={() => setShowGoalAnimation(true)}
+						onMilestoneAchieved={(milestone, milestoneCount) => {
+							setCurrentMilestone(milestone)
+							setCurrentMilestoneCount(milestoneCount)
+							setShowMilestoneReward(true)
+						}}
+					/>
+				)}
+				{currentTab === 'random' && (
+					<RandomQuestion
 						onGoalAchieved={() => setShowGoalAnimation(true)}
 						onMilestoneAchieved={(milestone, milestoneCount) => {
 							setCurrentMilestone(milestone)

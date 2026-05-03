@@ -55,6 +55,36 @@
 		font-size: 0.7rem;
 		color: $text-dim;
 	}
+
+	.stats-op-row {
+		display: flex;
+		gap: 6px;
+		margin-top: 4px;
+	}
+
+	.stats-op-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		background: rgba(99, 102, 241, 0.15);
+		border-radius: $radius-sm;
+		padding: 2px 6px;
+		min-width: 28px;
+	}
+
+	.stats-op-symbol {
+		font-size: 0.6rem;
+		color: $primary-light;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.stats-op-count {
+		font-size: 0.85rem;
+		color: $text-light;
+		font-weight: 600;
+		line-height: 1.2;
+	}
 }
 
 @media (max-width: 768px) {
@@ -79,6 +109,19 @@
 
 		.stats-unit {
 			font-size: 0.6rem;
+		}
+
+		.stats-op-item {
+			padding: 2px 4px;
+			min-width: 22px;
+		}
+
+		.stats-op-symbol {
+			font-size: 0.55rem;
+		}
+
+		.stats-op-count {
+			font-size: 0.75rem;
 		}
 	}
 }

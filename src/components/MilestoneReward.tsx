@@ -38,7 +38,7 @@ const animals = [
 ]
 
 // 奖杯样式（不同的emoji）
-export const trophyEmojis = [
+const trophyEmojis = [
 	{ number: 21, value: '🏆' },
 	{ number: 22, value: '🥇' },
 	{ number: 23, value: '🎖️' },
